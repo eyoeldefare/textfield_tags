@@ -10,7 +10,7 @@ class TagsStyler {
   ///[tagMargin] allows you to apply padding inside tag
   final EdgeInsets tagMargin;
 
-  ///[tagMargin] apply decoration to the container containing the tag
+  ///[tagMargin] apply decoration to the container containing the tag. Should specify the color to set tag color, otherwise its white by default
   final BoxDecoration tagDecoration;
 
   ///[tagTextStyle] style the text inside tag
