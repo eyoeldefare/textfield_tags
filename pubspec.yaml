@@ -1,8 +1,7 @@
 name: textfield_tags
 description: A text field that allows an input of tags inside the textfield
 version: 0.9.0
-author: Eyoel Defare
-homepage: defareeyoel@gmail.com
+homepage: https://github.com/eyoeldefare/textfield_tags
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
