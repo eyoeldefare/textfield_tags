@@ -82,10 +82,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 
   void _animateTransition() {
-    double end = MediaQuery.of(context).size.width;
+    var _pw = MediaQuery.of(context).size.width;
     _scrollController.animateTo(
-      end,
-      duration: const Duration(seconds: 2),
+      _pw + _scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 3),
       curve: Curves.easeOut,
     );
   }
@@ -112,21 +112,21 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         enabledBorder: _textFieldStyler.textFieldEnabledBorder,
         prefixIcon: _showPrefixIcon == true
             ? ConstrainedBox(
-          constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * .75),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: _getTags(),
-              ),
-            ),
-          ),
-        )
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.725),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _getTags(),
+                    ),
+                  ),
+                ),
+              )
             : null,
       ),
       onSubmitted: (value) {
@@ -135,43 +135,44 @@ class _TextFieldTagsState extends State<TextFieldTags> {
           _textEditingController.clear();
           if (!_tags.contains(val)) {
             if (_showPrefixIcon == false) {
+              widget.onTag(val);
               setState(() {
                 _tags.add(val);
                 _showPrefixIcon = true;
               });
             } else {
+              widget.onTag(val);
               setState(() {
                 _tags.add(val);
               });
             }
             this._animateTransition();
-            widget.onTag(val);
           }
         }
       },
       onChanged: (value) {
         var splitedTagsList = value.split(" ");
         var lastLastTag =
-        splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
-        var space = value.substring(value.length - 1);
+            splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
 
-        if (space.contains(" ")) {
+        if (value.contains(" ")) {
           if (lastLastTag.length > 0) {
             _textEditingController.clear();
 
             if (!_tags.contains(lastLastTag)) {
               if (_showPrefixIcon == false) {
+                widget.onTag(lastLastTag);
                 setState(() {
                   _tags.add(lastLastTag);
                   _showPrefixIcon = true;
                 });
               } else {
+                widget.onTag(lastLastTag);
                 setState(() {
                   _tags.add(lastLastTag);
                 });
               }
               this._animateTransition();
-              widget.onTag(lastLastTag);
             }
           }
         }
@@ -179,4 +180,3 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     );
   }
 }
-
