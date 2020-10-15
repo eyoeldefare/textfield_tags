@@ -87,3 +87,16 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i2.png" width="350">
 
+``` dart
+  TextFieldTags(
+      tagsStyler: TagsStyler(
+        tagTextStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), 
+        tagDecoration: BoxDecoration(color: const Color.fromARGB(255,171,81,81), borderRadius: BorderRadius.circular(8.0), ),
+        tagCancelIcon: Icon(Icons.cancel, size: 16.0, color: Color.fromARGB(255,235,214,214)),
+        tagPadding: const EdgeInsets.all(10.0),
+     ),
+     onTag: (tag) { print(tag)},  
+   )
+```
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i3.png" width="350">
+
