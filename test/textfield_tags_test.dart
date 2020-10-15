@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:textfield_tags/textfield_tags.dart';
-
 void main() {
   test('adds one to input values', () {
 //    final calculator = Calculator();
