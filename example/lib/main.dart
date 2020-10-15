@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
           onTag: (tag) {
             //This give you tags entered
-            //print(tag)
+            print(tag);
           },
         ),
       ),
