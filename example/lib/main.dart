@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: TextFieldTags(
           textFieldStyler: TextFieldStyler(
               //These are properties you can tweek for customization
-              
+
               // bool textFieldFilled = false,
               // String helperText = 'Enter tags',
               // TextStyle helperStyle,
@@ -52,13 +52,19 @@ class _MyHomePageState extends State<MyHomePage> {
               // OutlineInputBorder textFieldBorder = const OutlineInputBorder(),
               // OutlineInputBorder textFieldFocusedBorder,
               // OutlineInputBorder textFieldDisabledBorder,
-              // OutlineInputBorder textFieldEnabledBorder
+              // OutlineInputBorder textFieldEnabledBorder,
+              // Color cursorColor,
+              // TextStyle textStyle;
               ),
           tagsStyler: TagsStyler(
               //These are properties you can tweek for customization
               tagTextStyle: TextStyle(fontWeight: FontWeight.normal),
-              tagDecoration: BoxDecoration(color: Colors.blue[300], borderRadius: BorderRadius.circular(0.0), ),
-              tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
+              tagDecoration: BoxDecoration(
+                color: Colors.blue[300],
+                borderRadius: BorderRadius.circular(0.0),
+              ),
+              tagCancelIcon:
+                  Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
               tagPadding: const EdgeInsets.all(6.0)
               // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
               // EdgeInsets tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
@@ -68,7 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
           onTag: (tag) {
             //This give you tags entered
-            print(tag);
+            print('onTag ' + tag);
+          },
+          onDelete: (tag) {
+            print('onDelete ' + tag);
           },
         ),
       ),
