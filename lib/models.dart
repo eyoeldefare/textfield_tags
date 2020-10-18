@@ -23,7 +23,7 @@ class TagsStyler {
     this.tagPadding = const EdgeInsets.all(4.0),
     this.tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
     this.tagDecoration =
-    const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
+        const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
     this.tagTextStyle,
     this.tagCancelIcon = const Icon(
       Icons.cancel,
@@ -43,6 +43,12 @@ class TextFieldStyler {
 
   ///The padding for the input decoration's container. Adjust this to using EdgeInsets if you make textFieldBorder [null] or borderless to have the right customized style
   final EdgeInsets contentPadding;
+
+  /// The text style of the text input
+  final TextStyle textStyle;
+
+  ///The color of the cursor blinking
+  final Color cursorColor;
 
   ///Whether the input [child] is part of a dense form (i.e., uses less vertical space).
   final bool isDense;
@@ -73,6 +79,8 @@ class TextFieldStyler {
     this.textFieldFilled = false,
     this.helperText = 'Enter tags',
     this.helperStyle,
+    this.textStyle,
+    this.cursorColor,
     this.hintText = 'Got tags?',
     this.hintStyle,
     this.contentPadding,

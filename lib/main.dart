@@ -93,9 +93,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      keyboardType: TextInputType.text,
       controller: _textEditingController,
       autocorrect: false,
+      cursorColor: _textFieldStyler.cursorColor,
+      style: _textFieldStyler.textStyle,
       decoration: InputDecoration(
         contentPadding: _textFieldStyler.contentPadding,
         isDense: _textFieldStyler.isDense,
