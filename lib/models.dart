@@ -16,10 +16,18 @@ class TagsStyler {
   ///[tagTextStyle] style the text inside tag
   final TextStyle tagTextStyle;
 
+  /// Styles the padding of the tag text
+  final EdgeInsets tagTextPadding;
+
+  /// Styles the padding of the tag cancel icon
+  final EdgeInsets tagCancelIconPadding;
+
   ///[tagCancelIcon] apply your own icon, if you want, to delete the icon
   final Icon tagCancelIcon;
 
   TagsStyler({
+    this.tagTextPadding = const EdgeInsets.all(0.0),
+    this.tagCancelIconPadding = const EdgeInsets.only(left: 1.0),
     this.tagPadding = const EdgeInsets.all(4.0),
     this.tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
     this.tagDecoration =
