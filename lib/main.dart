@@ -6,13 +6,15 @@ class TextFieldTags extends StatefulWidget {
   final TagsStyler tagsStyler;
   final TextFieldStyler textFieldStyler;
   final void Function(String tag) onTag;
+  final void Function(String tag) onDelete;
 
-  const TextFieldTags({
-    Key key,
-    this.tagsStyler,
-    this.textFieldStyler,
-    this.onTag,
-  }) : super(key: key);
+  const TextFieldTags(
+      {Key key,
+      this.tagsStyler,
+      this.textFieldStyler,
+      this.onTag,
+      this.onDelete})
+      : super(key: key);
 
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
@@ -54,24 +56,32 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              tagText,
-              style: _tagsStyler.tagTextStyle,
+            Padding(
+              padding: _tagsStyler.tagTextPadding,
+              child: Text(
+                tagText,
+                style: _tagsStyler.tagTextStyle,
+              ),
             ),
-            GestureDetector(
-              onTap: () {
-                if (_tags.length <= 1 && _showPrefixIcon == true) {
-                  setState(() {
-                    _tags.remove(_tags[i]);
-                    _showPrefixIcon = false;
-                  });
-                } else {
-                  setState(() {
-                    _tags.remove(_tags[i]);
-                  });
-                }
-              },
-              child: _tagsStyler.tagCancelIcon,
+            Padding(
+              padding: _tagsStyler.tagCancelIconPadding,
+              child: GestureDetector(
+                onTap: () {
+                  if (_tags.length == 1 && _showPrefixIcon == true) {
+                    widget.onDelete(_tags[i]);
+                    setState(() {
+                      _tags.remove(_tags[i]);
+                      _showPrefixIcon = false;
+                    });
+                  } else {
+                    widget.onDelete(_tags[i]);
+                    setState(() {
+                      _tags.remove(_tags[i]);
+                    });
+                  }
+                },
+                child: _tagsStyler.tagCancelIcon,
+              ),
             ),
           ],
         ),
