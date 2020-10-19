@@ -88,6 +88,7 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i2.png" width="350">
 
 ``` dart
+  //The Colors for this are used from https://flutter-color-picker.herokuapp.com/
   TextFieldTags(
       tagsStyler: TagsStyler(
         tagTextStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), 
