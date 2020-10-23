@@ -1,3 +1,6 @@
+## [1.0.2] - 10/23/2020.
+* Require the entry of tagsStyler and textFieldStyler
+
 ## [1.0.1] - 10/18/2020.
 * Add onDelete callback capability
 * Add capability to manipulate padding of tag text and cancel icon

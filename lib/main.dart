@@ -8,13 +8,14 @@ class TextFieldTags extends StatefulWidget {
   final void Function(String tag) onTag;
   final void Function(String tag) onDelete;
 
-  const TextFieldTags(
-      {Key key,
-      this.tagsStyler,
-      this.textFieldStyler,
-      this.onTag,
-      this.onDelete})
-      : super(key: key);
+  const TextFieldTags({
+    Key key,
+    @required this.tagsStyler,
+    @required this.textFieldStyler,
+    this.onTag,
+    this.onDelete,
+  })  : assert(tagsStyler != null || textFieldStyler != null),
+        super(key: key);
 
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
