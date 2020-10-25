@@ -1,3 +1,6 @@
+## [1.0.3] - 10/25/2020.
+* Make tags variable private so it doesn't conflict with developers variable and gets overrided
+
 ## [1.0.2] - 10/23/2020.
 * Require the entry of tagsStyler and textFieldStyler
 

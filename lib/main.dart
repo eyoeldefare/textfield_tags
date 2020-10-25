@@ -22,7 +22,7 @@ class TextFieldTags extends StatefulWidget {
 }
 
 class _TextFieldTagsState extends State<TextFieldTags> {
-  List<String> _tags = [];
+  List<String> _tagsStringContent = [];
   TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   TagsStyler _tagsStyler;
@@ -47,9 +47,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 
   List<Widget> _getTags() {
-    List<Widget> tags = [];
-    for (var i = 0; i < _tags.length; i++) {
-      String tagText = _tags[i];
+    List<Widget> _tags = [];
+    for (var i = 0; i < _tagsStringContent.length; i++) {
+      String tagText = _tagsStringContent[i];
       Container tag = Container(
         padding: _tagsStyler.tagPadding,
         decoration: _tagsStyler.tagDecoration,
@@ -68,16 +68,16 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               padding: _tagsStyler.tagCancelIconPadding,
               child: GestureDetector(
                 onTap: () {
-                  if (_tags.length == 1 && _showPrefixIcon == true) {
-                    widget.onDelete(_tags[i]);
+                  if (_tagsStringContent.length == 1 && _showPrefixIcon == true) {
+                    widget.onDelete(_tagsStringContent[i]);
                     setState(() {
-                      _tags.remove(_tags[i]);
+                      _tagsStringContent.remove(_tagsStringContent[i]);
                       _showPrefixIcon = false;
                     });
                   } else {
-                    widget.onDelete(_tags[i]);
+                    widget.onDelete(_tagsStringContent[i]);
                     setState(() {
-                      _tags.remove(_tags[i]);
+                      _tagsStringContent.remove(_tagsStringContent[i]);
                     });
                   }
                 },
@@ -87,9 +87,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
           ],
         ),
       );
-      tags.add(tag);
+      _tags.add(tag);
     }
-    return tags;
+    return _tags;
   }
 
   void _animateTransition() {
@@ -145,17 +145,17 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         var val = value.trim().toLowerCase();
         if (value.length > 0) {
           _textEditingController.clear();
-          if (!_tags.contains(val)) {
+          if (!_tagsStringContent.contains(val)) {
             if (_showPrefixIcon == false) {
               widget.onTag(val);
               setState(() {
-                _tags.add(val);
+                _tagsStringContent.add(val);
                 _showPrefixIcon = true;
               });
             } else {
               widget.onTag(val);
               setState(() {
-                _tags.add(val);
+                _tagsStringContent.add(val);
               });
             }
             this._animateTransition();
@@ -171,17 +171,17 @@ class _TextFieldTagsState extends State<TextFieldTags> {
           if (lastLastTag.length > 0) {
             _textEditingController.clear();
 
-            if (!_tags.contains(lastLastTag)) {
+            if (!_tagsStringContent.contains(lastLastTag)) {
               if (_showPrefixIcon == false) {
                 widget.onTag(lastLastTag);
                 setState(() {
-                  _tags.add(lastLastTag);
+                  _tagsStringContent.add(lastLastTag);
                   _showPrefixIcon = true;
                 });
               } else {
                 widget.onTag(lastLastTag);
                 setState(() {
-                  _tags.add(lastLastTag);
+                  _tagsStringContent.add(lastLastTag);
                 });
               }
               this._animateTransition();
