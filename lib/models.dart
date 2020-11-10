@@ -23,7 +23,7 @@ class TagsStyler {
   final EdgeInsets tagCancelIconPadding;
 
   ///[tagCancelIcon] apply your own icon, if you want, to delete the icon
-  final Icon tagCancelIcon;
+  final Widget tagCancelIcon;
 
   TagsStyler({
     this.tagTextPadding = const EdgeInsets.all(0.0),
