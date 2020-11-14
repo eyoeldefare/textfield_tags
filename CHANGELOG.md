@@ -1,3 +1,6 @@
+## [1.0.4] - 11/14/2020.
+* Put the main and models file inside a source folder to optimise usability
+
 ## [1.0.3] - 10/25/2020.
 * Make tags variable private so it doesn't conflict with developers variable and gets overrided
 

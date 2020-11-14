@@ -1,3 +1,3 @@
 library textfield_tags;
-export 'main.dart';
-export 'models.dart';
+export 'src/main.dart';
+export 'src/models.dart';
