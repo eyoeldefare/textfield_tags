@@ -7,6 +7,7 @@ class TextFieldTags extends StatefulWidget {
   final TextFieldStyler textFieldStyler;
   final void Function(String tag) onTag;
   final void Function(String tag) onDelete;
+  final List<String> tags;
 
   const TextFieldTags({
     Key key,
@@ -14,6 +15,7 @@ class TextFieldTags extends StatefulWidget {
     @required this.textFieldStyler,
     this.onTag,
     this.onDelete,
+    this.tags,
   })  : assert(tagsStyler != null || textFieldStyler != null),
         super(key: key);
 
@@ -33,10 +35,14 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   void initState() {
     super.initState();
     _tagsStyler = widget.tagsStyler == null ? TagsStyler() : widget.tagsStyler;
-    _textFieldStyler = widget.textFieldStyler == null
-        ? TextFieldStyler()
-        : widget.textFieldStyler;
+    _textFieldStyler = widget.textFieldStyler == null ? TextFieldStyler() : widget.textFieldStyler;
     _showPrefixIcon = false;
+
+    if (widget.tags != null)
+      setState(() {
+        _showPrefixIcon = true;
+        _tagsStringContent = widget.tags;
+      });
   }
 
   @override
@@ -124,8 +130,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         enabledBorder: _textFieldStyler.textFieldEnabledBorder,
         prefixIcon: _showPrefixIcon == true
             ? ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.725),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.725),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: SingleChildScrollView(
@@ -164,8 +169,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         var splitedTagsList = value.split(" ");
-        var lastLastTag =
-            splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
+        var lastLastTag = splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
 
         if (value.contains(" ")) {
           if (lastLastTag.length > 0) {
