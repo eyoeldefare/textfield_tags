@@ -74,14 +74,12 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
         tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
         tagPadding: const EdgeInsets.all(6.0)
      ),
-     onTag: (tag) { print(tag)},  
    )
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i1.png" width="350">
 
 ``` dart
   TextFieldTags(
-      tags: ['university', 'college', 'music', 'math'],
       tagsStyler: TagsStyler(
         tagTextStyle: TextStyle(fontWeight: FontWeight.normal),
         tagDecoration: BoxDecoration(color: Colors.blue[300], borderRadius: BorderRadius.circular(0.0), ),
@@ -96,7 +94,6 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 ``` dart
   //The Colors for this are used from https://flutter-color-picker.herokuapp.com/
   TextFieldTags(
-      tags: ['university', 'math', 'cs', 'music'],
       tagsStyler: TagsStyler(
         tagTextStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), 
         tagDecoration: BoxDecoration(color: const Color.fromARGB(255,171,81,81), borderRadius: BorderRadius.circular(8.0), ),
