@@ -38,7 +38,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _textFieldStyler = widget.textFieldStyler == null ? TextFieldStyler() : widget.textFieldStyler;
     _showPrefixIcon = false;
 
-    if (widget.tags != null) {
+    if (widget.tags != null && widget.tags.isNotEmpty) {
       _showPrefixIcon = true;
       _tagsStringContent = widget.tags;
     }
@@ -73,7 +73,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               padding: _tagsStyler.tagCancelIconPadding,
               child: GestureDetector(
                 onTap: () {
-                  if (_tagsStringContent.length == 1 && _showPrefixIcon == true) {
+                  if (_tagsStringContent.length == 1 && _showPrefixIcon) {
                     widget.onDelete(_tagsStringContent[i]);
                     setState(() {
                       _tagsStringContent.remove(_tagsStringContent[i]);
@@ -118,8 +118,8 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         isDense: _textFieldStyler.isDense,
         helperText: _textFieldStyler.helperText,
         helperStyle: _textFieldStyler.helperStyle,
-        hintText: _showPrefixIcon == false ? _textFieldStyler.hintText : null,
-        hintStyle: _showPrefixIcon == false ? _textFieldStyler.hintStyle : null,
+        hintText: !_showPrefixIcon ? _textFieldStyler.hintText : null,
+        hintStyle: !_showPrefixIcon ? _textFieldStyler.hintStyle : null,
         filled: _textFieldStyler.textFieldFilled,
         fillColor: _textFieldStyler.textFieldFilledColor,
         enabled: _textFieldStyler.textFieldEnabled,
@@ -127,7 +127,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         focusedBorder: _textFieldStyler.textFieldFocusedBorder,
         disabledBorder: _textFieldStyler.textFieldDisabledBorder,
         enabledBorder: _textFieldStyler.textFieldEnabledBorder,
-        prefixIcon: _showPrefixIcon == true
+        prefixIcon: _showPrefixIcon
             ? ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.725),
                 child: Container(
@@ -150,7 +150,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (value.length > 0) {
           _textEditingController.clear();
           if (!_tagsStringContent.contains(val)) {
-            if (_showPrefixIcon == false) {
+            if (!_showPrefixIcon) {
               widget.onTag(val);
               setState(() {
                 _tagsStringContent.add(val);
@@ -175,7 +175,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             _textEditingController.clear();
 
             if (!_tagsStringContent.contains(lastLastTag)) {
-              if (_showPrefixIcon == false) {
+              if (!_showPrefixIcon) {
                 widget.onTag(lastLastTag);
                 setState(() {
                   _tagsStringContent.add(lastLastTag);
