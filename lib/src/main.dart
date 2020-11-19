@@ -38,11 +38,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _textFieldStyler = widget.textFieldStyler == null ? TextFieldStyler() : widget.textFieldStyler;
     _showPrefixIcon = false;
 
-    if (widget.tags != null)
-      setState(() {
-        _showPrefixIcon = true;
-        _tagsStringContent = widget.tags;
-      });
+    if (widget.tags != null) {
+      _showPrefixIcon = true;
+      _tagsStringContent = widget.tags;
+    }
   }
 
   @override
