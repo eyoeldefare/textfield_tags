@@ -17,7 +17,7 @@ class TextFieldTags extends StatefulWidget {
     this.onDelete,
     this.tags,
   })  : assert(tagsStyler != null || textFieldStyler != null),
-        assert((tags == null || tags.length == 0) || (tags.length > 0 && onDelete == null && onTag == null)),
+        assert((tags == null || tags.length == 0) || (onDelete == null && onTag == null)),
         super(key: key);
 
   @override
@@ -151,8 +151,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (value.length > 0) {
           _textEditingController.clear();
           if (!_tagsStringContent.contains(val)) {
-            if (widget.onTag != null)
-              widget.onTag(val);
+            if (widget.onTag != null) widget.onTag(val);
 
             if (!_showPrefixIcon) {
               setState(() {
@@ -177,8 +176,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             _textEditingController.clear();
 
             if (!_tagsStringContent.contains(lastLastTag)) {
-              if (widget.onTag != null)
-                widget.onTag(lastLastTag);
+              if (widget.onTag != null) widget.onTag(lastLastTag);
 
               if (!_showPrefixIcon) {
                 setState(() {
