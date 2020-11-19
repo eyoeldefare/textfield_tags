@@ -17,6 +17,7 @@ class TextFieldTags extends StatefulWidget {
     this.onDelete,
     this.tags,
   })  : assert(tagsStyler != null || textFieldStyler != null),
+        assert((tags == null || tags.length == 0) || (tags.length > 0 && onDelete == null && onTag == null)),
         super(key: key);
 
   @override
@@ -73,14 +74,14 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               padding: _tagsStyler.tagCancelIconPadding,
               child: GestureDetector(
                 onTap: () {
+                  if (widget.onDelete != null) widget.onDelete(_tagsStringContent[i]);
+
                   if (_tagsStringContent.length == 1 && _showPrefixIcon) {
-                    widget.onDelete(_tagsStringContent[i]);
                     setState(() {
                       _tagsStringContent.remove(_tagsStringContent[i]);
                       _showPrefixIcon = false;
                     });
                   } else {
-                    widget.onDelete(_tagsStringContent[i]);
                     setState(() {
                       _tagsStringContent.remove(_tagsStringContent[i]);
                     });
@@ -150,14 +151,15 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (value.length > 0) {
           _textEditingController.clear();
           if (!_tagsStringContent.contains(val)) {
-            if (!_showPrefixIcon) {
+            if (widget.onTag != null)
               widget.onTag(val);
+
+            if (!_showPrefixIcon) {
               setState(() {
                 _tagsStringContent.add(val);
                 _showPrefixIcon = true;
               });
             } else {
-              widget.onTag(val);
               setState(() {
                 _tagsStringContent.add(val);
               });
@@ -175,14 +177,15 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             _textEditingController.clear();
 
             if (!_tagsStringContent.contains(lastLastTag)) {
-              if (!_showPrefixIcon) {
+              if (widget.onTag != null)
                 widget.onTag(lastLastTag);
+
+              if (!_showPrefixIcon) {
                 setState(() {
                   _tagsStringContent.add(lastLastTag);
                   _showPrefixIcon = true;
                 });
               } else {
-                widget.onTag(lastLastTag);
                 setState(() {
                   _tagsStringContent.add(lastLastTag);
                 });
