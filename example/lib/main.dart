@@ -37,10 +37,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
-              // initialTags: <String>['Wero', 'baby'],
+          // optional initial tags
+          // initialTags: <String>['Wero', 'baby'],
+
+          //[textFieldStyler] is required and shall not be null
           textFieldStyler: TextFieldStyler(
 
-              //These are properties you can tweek for customization
+              //These are properties you can tweek for customization of the textfield
 
               // bool textFieldFilled = false,
               // String helperText = 'Enter tags',
@@ -58,8 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
               // Color cursorColor,
               // TextStyle textStyle;
               ),
+          //[tagsStyler] is required and shall not be null
           tagsStyler: TagsStyler(
-              //These are properties you can tweek for customization
+              //These are properties you can tweek for customization of tags
               tagTextStyle: TextStyle(fontWeight: FontWeight.normal),
               tagDecoration: BoxDecoration(
                 color: Colors.blue[300],
