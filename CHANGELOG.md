@@ -1,3 +1,7 @@
+## [1.1.0+1] - 12/5/2020.
+* Update documentations
+* Formatting 
+
 ## [1.1.0] - 12/5/2020.
 * Major changes  in all files
 * Breaking change on onTag and onDelete where they are required and shall not be null
