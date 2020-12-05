@@ -1,3 +1,9 @@
+## [1.1.0] - 12/5/2020.
+* Major changes  in all files
+* Breaking change on onTag and onDelete where they are required and shall not be null
+* A feature of optional tags implemented to enable initial tags to be entered
+* More examples and documentes showing usage
+
 ## [1.0.4] - 11/14/2020.
 * Put the main and models file inside a source folder to optimise usability
 
