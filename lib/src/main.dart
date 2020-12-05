@@ -3,10 +3,19 @@ import 'package:flutter/material.dart';
 import 'models.dart';
 
 class TextFieldTags extends StatefulWidget {
+  ///[tagsStyler] must not be [null]
   final TagsStyler tagsStyler;
+
+  ///[textFieldStyler] must not be [null]
   final TextFieldStyler textFieldStyler;
+
+  ///[onTag] must not be [null] and should be implemented
   final void Function(String tag) onTag;
+
+  ///[onDelete] must not be [null]
   final void Function(String tag) onDelete;
+
+  ///[initialTags] are optional initial tags you can enter
   final List<String> initialTags;
 
   const TextFieldTags({
@@ -39,6 +48,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       _showPrefixIcon = true;
       _tagsStringContent = widget.initialTags;
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _deviceWidth = MediaQuery.of(context).size.width;
   }
 
   @override
@@ -102,12 +117,6 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       duration: const Duration(seconds: 3),
       curve: Curves.easeOut,
     );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _deviceWidth = MediaQuery.of(context).size.width;
   }
 
   @override
