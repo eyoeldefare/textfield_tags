@@ -7,19 +7,20 @@ class TextFieldTags extends StatefulWidget {
   final TextFieldStyler textFieldStyler;
   final void Function(String tag) onTag;
   final void Function(String tag) onDelete;
-  final List<String> tags;
+  final List<String> initialTags;
 
   const TextFieldTags({
     Key key,
     @required this.tagsStyler,
     @required this.textFieldStyler,
-    this.onTag,
-    this.onDelete,
-    this.tags,
-  })  : assert(tagsStyler != null || textFieldStyler != null),
-        assert((tags == null || tags.length == 0) || (onDelete == null && onTag == null)),
+    @required this.onTag,
+    @required this.onDelete,
+    this.initialTags,
+  })  : assert(tagsStyler != null && textFieldStyler != null,
+            'tagsStyler and textFieldStyler should not be null'),
+        assert(onDelete != null && onTag != null,
+            'onDelete and onTag should not be null'),
         super(key: key);
-
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
 }
@@ -28,20 +29,15 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<String> _tagsStringContent = [];
   TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = ScrollController();
-  TagsStyler _tagsStyler;
-  TextFieldStyler _textFieldStyler;
-  bool _showPrefixIcon;
+  bool _showPrefixIcon = false;
+  double _deviceWidth;
 
   @override
   void initState() {
     super.initState();
-    _tagsStyler = widget.tagsStyler == null ? TagsStyler() : widget.tagsStyler;
-    _textFieldStyler = widget.textFieldStyler == null ? TextFieldStyler() : widget.textFieldStyler;
-    _showPrefixIcon = false;
-
-    if (widget.tags != null && widget.tags.isNotEmpty) {
+    if (widget.initialTags != null && widget.initialTags.isNotEmpty) {
       _showPrefixIcon = true;
-      _tagsStringContent = widget.tags;
+      _tagsStringContent = widget.initialTags;
     }
   }
 
@@ -52,29 +48,30 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _scrollController.dispose();
   }
 
-  List<Widget> _getTags() {
+  List<Widget> get _getTags {
     List<Widget> _tags = [];
     for (var i = 0; i < _tagsStringContent.length; i++) {
       String tagText = _tagsStringContent[i];
-      Container tag = Container(
-        padding: _tagsStyler.tagPadding,
-        decoration: _tagsStyler.tagDecoration,
-        margin: _tagsStyler.tagMargin,
+      var tag = Container(
+        padding: widget.tagsStyler.tagPadding,
+        decoration: widget.tagsStyler.tagDecoration,
+        margin: widget.tagsStyler.tagMargin,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: _tagsStyler.tagTextPadding,
+              padding: widget.tagsStyler.tagTextPadding,
               child: Text(
                 tagText,
-                style: _tagsStyler.tagTextStyle,
+                style: widget.tagsStyler.tagTextStyle,
               ),
             ),
             Padding(
-              padding: _tagsStyler.tagCancelIconPadding,
+              padding: widget.tagsStyler.tagCancelIconPadding,
               child: GestureDetector(
                 onTap: () {
-                  if (widget.onDelete != null) widget.onDelete(_tagsStringContent[i]);
+                  if (widget.onDelete != null)
+                    widget.onDelete(_tagsStringContent[i]);
 
                   if (_tagsStringContent.length == 1 && _showPrefixIcon) {
                     setState(() {
@@ -87,7 +84,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                     });
                   }
                 },
-                child: _tagsStyler.tagCancelIcon,
+                child: widget.tagsStyler.tagCancelIcon,
               ),
             ),
           ],
@@ -99,7 +96,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 
   void _animateTransition() {
-    var _pw = MediaQuery.of(context).size.width;
+    var _pw = _deviceWidth;
     _scrollController.animateTo(
       _pw + _scrollController.position.maxScrollExtent,
       duration: const Duration(seconds: 3),
@@ -108,29 +105,35 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _deviceWidth = MediaQuery.of(context).size.width;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
       controller: _textEditingController,
       autocorrect: false,
-      cursorColor: _textFieldStyler.cursorColor,
-      style: _textFieldStyler.textStyle,
+      cursorColor: widget.textFieldStyler.cursorColor,
+      style: widget.textFieldStyler.textStyle,
       decoration: InputDecoration(
-        contentPadding: _textFieldStyler.contentPadding,
-        isDense: _textFieldStyler.isDense,
-        helperText: _textFieldStyler.helperText,
-        helperStyle: _textFieldStyler.helperStyle,
-        hintText: !_showPrefixIcon ? _textFieldStyler.hintText : null,
-        hintStyle: !_showPrefixIcon ? _textFieldStyler.hintStyle : null,
-        filled: _textFieldStyler.textFieldFilled,
-        fillColor: _textFieldStyler.textFieldFilledColor,
-        enabled: _textFieldStyler.textFieldEnabled,
-        border: _textFieldStyler.textFieldBorder,
-        focusedBorder: _textFieldStyler.textFieldFocusedBorder,
-        disabledBorder: _textFieldStyler.textFieldDisabledBorder,
-        enabledBorder: _textFieldStyler.textFieldEnabledBorder,
+        contentPadding: widget.textFieldStyler.contentPadding,
+        isDense: widget.textFieldStyler.isDense,
+        helperText: widget.textFieldStyler.helperText,
+        helperStyle: widget.textFieldStyler.helperStyle,
+        hintText: !_showPrefixIcon ? widget.textFieldStyler.hintText : null,
+        hintStyle: !_showPrefixIcon ? widget.textFieldStyler.hintStyle : null,
+        filled: widget.textFieldStyler.textFieldFilled,
+        fillColor: widget.textFieldStyler.textFieldFilledColor,
+        enabled: widget.textFieldStyler.textFieldEnabled,
+        border: widget.textFieldStyler.textFieldBorder,
+        focusedBorder: widget.textFieldStyler.textFieldFocusedBorder,
+        disabledBorder: widget.textFieldStyler.textFieldDisabledBorder,
+        enabledBorder: widget.textFieldStyler.textFieldEnabledBorder,
         prefixIcon: _showPrefixIcon
             ? ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.725),
+                constraints: BoxConstraints(maxWidth: _deviceWidth * 0.725),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: SingleChildScrollView(
@@ -139,7 +142,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: _getTags(),
+                      children: _getTags,
                     ),
                   ),
                 ),
@@ -151,8 +154,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (value.length > 0) {
           _textEditingController.clear();
           if (!_tagsStringContent.contains(val)) {
-            if (widget.onTag != null) widget.onTag(val);
-
+            widget.onTag(val);
             if (!_showPrefixIcon) {
               setState(() {
                 _tagsStringContent.add(val);
@@ -169,14 +171,15 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         var splitedTagsList = value.split(" ");
-        var lastLastTag = splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
+        var lastLastTag =
+            splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
 
         if (value.contains(" ")) {
           if (lastLastTag.length > 0) {
             _textEditingController.clear();
 
             if (!_tagsStringContent.contains(lastLastTag)) {
-              if (widget.onTag != null) widget.onTag(lastLastTag);
+              widget.onTag(lastLastTag);
 
               if (!_showPrefixIcon) {
                 setState(() {

@@ -37,7 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
+              // initialTags: <String>['Wero', 'baby'],
           textFieldStyler: TextFieldStyler(
+
               //These are properties you can tweek for customization
 
               // bool textFieldFilled = false,
