@@ -7,6 +7,7 @@ class TextFieldTags extends StatefulWidget {
   final TextFieldStyler textFieldStyler;
   final void Function(String tag) onTag;
   final void Function(String tag) onDelete;
+  final List<String> tags;
 
   const TextFieldTags({
     Key key,
@@ -14,7 +15,9 @@ class TextFieldTags extends StatefulWidget {
     @required this.textFieldStyler,
     this.onTag,
     this.onDelete,
+    this.tags,
   })  : assert(tagsStyler != null || textFieldStyler != null),
+        assert((tags == null || tags.length == 0) || (onDelete == null && onTag == null)),
         super(key: key);
 
   @override
@@ -33,10 +36,13 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   void initState() {
     super.initState();
     _tagsStyler = widget.tagsStyler == null ? TagsStyler() : widget.tagsStyler;
-    _textFieldStyler = widget.textFieldStyler == null
-        ? TextFieldStyler()
-        : widget.textFieldStyler;
+    _textFieldStyler = widget.textFieldStyler == null ? TextFieldStyler() : widget.textFieldStyler;
     _showPrefixIcon = false;
+
+    if (widget.tags != null && widget.tags.isNotEmpty) {
+      _showPrefixIcon = true;
+      _tagsStringContent = widget.tags;
+    }
   }
 
   @override
@@ -68,14 +74,14 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               padding: _tagsStyler.tagCancelIconPadding,
               child: GestureDetector(
                 onTap: () {
-                  if (_tagsStringContent.length == 1 && _showPrefixIcon == true) {
-                    widget.onDelete(_tagsStringContent[i]);
+                  if (widget.onDelete != null) widget.onDelete(_tagsStringContent[i]);
+
+                  if (_tagsStringContent.length == 1 && _showPrefixIcon) {
                     setState(() {
                       _tagsStringContent.remove(_tagsStringContent[i]);
                       _showPrefixIcon = false;
                     });
                   } else {
-                    widget.onDelete(_tagsStringContent[i]);
                     setState(() {
                       _tagsStringContent.remove(_tagsStringContent[i]);
                     });
@@ -113,8 +119,8 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         isDense: _textFieldStyler.isDense,
         helperText: _textFieldStyler.helperText,
         helperStyle: _textFieldStyler.helperStyle,
-        hintText: _showPrefixIcon == false ? _textFieldStyler.hintText : null,
-        hintStyle: _showPrefixIcon == false ? _textFieldStyler.hintStyle : null,
+        hintText: !_showPrefixIcon ? _textFieldStyler.hintText : null,
+        hintStyle: !_showPrefixIcon ? _textFieldStyler.hintStyle : null,
         filled: _textFieldStyler.textFieldFilled,
         fillColor: _textFieldStyler.textFieldFilledColor,
         enabled: _textFieldStyler.textFieldEnabled,
@@ -122,10 +128,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         focusedBorder: _textFieldStyler.textFieldFocusedBorder,
         disabledBorder: _textFieldStyler.textFieldDisabledBorder,
         enabledBorder: _textFieldStyler.textFieldEnabledBorder,
-        prefixIcon: _showPrefixIcon == true
+        prefixIcon: _showPrefixIcon
             ? ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.725),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.725),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: SingleChildScrollView(
@@ -146,14 +151,14 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (value.length > 0) {
           _textEditingController.clear();
           if (!_tagsStringContent.contains(val)) {
-            if (_showPrefixIcon == false) {
-              widget.onTag(val);
+            if (widget.onTag != null) widget.onTag(val);
+
+            if (!_showPrefixIcon) {
               setState(() {
                 _tagsStringContent.add(val);
                 _showPrefixIcon = true;
               });
             } else {
-              widget.onTag(val);
               setState(() {
                 _tagsStringContent.add(val);
               });
@@ -164,22 +169,21 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         var splitedTagsList = value.split(" ");
-        var lastLastTag =
-            splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
+        var lastLastTag = splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
 
         if (value.contains(" ")) {
           if (lastLastTag.length > 0) {
             _textEditingController.clear();
 
             if (!_tagsStringContent.contains(lastLastTag)) {
-              if (_showPrefixIcon == false) {
-                widget.onTag(lastLastTag);
+              if (widget.onTag != null) widget.onTag(lastLastTag);
+
+              if (!_showPrefixIcon) {
                 setState(() {
                   _tagsStringContent.add(lastLastTag);
                   _showPrefixIcon = true;
                 });
               } else {
-                widget.onTag(lastLastTag);
                 setState(() {
                   _tagsStringContent.add(lastLastTag);
                 });

@@ -25,6 +25,10 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 
 ``` dart 
    TextFieldTags(
+      tags: <String>[
+         // List of tags
+         // Provide a list of tags to initialize it with a list your provided tags
+         ],
       textFieldStyler: TextFieldStyler(
           //These are properties you can tweek for customization
 
@@ -63,13 +67,13 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 
 ``` dart
   TextFieldTags(
+      tags: ['university', 'college', 'music', 'math'],
       tagsStyler: TagsStyler(
         tagTextStyle: TextStyle(fontWeight: FontWeight.bold),
         tagDecoration: BoxDecoration(color: Colors.blue[300], borderRadius: BorderRadius.circular(8.0), ),
         tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
         tagPadding: const EdgeInsets.all(6.0)
      ),
-     onTag: (tag) { print(tag)},  
    )
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i1.png" width="350">
