@@ -1,7 +1,7 @@
 //Models
 import 'package:flutter/material.dart';
 
-///[TagsStyler] is a model class that allows you to design the exact style you want from your tag by using its properties
+///[TagsStyler] allows you to design the exact style you want for your tag by using its properties. It must not be [null]
 
 class TagsStyler {
   ///[tagPadding] allows you to apply padding inside tag
@@ -41,7 +41,7 @@ class TagsStyler {
   });
 }
 
-///[TextFieldStyler] is a model class that allows you to design the exact style you want from your textfield by using its properties
+///[TextFieldStyler] allows you to design the exact style you want for your textfield by using its properties. It must not be [null]
 class TextFieldStyler {
   /// The color of the decoration inside the textfield
   final Color textFieldFilledColor;
@@ -76,8 +76,6 @@ class TextFieldStyler {
   ///Enable or disable the textfield
   final bool textFieldEnabled;
 
-  ///If you make the textFieldBorder [null],
-  ///adjust the [contentPadding] to get the correct styling
   final OutlineInputBorder textFieldBorder;
   final OutlineInputBorder textFieldFocusedBorder;
   final OutlineInputBorder textFieldDisabledBorder;
