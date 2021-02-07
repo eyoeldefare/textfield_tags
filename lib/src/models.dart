@@ -76,10 +76,10 @@ class TextFieldStyler {
   ///Enable or disable the textfield
   final bool textFieldEnabled;
 
-  final OutlineInputBorder textFieldBorder;
-  final OutlineInputBorder textFieldFocusedBorder;
-  final OutlineInputBorder textFieldDisabledBorder;
-  final OutlineInputBorder textFieldEnabledBorder;
+  final InputBorder textFieldBorder;
+  final InputBorder textFieldFocusedBorder;
+  final InputBorder textFieldDisabledBorder;
+  final InputBorder textFieldEnabledBorder;
 
   TextFieldStyler({
     this.textFieldFilled = false,
