@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //[textFieldStyler] is required and shall not be null
           textFieldStyler: TextFieldStyler(
-
               //These are properties you can tweek for customization of the textfield
 
               // bool textFieldFilled = false,
@@ -77,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // BoxDecoration tagDecoration = const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
               // TextStyle tagTextStyle,
               // Icon tagCancelIcon = const Icon(Icons.cancel, size: 18.0, color: Colors.green)
+              // isHashTag: true,
               ),
           onTag: (tag) {
             //This give you tags entered
