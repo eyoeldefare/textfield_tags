@@ -1,3 +1,8 @@
+## [1.1.1] - 3/6/2021.
+* Update and change the InputDecorator widget properties of type InputBorder 
+* Add hashtags to show infront of the values entered inside textfield
+* Formatting 
+
 ## [1.1.0+1] - 12/5/2020.
 * Update documentations
 * Formatting 

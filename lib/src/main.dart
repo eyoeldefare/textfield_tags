@@ -65,7 +65,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<Widget> get _getTags {
     List<Widget> _tags = [];
     for (var i = 0; i < _tagsStringContent.length; i++) {
-      String tagText = widget.tagsStyler.isHashTag ?  "#${_tagsStringContent[i]}" : _tagsStringContent[i];
+      String tagText = widget.tagsStyler.showHashtag ?  "#${_tagsStringContent[i]}" : _tagsStringContent[i];
       var tag = Container(
         padding: widget.tagsStyler.tagPadding,
         decoration: widget.tagsStyler.tagDecoration,
