@@ -40,7 +40,6 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   ScrollController _scrollController = ScrollController();
   bool _showPrefixIcon = false;
   double _deviceWidth;
-
   @override
   void initState() {
     super.initState();
@@ -66,7 +65,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<Widget> get _getTags {
     List<Widget> _tags = [];
     for (var i = 0; i < _tagsStringContent.length; i++) {
-      String tagText = _tagsStringContent[i];
+      String tagText = widget.tagsStyler.isHashTag ?  "#${_tagsStringContent[i]}" : _tagsStringContent[i];
       var tag = Container(
         padding: widget.tagsStyler.tagPadding,
         decoration: widget.tagsStyler.tagDecoration,

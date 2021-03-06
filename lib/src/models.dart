@@ -25,6 +25,9 @@ class TagsStyler {
   ///[tagCancelIcon] apply your own icon, if you want, to delete the icon
   final Widget tagCancelIcon;
 
+  ///Enable or disable the # prefix icon
+  final bool isHashTag;
+
   TagsStyler({
     this.tagTextPadding = const EdgeInsets.all(0.0),
     this.tagCancelIconPadding = const EdgeInsets.only(left: 1.0),
@@ -33,6 +36,7 @@ class TagsStyler {
     this.tagDecoration =
         const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
     this.tagTextStyle,
+    this.isHashTag = false,
     this.tagCancelIcon = const Icon(
       Icons.cancel,
       size: 18.0,
