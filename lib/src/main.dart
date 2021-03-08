@@ -38,11 +38,13 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<String> _tagsStringContent = [];
   TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = ScrollController();
+  FocusNode _focusNode = FocusNode();
   bool _showPrefixIcon = false;
   double _deviceWidth;
   @override
   void initState() {
     super.initState();
+    _focusNode.addListener(_onFocusChange);
     if (widget.initialTags != null && widget.initialTags.isNotEmpty) {
       _showPrefixIcon = true;
       _tagsStringContent = widget.initialTags;
@@ -60,6 +62,16 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     super.dispose();
     _textEditingController.dispose();
     _scrollController.dispose();
+  }
+
+  void _onFocusChange() {
+    if (_tagsStringContent.length == 0) {
+      _textEditingController.text = "";
+    } else {
+      _textEditingController.text = "  ";
+      _textEditingController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _textEditingController.text.length));
+    }
   }
 
   List<Widget> get _getTags {
@@ -121,6 +133,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: _focusNode,
       controller: _textEditingController,
       autocorrect: false,
       cursorColor: widget.textFieldStyler.cursorColor,
@@ -158,22 +171,24 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             : null,
       ),
       onSubmitted: (value) {
-        var val = value.trim().toLowerCase();
-        if (value.length > 0) {
-          _textEditingController.clear();
-          if (!_tagsStringContent.contains(val)) {
-            widget.onTag(val);
-            if (!_showPrefixIcon) {
-              setState(() {
-                _tagsStringContent.add(val);
-                _showPrefixIcon = true;
-              });
-            } else {
-              setState(() {
-                _tagsStringContent.add(val);
-              });
+        if(value != "  ") {
+          var val = value.trim().toLowerCase();
+          if (value.length > 0) {
+            _textEditingController.clear();
+            if (!_tagsStringContent.contains(val)) {
+              widget.onTag(val);
+              if (!_showPrefixIcon) {
+                setState(() {
+                  _tagsStringContent.add(val);
+                  _showPrefixIcon = true;
+                });
+              } else {
+                setState(() {
+                  _tagsStringContent.add(val);
+                });
+              }
+              this._animateTransition();
             }
-            this._animateTransition();
           }
         }
       },
@@ -214,9 +229,6 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             _textEditingController.clear();
             if (!_tagsStringContent.contains(lastLastTag)) {
               widget.onTag(lastLastTag);
-              _textEditingController.text = "  ";
-              _textEditingController.selection = TextSelection.fromPosition(
-                  TextPosition(offset: _textEditingController.text.length));
               if (!_showPrefixIcon) {
                 setState(() {
                   _tagsStringContent.add(lastLastTag);
@@ -227,8 +239,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                   _tagsStringContent.add(lastLastTag);
                 });
               }
-              this._animateTransition();
             }
+            _textEditingController.text = "  ";
+            _textEditingController.selection = TextSelection.fromPosition(
+                TextPosition(offset: _textEditingController.text.length));
+            this._animateTransition();
           }
         }
       },
