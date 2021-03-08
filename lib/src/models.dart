@@ -26,7 +26,7 @@ class TagsStyler {
   final Widget tagCancelIcon;
 
   ///Enable or disable the # prefix icon
-  final bool isHashTag;
+  final bool showHashtag;
 
   TagsStyler({
     this.tagTextPadding = const EdgeInsets.all(0.0),
@@ -36,7 +36,7 @@ class TagsStyler {
     this.tagDecoration =
         const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
     this.tagTextStyle,
-    this.isHashTag = false,
+    this.showHashtag = false,
     this.tagCancelIcon = const Icon(
       Icons.cancel,
       size: 18.0,
@@ -80,10 +80,10 @@ class TextFieldStyler {
   ///Enable or disable the textfield
   final bool textFieldEnabled;
 
-  final OutlineInputBorder textFieldBorder;
-  final OutlineInputBorder textFieldFocusedBorder;
-  final OutlineInputBorder textFieldDisabledBorder;
-  final OutlineInputBorder textFieldEnabledBorder;
+  final InputBorder textFieldBorder;
+  final InputBorder textFieldFocusedBorder;
+  final InputBorder textFieldDisabledBorder;
+  final InputBorder textFieldEnabledBorder;
 
   TextFieldStyler({
     this.textFieldFilled = false,

@@ -13,7 +13,7 @@ and move on to enter another tag.
 
 ```yaml 
   dependencies:
-      textfield_tags: ^1.1.0+1
+      textfield_tags: ^1.1.1
 ```
 
 `$ flutter pub get`
@@ -58,7 +58,8 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
           ),
       tagsStyler: TagsStyler(
           //These are properties you can tweek for customization
-
+          
+          // showHashtag = false,
           // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
           // EdgeInsets tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
           // BoxDecoration tagDecoration = const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
