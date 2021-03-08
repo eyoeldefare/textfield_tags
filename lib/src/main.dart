@@ -171,24 +171,22 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             : null,
       ),
       onSubmitted: (value) {
-        if(value != "  ") {
-          var val = value.trim().toLowerCase();
-          if (value.length > 0) {
-            _textEditingController.clear();
-            if (!_tagsStringContent.contains(val)) {
-              widget.onTag(val);
-              if (!_showPrefixIcon) {
-                setState(() {
-                  _tagsStringContent.add(val);
-                  _showPrefixIcon = true;
-                });
-              } else {
-                setState(() {
-                  _tagsStringContent.add(val);
-                });
-              }
-              this._animateTransition();
+        var val = value.trim().toLowerCase();
+        if (val.length > 0) {
+          _textEditingController.clear();
+          if (!_tagsStringContent.contains(val)) {
+            widget.onTag(val);
+            if (!_showPrefixIcon) {
+              setState(() {
+                _tagsStringContent.add(val);
+                _showPrefixIcon = true;
+              });
+            } else {
+              setState(() {
+                _tagsStringContent.add(val);
+              });
             }
+            this._animateTransition();
           }
         }
       },
