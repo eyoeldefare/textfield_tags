@@ -30,6 +30,7 @@ class TextFieldTags extends StatefulWidget {
         assert(onDelete != null && onTag != null,
             'onDelete and onTag should not be null'),
         super(key: key);
+
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
 }
@@ -41,6 +42,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   FocusNode _focusNode = FocusNode();
   bool _showPrefixIcon = false;
   double _deviceWidth;
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +79,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<Widget> get _getTags {
     List<Widget> _tags = [];
     for (var i = 0; i < _tagsStringContent.length; i++) {
-      String tagText = widget.tagsStyler.showHashtag ?  "#${_tagsStringContent[i]}" : _tagsStringContent[i];
+      String tagText = widget.tagsStyler.showHashtag
+          ? "#${_tagsStringContent[i]}"
+          : _tagsStringContent[i];
       var tag = Container(
         padding: widget.tagsStyler.tagPadding,
         decoration: widget.tagsStyler.tagDecoration,
@@ -109,6 +113,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                       _tagsStringContent.remove(_tagsStringContent[i]);
                     });
                   }
+                  _onFocusChange();
                 },
                 child: widget.tagsStyler.tagCancelIcon,
               ),
@@ -134,6 +139,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   Widget build(BuildContext context) {
     return TextField(
       focusNode: _focusNode,
+      enableInteractiveSelection: false,
       controller: _textEditingController,
       autocorrect: false,
       cursorColor: widget.textFieldStyler.cursorColor,
@@ -211,7 +217,6 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                   .remove(_tagsStringContent[_tagsStringContent.length - 1]);
             });
           }
-
           _onFocusChange();
           return;
         }
@@ -232,9 +237,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                 });
               }
             }
-            _textEditingController.text = "  ";
-            _textEditingController.selection = TextSelection.fromPosition(
-                TextPosition(offset: _textEditingController.text.length));
+            _onFocusChange();
             this._animateTransition();
           }
         }
