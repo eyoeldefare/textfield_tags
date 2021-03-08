@@ -212,13 +212,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             });
           }
 
-          if (_tagsStringContent.length == 0) {
-            _textEditingController.text = "";
-          } else {
-            _textEditingController.text = "  ";
-            _textEditingController.selection = TextSelection.fromPosition(
-                TextPosition(offset: _textEditingController.text.length));
-          }
+          _onFocusChange();
           return;
         }
 
