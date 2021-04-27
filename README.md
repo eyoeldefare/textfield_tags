@@ -28,7 +28,7 @@ To start using this widget, you will need to first import the package inside you
 To use this widget, 
 1. `import 'package:textfield_tags/textfield_tags.dart';` inside your dart file
 2. Call the widget `TextFieldTags()`. 
-3. The widget takes in 5 arguments: `TagsStyler`, `TextFieldStyler`, `onTag`, `onDelete`, and `initialTags`. Note that `TagsStyler`, `TextFieldStyler`, `onTag`, `onDelete` should not be null.
+3. The widget takes in 6 arguments: `TagsStyler`, `TextFieldStyler`, `onTag`, `onDelete`, `initialTags` and `allowSpaces`. Note that `TagsStyler`, `TextFieldStyler`, `onTag`, `onDelete` should not be null.
 You can investigate the properties of `TagsStyler` and `TextFieldStyler` for more customizations if you choose to do so.
 
 ### When you want to use it, call the `TextFieldTags()` as bellow examples show
