@@ -18,7 +18,7 @@ class TextFieldTags extends StatefulWidget {
   ///[initialTags] are optional initial tags you can enter
   final List<String> initialTags;
   
-  ///[textFieldStyler] must not be [null]
+  ///[allowSpaces] can be set to true to prevent tags from being added when entering space. Defaults to false.
   final bool allowSpaces;
 
   const TextFieldTags({
