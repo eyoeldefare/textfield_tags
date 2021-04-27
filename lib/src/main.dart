@@ -8,7 +8,7 @@ class TextFieldTags extends StatefulWidget {
 
   ///[textFieldStyler] must not be [null]
   final TextFieldStyler textFieldStyler;
-
+  
   ///[onTag] must not be [null] and should be implemented
   final void Function(String tag) onTag;
 
@@ -17,6 +17,9 @@ class TextFieldTags extends StatefulWidget {
 
   ///[initialTags] are optional initial tags you can enter
   final List<String> initialTags;
+  
+  ///[textFieldStyler] must not be [null]
+  final bool allowSpaces;
 
   const TextFieldTags({
     Key key,
@@ -25,6 +28,7 @@ class TextFieldTags extends StatefulWidget {
     @required this.onTag,
     @required this.onDelete,
     this.initialTags,
+    this.allowSpaces = false,
   })  : assert(tagsStyler != null && textFieldStyler != null,
             'tagsStyler and textFieldStyler should not be null'),
         assert(onDelete != null && onTag != null,
@@ -178,28 +182,30 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         }
       },
       onChanged: (value) {
-        var splitedTagsList = value.split(" ");
-        var lastLastTag =
-            splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
+        if(!widget.allowSpaces){
+          var splitedTagsList = value.split(" ");
+          var lastLastTag =
+              splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
 
-        if (value.contains(" ")) {
-          if (lastLastTag.length > 0) {
-            _textEditingController.clear();
+          if (value.contains(" ")) {
+            if (lastLastTag.length > 0) {
+              _textEditingController.clear();
 
-            if (!_tagsStringContent.contains(lastLastTag)) {
-              widget.onTag(lastLastTag);
+              if (!_tagsStringContent.contains(lastLastTag)) {
+                widget.onTag(lastLastTag);
 
-              if (!_showPrefixIcon) {
-                setState(() {
-                  _tagsStringContent.add(lastLastTag);
-                  _showPrefixIcon = true;
-                });
-              } else {
-                setState(() {
-                  _tagsStringContent.add(lastLastTag);
-                });
+                if (!_showPrefixIcon) {
+                  setState(() {
+                    _tagsStringContent.add(lastLastTag);
+                    _showPrefixIcon = true;
+                  });
+                } else {
+                  setState(() {
+                    _tagsStringContent.add(lastLastTag);
+                  });
+                }
+                this._animateTransition();
               }
-              this._animateTransition();
             }
           }
         }
