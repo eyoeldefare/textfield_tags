@@ -67,7 +67,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<Widget> get _getTags {
     List<Widget> _tags = [];
     for (var i = 0; i < _tagsStringContent.length; i++) {
-      String tagText = widget.tagsStyler.showHashtag ?  "#${_tagsStringContent[i]}" : _tagsStringContent[i];
+      String tagText = widget.tagsStyler.showHashtag
+          ? "#${_tagsStringContent[i]}"
+          : _tagsStringContent[i];
       var tag = Container(
         padding: widget.tagsStyler.tagPadding,
         decoration: widget.tagsStyler.tagDecoration,
@@ -184,8 +186,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         var splitedTagsList = value.split(" ");
+        if (splitedTagsList.length < 2) {
+          return;
+        }
         var lastLastTag =
-            splitedTagsList[splitedTagsList.length - 1].trim().toLowerCase();
+            splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
 
         if (value.contains(" ")) {
           if (lastLastTag.length > 0) {
