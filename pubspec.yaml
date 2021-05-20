@@ -1,11 +1,11 @@
 name: textfield_tags
 description: A text field that allows an input of tags inside the textfield
-version: 1.1.1
+version: 1.1.2
 homepage: https://github.com/eyoeldefare/textfield_tags
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+  flutter: ">=1.17.0"
 
 dependencies:
   flutter:

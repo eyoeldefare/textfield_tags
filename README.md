@@ -1,13 +1,13 @@
 # textfield_tags
 
-This is a simple widget that allows your users to create tags by entering the tag's name inside of textfield and make the tags appear in the textfield. After entering the tag, the user can press the spacebar or enter button to save the tag
+This is a widget that allows your users to create tags by entering the tag's name inside of textfield and make the tags appear in the textfield. After entering the tag, the user can press the spacebar or enter button to save the tag
 and move on to enter another tag.
 
 ## Environment
 
 `sdk: ">=2.7.0 <3.0.0"`
 
-`flutter: ">=1.17.0 <2.0.0"`
+`flutter: ">=1.17.0"`
 
 ## Installation
 
