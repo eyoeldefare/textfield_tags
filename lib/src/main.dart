@@ -67,7 +67,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<Widget> get _getTags {
     List<Widget> _tags = [];
     for (var i = 0; i < _tagsStringContent.length; i++) {
-      String tagText = widget.tagsStyler.showHashtag ?  "#${_tagsStringContent[i]}" : _tagsStringContent[i];
+      String tagText = widget.tagsStyler.showHashtag
+          ? "#${_tagsStringContent[i]}"
+          : _tagsStringContent[i];
       var tag = Container(
         padding: widget.tagsStyler.tagPadding,
         decoration: widget.tagsStyler.tagDecoration,
@@ -112,15 +114,13 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 
   void _animateTransition() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.linear,
-        );
-      }
-    });
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
+    }
   }
 
   @override
@@ -184,8 +184,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         var splitedTagsList = value.split(" ");
-        var lastLastTag =
-            splitedTagsList[splitedTagsList.length - 2].trim().toLowerCase();
+        var indexer = splitedTagsList.length > 1
+            ? splitedTagsList.length - 2
+            : splitedTagsList.length - 1;
+        var lastLastTag = splitedTagsList[indexer].trim().toLowerCase();
 
         if (value.contains(" ")) {
           if (lastLastTag.length > 0) {
