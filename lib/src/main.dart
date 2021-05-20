@@ -30,6 +30,7 @@ class TextFieldTags extends StatefulWidget {
         assert(onDelete != null && onTag != null,
             'onDelete and onTag should not be null'),
         super(key: key);
+
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
 }
@@ -40,6 +41,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   ScrollController _scrollController = ScrollController();
   bool _showPrefixIcon = false;
   double _deviceWidth;
+
   @override
   void initState() {
     super.initState();
@@ -110,12 +112,15 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 
   void _animateTransition() {
-    var _pw = _deviceWidth;
-    _scrollController.animateTo(
-      _pw + _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 3),
-      curve: Curves.easeOut,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.linear,
+        );
+      }
+    });
   }
 
   @override
