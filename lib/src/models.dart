@@ -14,7 +14,7 @@ class TagsStyler {
   final BoxDecoration tagDecoration;
 
   ///[tagTextStyle] style the text inside tag
-  final TextStyle tagTextStyle;
+  final TextStyle? tagTextStyle;
 
   /// Styles the padding of the tag text
   final EdgeInsets tagTextPadding;
@@ -48,19 +48,19 @@ class TagsStyler {
 ///[TextFieldStyler] allows you to design the exact style you want for your textfield by using its properties. It must not be [null]
 class TextFieldStyler {
   /// The color of the decoration inside the textfield
-  final Color textFieldFilledColor;
+  final Color? textFieldFilledColor;
 
   ///[textFieldFilled] If true the decoration's container is filled with [textFieldFilledColor].
   final bool textFieldFilled;
 
   ///The padding for the input decoration's container. Adjust this to using EdgeInsets if you make textFieldBorder [null] or borderless to have the right customized style
-  final EdgeInsets contentPadding;
+  final EdgeInsets? contentPadding;
 
   /// The text style of the text input
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   ///The color of the cursor blinking
-  final Color cursorColor;
+  final Color? cursorColor;
 
   ///Whether the input [child] is part of a dense form (i.e., uses less vertical space).
   final bool isDense;
@@ -69,21 +69,21 @@ class TextFieldStyler {
   final String helperText;
 
   ///Style helperText
-  final TextStyle helperStyle;
+  final TextStyle? helperStyle;
 
   ///Text that suggests what sort of input the field accepts.
   final String hintText;
 
   ///Styles hint text
-  final TextStyle hintStyle;
+  final TextStyle? hintStyle;
 
   ///Enable or disable the textfield
   final bool textFieldEnabled;
 
   final InputBorder textFieldBorder;
-  final InputBorder textFieldFocusedBorder;
-  final InputBorder textFieldDisabledBorder;
-  final InputBorder textFieldEnabledBorder;
+  final InputBorder? textFieldFocusedBorder;
+  final InputBorder? textFieldDisabledBorder;
+  final InputBorder? textFieldEnabledBorder;
 
   TextFieldStyler({
     this.textFieldFilled = false,

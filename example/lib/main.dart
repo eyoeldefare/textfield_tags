@@ -85,6 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
           onDelete: (tag) {
             print('onDelete ' + tag);
           },
+          //tagsDistanceFromBorderEnd: 0.725,
+          //scrollableTagsMargin: EdgeInsets.only(left: 9),
+          //scrollableTagsPadding: EdgeInsets.only(left: 9),
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.

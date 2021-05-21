@@ -16,38 +16,46 @@ class TextFieldTags extends StatefulWidget {
   final void Function(String tag) onDelete;
 
   ///[initialTags] are optional initial tags you can enter
-  final List<String> initialTags;
+  final List<String>? initialTags;
+
+  ///Padding for the scrollable
+  final EdgeInsets scrollableTagsPadding;
+
+  ///Margin for the scrollable
+  final EdgeInsets? scrollableTagsMargin;
+
+  ///[tagsDistanceFromBorder] sets the distance of the tags from the border
+  final double tagsDistanceFromBorderEnd;
 
   const TextFieldTags({
-    Key key,
-    @required this.tagsStyler,
-    @required this.textFieldStyler,
-    @required this.onTag,
-    @required this.onDelete,
+    Key? key,
+    this.tagsDistanceFromBorderEnd = 0.725,
+    this.scrollableTagsPadding = const EdgeInsets.symmetric(horizontal: 4.0),
+    this.scrollableTagsMargin,
+    required this.tagsStyler,
+    required this.textFieldStyler,
+    required this.onTag,
+    required this.onDelete,
     this.initialTags,
-  })  : assert(tagsStyler != null && textFieldStyler != null,
-            'tagsStyler and textFieldStyler should not be null'),
-        assert(onDelete != null && onTag != null,
-            'onDelete and onTag should not be null'),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
 }
 
 class _TextFieldTagsState extends State<TextFieldTags> {
-  List<String> _tagsStringContent = [];
+  List<String>? _tagsStringContents = [];
   TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   bool _showPrefixIcon = false;
-  double _deviceWidth;
+  late double _deviceWidth;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialTags != null && widget.initialTags.isNotEmpty) {
+    if (widget.initialTags != null && widget.initialTags!.isNotEmpty) {
       _showPrefixIcon = true;
-      _tagsStringContent = widget.initialTags;
+      _tagsStringContents = widget.initialTags;
     }
   }
 
@@ -66,11 +74,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
 
   List<Widget> get _getTags {
     List<Widget> _tags = [];
-    for (var i = 0; i < _tagsStringContent.length; i++) {
-      String tagText = widget.tagsStyler.showHashtag
-          ? "#${_tagsStringContent[i]}"
-          : _tagsStringContent[i];
-      var tag = Container(
+    for (var i = 0; i < _tagsStringContents!.length; i++) {
+      final String stringContent = _tagsStringContents![i];
+      final String stringContentWithHash =
+          widget.tagsStyler.showHashtag ? "#$stringContent" : stringContent;
+      final Container tag = Container(
         padding: widget.tagsStyler.tagPadding,
         decoration: widget.tagsStyler.tagDecoration,
         margin: widget.tagsStyler.tagMargin,
@@ -80,7 +88,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             Padding(
               padding: widget.tagsStyler.tagTextPadding,
               child: Text(
-                tagText,
+                stringContentWithHash,
                 style: widget.tagsStyler.tagTextStyle,
               ),
             ),
@@ -88,17 +96,15 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               padding: widget.tagsStyler.tagCancelIconPadding,
               child: GestureDetector(
                 onTap: () {
-                  if (widget.onDelete != null)
-                    widget.onDelete(_tagsStringContent[i]);
-
-                  if (_tagsStringContent.length == 1 && _showPrefixIcon) {
+                  widget.onDelete(stringContent);
+                  if (_tagsStringContents!.length == 1 && _showPrefixIcon) {
                     setState(() {
-                      _tagsStringContent.remove(_tagsStringContent[i]);
+                      _tagsStringContents!.remove(stringContent);
                       _showPrefixIcon = false;
                     });
                   } else {
                     setState(() {
-                      _tagsStringContent.remove(_tagsStringContent[i]);
+                      _tagsStringContents!.remove(stringContent);
                     });
                   }
                 },
@@ -114,7 +120,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 
   void _animateTransition() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
@@ -148,9 +154,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         enabledBorder: widget.textFieldStyler.textFieldEnabledBorder,
         prefixIcon: _showPrefixIcon
             ? ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: _deviceWidth * 0.725),
+                constraints: BoxConstraints(
+                    maxWidth: _deviceWidth * widget.tagsDistanceFromBorderEnd),
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  margin: widget.scrollableTagsMargin,
+                  padding: widget.scrollableTagsPadding,
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
@@ -165,19 +173,19 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             : null,
       ),
       onSubmitted: (value) {
-        var val = value.trim().toLowerCase();
+        final String val = value.trim().toLowerCase();
         if (value.length > 0) {
           _textEditingController.clear();
-          if (!_tagsStringContent.contains(val)) {
+          if (!_tagsStringContents!.contains(val)) {
             widget.onTag(val);
             if (!_showPrefixIcon) {
               setState(() {
-                _tagsStringContent.add(val);
+                _tagsStringContents!.add(val);
                 _showPrefixIcon = true;
               });
             } else {
               setState(() {
-                _tagsStringContent.add(val);
+                _tagsStringContents!.add(val);
               });
             }
             this._animateTransition();
@@ -185,27 +193,28 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         }
       },
       onChanged: (value) {
-        var splitedTagsList = value.split(" ");
-        var indexer = splitedTagsList.length > 1
+        final List<String> splitedTagsList = value.split(" ");
+        final int indexer = splitedTagsList.length > 1
             ? splitedTagsList.length - 2
             : splitedTagsList.length - 1;
-        var lastLastTag = splitedTagsList[indexer].trim().toLowerCase();
+        final String lastLastTag =
+            splitedTagsList[indexer].trim().toLowerCase();
 
         if (value.contains(" ")) {
           if (lastLastTag.length > 0) {
             _textEditingController.clear();
 
-            if (!_tagsStringContent.contains(lastLastTag)) {
+            if (!_tagsStringContents!.contains(lastLastTag)) {
               widget.onTag(lastLastTag);
 
               if (!_showPrefixIcon) {
                 setState(() {
-                  _tagsStringContent.add(lastLastTag);
+                  _tagsStringContents!.add(lastLastTag);
                   _showPrefixIcon = true;
                 });
               } else {
                 setState(() {
-                  _tagsStringContent.add(lastLastTag);
+                  _tagsStringContents!.add(lastLastTag);
                 });
               }
               this._animateTransition();

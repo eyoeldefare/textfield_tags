@@ -5,7 +5,7 @@ and move on to enter another tag.
 
 ## Environment
 
-`sdk: ">=2.7.0 <3.0.0"`
+`sdk: ">=2.12.0 <3.0.0"`
 
 `flutter: ">=1.17.0"`
 
@@ -13,7 +13,7 @@ and move on to enter another tag.
 
 ```yaml 
   dependencies:
-      textfield_tags: ^1.1.1
+      textfield_tags: ^1.2.0
 ```
 
 `$ flutter pub get`
@@ -68,15 +68,16 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
           ),
       onTag: (tag) {
         //This give you the tag that was entered
-        
         //print(tag)
       },
 
       onDelete: (tag){
         //This gives you the tag that was deleted
-
         //print(tag)
-      }
+      },
+      //tagsDistanceFromBorderEnd: 0.725,
+      //scrollableTagsMargin: EdgeInsets.only(left: 9),
+      //scrollableTagsPadding: EdgeInsets.only(left: 9),
     )
 ```
 ## Example giffs

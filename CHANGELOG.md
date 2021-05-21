@@ -1,3 +1,7 @@
+## [1.2.0] - 5/21/2021.
+* Migrating to null safety
+* Added tagsDistanceFromBorderEnd, scrollableTagsPadding and scrollableTagsMargin for more customization
+* Spelling and formattings
 
 ## [1.1.2] - 5/20/2021.
 * Fix issue #18
