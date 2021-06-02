@@ -1,3 +1,7 @@
+## [1.2.0+1] - 6/2/2021.
+* Fix comment errors
+* Make textFieldBorder nullable for open borders
+
 ## [1.2.0] - 5/21/2021.
 * Migrating to null safety
 * Added tagsDistanceFromBorderEnd, scrollableTagsPadding and scrollableTagsMargin for more customization

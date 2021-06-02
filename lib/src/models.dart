@@ -7,7 +7,7 @@ class TagsStyler {
   ///[tagPadding] allows you to apply padding inside tag
   final EdgeInsets tagPadding;
 
-  ///[tagMargin] allows you to apply padding inside tag
+  ///[tagMargin] allows you to apply margin inside tag
   final EdgeInsets tagMargin;
 
   ///[tagMargin] apply decoration to the container containing the tag. Should specify the color to set tag color, otherwise its white by default
@@ -80,7 +80,7 @@ class TextFieldStyler {
   ///Enable or disable the textfield
   final bool textFieldEnabled;
 
-  final InputBorder textFieldBorder;
+  final InputBorder? textFieldBorder;
   final InputBorder? textFieldFocusedBorder;
   final InputBorder? textFieldDisabledBorder;
   final InputBorder? textFieldEnabledBorder;
