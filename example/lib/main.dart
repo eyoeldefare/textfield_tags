@@ -42,24 +42,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //[textFieldStyler] is required and shall not be null
           textFieldStyler: TextFieldStyler(
-              //These are properties you can tweek for customization of the textfield
-
-              // bool textFieldFilled = false,
-              // String helperText = 'Enter tags',
-              // TextStyle helperStyle,
-              // String hintText = 'Got tags?',
-              // TextStyle hintStyle,
-              // EdgeInsets contentPadding,
-              // Color textFieldFilledColor,
-              // bool isDense = true,
-              // bool textFieldEnabled = true,
-              // OutlineInputBorder textFieldBorder = const OutlineInputBorder(),
-              // OutlineInputBorder textFieldFocusedBorder,
-              // OutlineInputBorder textFieldDisabledBorder,
-              // OutlineInputBorder textFieldEnabledBorder,
-              // Color cursorColor,
-              // TextStyle textStyle;
-              ),
+            //These are properties you can tweek for customization of the textfield
+            textFieldBorder: null,
+            isDense: false,
+            // bool textFieldFilled = false,
+            // String helperText = 'Enter tags',
+            // TextStyle helperStyle,
+            // String hintText = 'Got tags?',
+            // TextStyle hintStyle,
+            // EdgeInsets contentPadding,
+            // Color textFieldFilledColor,
+            // bool isDense = true,
+            // bool textFieldEnabled = true,
+            // OutlineInputBorder textFieldBorder = const OutlineInputBorder(),
+            // OutlineInputBorder textFieldFocusedBorder,
+            // OutlineInputBorder textFieldDisabledBorder,
+            // OutlineInputBorder textFieldEnabledBorder,
+            // Color cursorColor,
+            // TextStyle textStyle;
+          ),
           //[tagsStyler] is required and shall not be null
           tagsStyler: TagsStyler(
               //These are properties you can tweek for customization of tags
