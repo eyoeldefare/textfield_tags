@@ -1,3 +1,7 @@
+## [1.2.0+2] - 6/4/2021.
+* More examples
+* Improve sytax
+
 ## [1.2.0+1] - 6/2/2021.
 * Fix comment errors
 * Make textFieldBorder nullable for open borders

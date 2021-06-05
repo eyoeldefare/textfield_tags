@@ -13,7 +13,7 @@ and move on to enter another tag.
 
 ```yaml 
   dependencies:
-      textfield_tags: ^1.2.0+1
+      textfield_tags: ^1.2.0+2
 ```
 
 `$ flutter pub get`
@@ -85,7 +85,7 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g1.gif" width="300">
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g2.gif" width="300">
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g3.gif" width="300">
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g4.gif" width="300">
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g4.gif" width="300" height="142">
 
 ## Examples pics
 
