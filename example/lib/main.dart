@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           onDelete: (tag) {},
           onTag: (tag) {},
           validator: (String tag) {
-            if (tag.length > 30) {
+            if (tag.length > 10) {
               return "hey that is too much";
             }
             return null;

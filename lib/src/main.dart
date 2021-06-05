@@ -110,10 +110,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                     setState(() {
                       _tagsStringContents!.remove(stringContent);
                       _showPrefixIcon = false;
+                      _showValidator = false;
                     });
                   } else {
                     setState(() {
                       _tagsStringContents!.remove(stringContent);
+                      _showValidator = false;
                     });
                   }
                 },
@@ -192,9 +194,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             _textEditingController.clear();
             if (!_tagsStringContents!.contains(val)) {
               widget.onTag(val);
-
               final validatorResult = widget.validator!(val);
-
               if (validatorResult == null) {
                 if (!_showPrefixIcon) {
                   setState(() {

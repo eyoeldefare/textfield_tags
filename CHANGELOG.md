@@ -1,3 +1,6 @@
+## [1.3.1] - 6/5/2021.
+* Don't show validator warning once user deletes tag or enters tag
+
 ## [1.3.0] - 6/5/2021.
 * Added validator to validate tags
 * Added comma seperation
