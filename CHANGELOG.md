@@ -1,3 +1,7 @@
+## [1.3.0] - 6/5/2021.
+* Added validator to validate tags
+* Added comma seperation
+
 ## [1.2.0+2] - 6/4/2021.
 * More examples
 * Improve sytax

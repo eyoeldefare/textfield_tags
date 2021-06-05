@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'models.dart';
 
+typedef String? Validator(String? tag);
+
 class TextFieldTags extends StatefulWidget {
   ///[tagsStyler] must not be [null]
   final TagsStyler tagsStyler;
@@ -14,6 +16,9 @@ class TextFieldTags extends StatefulWidget {
 
   ///[onDelete] must not be [null]
   final void Function(String tag) onDelete;
+
+  ///[validator] allows you to validate the tag that has been entered
+  final Validator? validator;
 
   ///[initialTags] are optional initial tags you can enter
   final List<String>? initialTags;
@@ -32,11 +37,12 @@ class TextFieldTags extends StatefulWidget {
     this.tagsDistanceFromBorderEnd = 0.725,
     this.scrollableTagsPadding = const EdgeInsets.symmetric(horizontal: 4.0),
     this.scrollableTagsMargin,
+    this.validator,
+    this.initialTags,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
     required this.onDelete,
-    this.initialTags,
   }) : super(key: key);
 
   @override
@@ -49,10 +55,13 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   ScrollController _scrollController = ScrollController();
   bool _showPrefixIcon = false;
   late double _deviceWidth;
+  late bool _showValidator;
+  late String _validatorMessage;
 
   @override
   void initState() {
     super.initState();
+    _showValidator = false;
     if (widget.initialTags != null && widget.initialTags!.isNotEmpty) {
       _showPrefixIcon = true;
       _tagsStringContents = widget.initialTags;
@@ -141,8 +150,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       decoration: InputDecoration(
         contentPadding: widget.textFieldStyler.contentPadding,
         isDense: widget.textFieldStyler.isDense,
-        helperText: widget.textFieldStyler.helperText,
-        helperStyle: widget.textFieldStyler.helperStyle,
+        helperText: _showValidator
+            ? _validatorMessage
+            : widget.textFieldStyler.helperText,
+        helperStyle: _showValidator
+            ? const TextStyle(color: Colors.red)
+            : widget.textFieldStyler.helperStyle,
         hintText: !_showPrefixIcon ? widget.textFieldStyler.hintText : null,
         hintStyle: !_showPrefixIcon ? widget.textFieldStyler.hintStyle : null,
         filled: widget.textFieldStyler.textFieldFilled,
@@ -173,55 +186,90 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             : null,
       ),
       onSubmitted: (value) {
-        final String val = value.trim().toLowerCase();
-        if (value.length > 0) {
-          _textEditingController.clear();
-          if (!_tagsStringContents!.contains(val)) {
-            widget.onTag(val);
-            if (!_showPrefixIcon) {
-              setState(() {
-                _tagsStringContents!.add(val);
-                _showPrefixIcon = true;
-              });
-            } else {
-              setState(() {
-                _tagsStringContents!.add(val);
-              });
+        if (_showValidator == false) {
+          final String val = value.trim().toLowerCase();
+          if (value.length > 0) {
+            _textEditingController.clear();
+            if (!_tagsStringContents!.contains(val)) {
+              widget.onTag(val);
+
+              final validatorResult = widget.validator!(val);
+
+              if (validatorResult == null) {
+                if (!_showPrefixIcon) {
+                  setState(() {
+                    _tagsStringContents!.add(val);
+                    _showPrefixIcon = true;
+                  });
+                } else {
+                  setState(() {
+                    _tagsStringContents!.add(val);
+                  });
+                }
+                this._animateTransition();
+              } else {
+                setState(() {
+                  _showValidator = true;
+                  _validatorMessage = validatorResult;
+                });
+              }
             }
-            this._animateTransition();
           }
+        } else {
+          setState(() {
+            _showValidator = false;
+          });
         }
       },
       onChanged: (value) {
-        final List<String> splitedTagsList = value.split(" ");
-        final int indexer = splitedTagsList.length > 1
-            ? splitedTagsList.length - 2
-            : splitedTagsList.length - 1;
-        final String lastLastTag =
-            splitedTagsList[indexer].trim().toLowerCase();
-
-        if (value.contains(" ")) {
-          if (lastLastTag.length > 0) {
-            _textEditingController.clear();
-
-            if (!_tagsStringContents!.contains(lastLastTag)) {
-              widget.onTag(lastLastTag);
-
-              if (!_showPrefixIcon) {
-                setState(() {
-                  _tagsStringContents!.add(lastLastTag);
-                  _showPrefixIcon = true;
-                });
-              } else {
-                setState(() {
-                  _tagsStringContents!.add(lastLastTag);
-                });
+        if (_showValidator == false) {
+          if (value.contains(" ") || value.contains(",")) {
+            final List<String> splitedTagsList = value.multiSplit([",", " "]);
+            final int indexer = splitedTagsList.length > 1
+                ? splitedTagsList.length - 2
+                : splitedTagsList.length - 1;
+            final String lastLastTag =
+                splitedTagsList[indexer].trim().toLowerCase();
+            if (lastLastTag.length > 0) {
+              _textEditingController.clear();
+              if (!_tagsStringContents!.contains(lastLastTag)) {
+                widget.onTag(lastLastTag);
+                final validatorResult = widget.validator!(lastLastTag);
+                if (validatorResult == null) {
+                  if (!_showPrefixIcon) {
+                    setState(() {
+                      _tagsStringContents!.add(lastLastTag);
+                      _showPrefixIcon = true;
+                    });
+                  } else {
+                    setState(() {
+                      _tagsStringContents!.add(lastLastTag);
+                    });
+                  }
+                  this._animateTransition();
+                } else {
+                  setState(() {
+                    _showValidator = true;
+                    _validatorMessage = validatorResult;
+                  });
+                }
               }
-              this._animateTransition();
             }
           }
+        } else {
+          setState(() {
+            _showValidator = false;
+          });
         }
       },
     );
+  }
+}
+
+extension _Extension on String {
+  List<String> multiSplit(List<String> delimenters) {
+    return delimenters.isEmpty
+        ? [this]
+        : this.split(RegExp(delimenters.map(RegExp.escape).join('|')));
   }
 }

@@ -13,7 +13,7 @@ and move on to enter another tag.
 
 ```yaml 
   dependencies:
-      textfield_tags: ^1.2.0+2
+      textfield_tags: ^1.3.0
 ```
 
 `$ flutter pub get`
@@ -75,6 +75,12 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
         //This gives you the tag that was deleted
         //print(tag)
       },
+      validator: (tag){
+        if(tag.length>15){
+          return "hey that's too long";
+        }
+        return null;
+      }
       //tagsDistanceFromBorderEnd: 0.725,
       //scrollableTagsMargin: EdgeInsets.only(left: 9),
       //scrollableTagsPadding: EdgeInsets.only(left: 9),
@@ -100,7 +106,13 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
        ),
       textFieldStyler: TextFieldStyler(),
       onTag: (tag) {},
-      onDelete: (tag) {}
+      onDelete: (tag) {},
+      validator: (tag){
+        if(tag.length>15){
+          return "hey that's too long";
+        }
+        return null;
+      }
    )
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i1.png" width="350">
@@ -115,7 +127,13 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
       ),
       textFieldStyler: TextFieldStyler(),
       onTag: (tag) {},
-      onDelete: (tag) {}  
+      onDelete: (tag) {},
+      validator: (tag){
+        if(tag.length>15){
+          return "hey that's too long";
+        }
+        return null;
+      } 
    )
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i2.png" width="350">
@@ -131,7 +149,13 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
       ),
       textFieldStyler: TextFieldStyler(),
       onTag: (tag) {},
-      onDelete: (tag) {} 
+      onDelete: (tag) {},
+      validator: (tag){
+        if(tag.length>15){
+          return "hey that's too long";
+        }
+        return null;
+      }
    )
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i3.png" width="350">

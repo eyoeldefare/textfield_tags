@@ -69,15 +69,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           onDelete: (tag) {},
-          onTag: (tag) {
-            if (tag.length > 40) {
-              //Show snackbar error message
-              final snackBar = SnackBar(
-                duration: const Duration(milliseconds: 5000),
-                content: Text('Tags should be less than 40 characters long'),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            } else {}
+          onTag: (tag) {},
+          validator: (String tag) {
+            if (tag.length > 30) {
+              return "hey that is too much";
+            }
+            return null;
           },
         ),
       ),
