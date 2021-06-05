@@ -32,63 +32,53 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter textfield tags'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Flutter textfield tags',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
-          // optional initial tags
-          // initialTags: <String>['Wero', 'baby'],
-
-          //[textFieldStyler] is required and shall not be null
-          textFieldStyler: TextFieldStyler(
-            //These are properties you can tweek for customization of the textfield
-            textFieldBorder: null,
-            isDense: false,
-            // bool textFieldFilled = false,
-            // String helperText = 'Enter tags',
-            // TextStyle helperStyle,
-            // String hintText = 'Got tags?',
-            // TextStyle hintStyle,
-            // EdgeInsets contentPadding,
-            // Color textFieldFilledColor,
-            // bool isDense = true,
-            // bool textFieldEnabled = true,
-            // OutlineInputBorder textFieldBorder = const OutlineInputBorder(),
-            // OutlineInputBorder textFieldFocusedBorder,
-            // OutlineInputBorder textFieldDisabledBorder,
-            // OutlineInputBorder textFieldEnabledBorder,
-            // Color cursorColor,
-            // TextStyle textStyle;
-          ),
-          //[tagsStyler] is required and shall not be null
+          initialTags: ["college"],
           tagsStyler: TagsStyler(
-              //These are properties you can tweek for customization of tags
-              tagTextStyle: TextStyle(fontWeight: FontWeight.normal),
-              tagDecoration: BoxDecoration(
-                color: Colors.blue[300],
-                borderRadius: BorderRadius.circular(0.0),
+            showHashtag: true,
+            tagMargin: const EdgeInsets.only(right: 4.0),
+            tagCancelIcon: Icon(Icons.cancel, size: 15.0, color: Colors.black),
+            tagCancelIconPadding: EdgeInsets.only(left: 4.0, top: 2.0),
+            tagPadding:
+                EdgeInsets.only(top: 2.0, bottom: 4.0, left: 8.0, right: 4.0),
+            tagDecoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.grey.shade300,
               ),
-              tagCancelIcon:
-                  Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
-              tagPadding: const EdgeInsets.all(6.0)
-              // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
-              // EdgeInsets tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
-              // BoxDecoration tagDecoration = const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
-              // TextStyle tagTextStyle,
-              // Icon tagCancelIcon = const Icon(Icons.cancel, size: 18.0, color: Colors.green)
-              // isHashTag: true,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20.0),
               ),
+            ),
+            tagTextStyle:
+                TextStyle(fontWeight: FontWeight.normal, color: Colors.black),
+          ),
+          textFieldStyler: TextFieldStyler(
+            hintText: "Tags",
+            isDense: false,
+            textFieldFocusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 3.0),
+            ),
+          ),
+          onDelete: (tag) {},
           onTag: (tag) {
-            //This give you tags entered
-            print('onTag ' + tag);
+            if (tag.length > 40) {
+              //Show snackbar error message
+              final snackBar = SnackBar(
+                duration: const Duration(milliseconds: 5000),
+                content: Text('Tags should be less than 40 characters long'),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            } else {}
           },
-          onDelete: (tag) {
-            print('onDelete ' + tag);
-          },
-          //tagsDistanceFromBorderEnd: 0.725,
-          //scrollableTagsMargin: EdgeInsets.only(left: 9),
-          //scrollableTagsPadding: EdgeInsets.only(left: 9),
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.

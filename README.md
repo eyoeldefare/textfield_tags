@@ -85,6 +85,7 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g1.gif" width="300">
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g2.gif" width="300">
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g3.gif" width="300">
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g4.gif" width="300">
 
 ## Examples pics
 
