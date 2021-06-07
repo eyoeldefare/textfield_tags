@@ -67,9 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
             textFieldFocusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 3.0),
             ),
+            textFieldBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 3.0),
+            ),
           ),
-          onDelete: (tag) {},
-          onTag: (tag) {},
+          onDelete: (tag) {
+            print(tag);
+          },
+          onTag: (tag) {
+            print(tag);
+          },
           validator: (String tag) {
             if (tag.length > 10) {
               return "hey that is too much";
