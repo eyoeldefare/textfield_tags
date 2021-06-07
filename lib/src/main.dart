@@ -193,9 +193,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
           if (value.length > 0) {
             _textEditingController.clear();
             if (!_tagsStringContents!.contains(val)) {
-              widget.onTag(val);
               final validatorResult = widget.validator!(val);
               if (validatorResult == null) {
+                widget.onTag(val);
                 if (!_showPrefixIcon) {
                   setState(() {
                     _tagsStringContents!.add(val);
@@ -233,9 +233,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             if (lastLastTag.length > 0) {
               _textEditingController.clear();
               if (!_tagsStringContents!.contains(lastLastTag)) {
-                widget.onTag(lastLastTag);
                 final validatorResult = widget.validator!(lastLastTag);
                 if (validatorResult == null) {
+                  widget.onTag(lastLastTag);
                   if (!_showPrefixIcon) {
                     setState(() {
                       _tagsStringContents!.add(lastLastTag);

@@ -72,12 +72,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           onDelete: (tag) {
-            print(tag);
+            print('onDelete: $tag');
           },
           onTag: (tag) {
-            print(tag);
+            print('onTag: $tag');
           },
           validator: (String tag) {
+            print('validator: $tag');
             if (tag.length > 10) {
               return "hey that is too much";
             }
