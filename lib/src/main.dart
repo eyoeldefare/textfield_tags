@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'models.dart';
 
-typedef String? Validator(String? tag);
+typedef String? Validator(String tag);
 
 class TextFieldTags extends StatefulWidget {
   ///[tagsStyler] must not be [null]
@@ -32,18 +32,27 @@ class TextFieldTags extends StatefulWidget {
   ///[tagsDistanceFromBorder] sets the distance of the tags from the border
   final double tagsDistanceFromBorderEnd;
 
-  const TextFieldTags({
+  ///Separators used to split tags
+  late final List<String> textSeparators;
+
+  TextFieldTags({
     Key? key,
     this.tagsDistanceFromBorderEnd = 0.725,
     this.scrollableTagsPadding = const EdgeInsets.symmetric(horizontal: 4.0),
     this.scrollableTagsMargin,
     this.validator,
     this.initialTags,
+    List<String>? textSeparators,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
     required this.onDelete,
-  }) : super(key: key);
+  }) : super(key: key) {
+    if (textSeparators == null)
+      this.textSeparators = [" ", ","];
+    else
+      this.textSeparators = textSeparators;
+  }
 
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
@@ -223,36 +232,39 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         if (_showValidator == false) {
-          if (value.contains(" ") || value.contains(",")) {
-            final List<String> splitedTagsList = value.multiSplit([",", " "]);
-            final int indexer = splitedTagsList.length > 1
-                ? splitedTagsList.length - 2
-                : splitedTagsList.length - 1;
-            final String lastLastTag =
-                splitedTagsList[indexer].trim().toLowerCase();
-            if (lastLastTag.length > 0) {
-              _textEditingController.clear();
-              if (!_tagsStringContents!.contains(lastLastTag)) {
-                final validatorResult = widget.validator!(lastLastTag);
-                if (validatorResult == null) {
-                  widget.onTag(lastLastTag);
-                  if (!_showPrefixIcon) {
-                    setState(() {
-                      _tagsStringContents!.add(lastLastTag);
-                      _showPrefixIcon = true;
-                    });
-                  } else {
-                    setState(() {
-                      _tagsStringContents!.add(lastLastTag);
-                    });
-                  }
-                  this._animateTransition();
+          var containedSeparator = widget.textSeparators
+              .cast<String?>()
+              .firstWhere((element) => value.contains(element!), orElse: () => null);
+          if (containedSeparator == null) return;
+
+          final List<String> splitTagsList = value.split(containedSeparator);
+          final int indexer = splitTagsList.length > 1
+              ? splitTagsList.length - 2
+              : splitTagsList.length - 1;
+          final String lastLastTag =
+              splitTagsList[indexer].trim().toLowerCase();
+          if (lastLastTag.length > 0) {
+            _textEditingController.clear();
+            if (!_tagsStringContents!.contains(lastLastTag)) {
+              final validatorResult = widget.validator!(lastLastTag);
+              if (validatorResult == null) {
+                widget.onTag(lastLastTag);
+                if (!_showPrefixIcon) {
+                  setState(() {
+                    _tagsStringContents!.add(lastLastTag);
+                    _showPrefixIcon = true;
+                  });
                 } else {
                   setState(() {
-                    _showValidator = true;
-                    _validatorMessage = validatorResult;
+                    _tagsStringContents!.add(lastLastTag);
                   });
                 }
+                this._animateTransition();
+              } else {
+                setState(() {
+                  _showValidator = true;
+                  _validatorMessage = validatorResult;
+                });
               }
             }
           }
@@ -266,10 +278,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   }
 }
 
-extension _Extension on String {
-  List<String> multiSplit(List<String> delimenters) {
-    return delimenters.isEmpty
-        ? [this]
-        : this.split(RegExp(delimenters.map(RegExp.escape).join('|')));
-  }
-}
+// extension _Extension on String {
+//   List<String> multiSplit(List<String> delimiters) {
+//     return delimiters.isEmpty
+//         ? [this]
+//         : this.split(RegExp(delimiters.map(RegExp.escape).join('|')));
+//   }
+// }
