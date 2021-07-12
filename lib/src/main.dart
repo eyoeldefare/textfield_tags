@@ -150,6 +150,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       cursorColor: widget.textFieldStyler.cursorColor,
       style: widget.textFieldStyler.textStyle,
       decoration: InputDecoration(
+        icon: widget.textFieldStyler.icon,
         contentPadding: widget.textFieldStyler.contentPadding,
         isDense: widget.textFieldStyler.isDense,
         helperText: _showValidator

@@ -80,6 +80,9 @@ class TextFieldStyler {
   ///Enable or disable the textfield
   final bool textFieldEnabled;
 
+  /// The icon that displays side of the text field
+  final Icon? icon;
+
   final InputBorder? textFieldBorder;
   final InputBorder? textFieldFocusedBorder;
   final InputBorder? textFieldDisabledBorder;
@@ -97,6 +100,7 @@ class TextFieldStyler {
     this.textFieldFilledColor,
     this.isDense = true,
     this.textFieldEnabled = true,
+    this.icon,
     this.textFieldBorder = const OutlineInputBorder(),
     this.textFieldFocusedBorder,
     this.textFieldDisabledBorder,
