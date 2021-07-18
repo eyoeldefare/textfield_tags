@@ -13,7 +13,7 @@ and move on to enter another tag.
 
 ```yaml 
   dependencies:
-      textfield_tags: ^1.3.1
+      textfield_tags: ^1.4.0
 ```
 
 `$ flutter pub get`
@@ -43,6 +43,7 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
           //These are properties you can tweek for customization
 
           // bool textFieldFilled = false,
+          // Icon icon,
           // String helperText = 'Enter tags',
           // TextStyle helperStyle,
           // String hintText = 'Got tags?',
@@ -91,31 +92,8 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g1.gif" width="300">
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g2.gif" width="300">
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g3.gif" width="300">
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i4.png" width="300" height="142">
 
 ## Examples pics
-
-``` dart
-  TextFieldTags(
-      tags: ['university', 'college', 'music', 'math'],
-      tagsStyler: TagsStyler(
-        tagTextStyle: TextStyle(fontWeight: FontWeight.bold),
-        tagDecoration: BoxDecoration(color: Colors.blue[300], borderRadius: BorderRadius.circular(8.0), ),
-        tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
-        tagPadding: const EdgeInsets.all(6.0)
-       ),
-      textFieldStyler: TextFieldStyler(),
-      onTag: (tag) {},
-      onDelete: (tag) {},
-      validator: (tag){
-        if(tag.length>15){
-          return "hey that's too long";
-        }
-        return null;
-      }
-   )
-```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i1.png" width="350">
 
 ``` dart
   TextFieldTags(
@@ -137,6 +115,7 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
    )
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i2.png" width="350">
+
 
 ``` dart
   //The Colors for this are used from https://flutter-color-picker.herokuapp.com/
@@ -160,3 +139,52 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 ```
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i3.png" width="350">
 
+
+``` dart
+TextFieldTags(
+  initialTags: ["college"],
+  tagsStyler: TagsStyler(
+    showHashtag: true,
+    tagMargin: const EdgeInsets.only(right: 4.0),
+    tagCancelIcon: Icon(Icons.cancel, size: 15.0, color: Colors.black),
+    tagCancelIconPadding: EdgeInsets.only(left: 4.0, top: 2.0),
+    tagPadding:
+        EdgeInsets.only(top: 2.0, bottom: 4.0, left: 8.0, right: 4.0),
+    tagDecoration: BoxDecoration(
+      color: Colors.white,
+      border: Border.all(
+        color: Colors.grey.shade300,
+      ),
+      borderRadius: const BorderRadius.all(
+        Radius.circular(20.0),
+      ),
+    ),
+    tagTextStyle:
+        TextStyle(fontWeight: FontWeight.normal, color: Colors.black),
+  ),
+  textFieldStyler: TextFieldStyler(
+    hintText: "Tags",
+    isDense: false,
+    textFieldFocusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 3.0),
+    ),
+    textFieldBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 3.0),
+    ),
+  ),
+  onDelete: (tag) {
+    print('onDelete: $tag');
+  },
+  onTag: (tag) {
+    print('onTag: $tag');
+  },
+  validator: (String tag) {
+    print('validator: $tag');
+    if (tag.length > 10) {
+      return "hey that is too much";
+    }
+    return null;
+  },
+)
+```
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/i4.png" width="350">

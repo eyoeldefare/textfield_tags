@@ -1,3 +1,9 @@
+## [1.4.0] - 7/18/2021
+* Added prefix Icon inside the textfield
+* Fixed the issue that returned null whenever users remove validator function
+* Optimised for memory using smaller widgets when appropriate
+* Add additional example and also fix the example gif that was not working
+
 ## [1.3.1] - 6/5/2021.
 * Don't show validator warning once user deletes tag or enters tag
 
