@@ -193,8 +193,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
           if (value.length > 0) {
             _textEditingController.clear();
             if (!_tagsStringContents!.contains(val)) {
-              final validatorResult = widget.validator!(val);
-              if (validatorResult == null) {
+              if (widget.validator == null || widget.validator!(val) == null) {
                 widget.onTag(val);
                 if (!_showPrefixIcon) {
                   setState(() {
@@ -210,7 +209,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               } else {
                 setState(() {
                   _showValidator = true;
-                  _validatorMessage = validatorResult;
+                  _validatorMessage = widget.validator!(val)!;
                 });
               }
             }
@@ -233,8 +232,8 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             if (lastLastTag.length > 0) {
               _textEditingController.clear();
               if (!_tagsStringContents!.contains(lastLastTag)) {
-                final validatorResult = widget.validator!(lastLastTag);
-                if (validatorResult == null) {
+                if (widget.validator == null ||
+                    widget.validator!(lastLastTag) == null) {
                   widget.onTag(lastLastTag);
                   if (!_showPrefixIcon) {
                     setState(() {
@@ -250,7 +249,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                 } else {
                   setState(() {
                     _showValidator = true;
-                    _validatorMessage = validatorResult;
+                    _validatorMessage = widget.validator!(lastLastTag)!;
                   });
                 }
               }
