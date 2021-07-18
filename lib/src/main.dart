@@ -50,10 +50,10 @@ class TextFieldTags extends StatefulWidget {
 }
 
 class _TextFieldTagsState extends State<TextFieldTags> {
-  List<String>? _tagsStringContents = [];
-  TextEditingController _textEditingController = TextEditingController();
-  ScrollController _scrollController = ScrollController();
-  bool _showPrefixIcon = false;
+  List<String>? _tagsStringContents;
+  TextEditingController? _textEditingController;
+  ScrollController? _scrollController;
+  late bool _showPrefixIcon;
   late double _deviceWidth;
   late bool _showValidator;
   late String _validatorMessage;
@@ -62,6 +62,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   void initState() {
     super.initState();
     _showValidator = false;
+    _showPrefixIcon = false;
+    _tagsStringContents = [];
+
+    _textEditingController = TextEditingController();
+    _scrollController = ScrollController();
     if (widget.initialTags != null && widget.initialTags!.isNotEmpty) {
       _showPrefixIcon = true;
       _tagsStringContents = widget.initialTags;
@@ -77,8 +82,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   @override
   void dispose() {
     super.dispose();
-    _textEditingController.dispose();
-    _scrollController.dispose();
+    _textEditingController!.dispose();
+    _scrollController!.dispose();
+    _tagsStringContents = null;
+    _textEditingController = null;
+    _scrollController = null;
   }
 
   List<Widget> get _getTags {
@@ -132,9 +140,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
 
   void _animateTransition() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
+      if (_scrollController!.hasClients) {
+        _scrollController!.animateTo(
+          _scrollController!.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
           curve: Curves.linear,
         );
@@ -192,7 +200,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (_showValidator == false) {
           final String val = value.trim().toLowerCase();
           if (value.length > 0) {
-            _textEditingController.clear();
+            _textEditingController!.clear();
             if (!_tagsStringContents!.contains(val)) {
               if (widget.validator == null || widget.validator!(val) == null) {
                 widget.onTag(val);
@@ -231,7 +239,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             final String lastLastTag =
                 splitedTagsList[indexer].trim().toLowerCase();
             if (lastLastTag.length > 0) {
-              _textEditingController.clear();
+              _textEditingController!.clear();
               if (!_tagsStringContents!.contains(lastLastTag)) {
                 if (widget.validator == null ||
                     widget.validator!(lastLastTag) == null) {
