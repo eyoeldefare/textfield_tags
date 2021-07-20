@@ -245,14 +245,14 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               .firstWhere((element) => value.contains(element!), orElse: () => null);
           if (containedSeparator == null) return;
 
-            final List<String> splitedTagsList = value.split(containedSeparator);
-            final int indexer = splitedTagsList.length > 1
-                ? splitedTagsList.length - 2
-                : splitedTagsList.length - 1;
+            final List<String> splittedTagsList = value.split(containedSeparator);
+            final int indexer = splittedTagsList.length > 1
+                ? splittedTagsList.length - 2
+                : splittedTagsList.length - 1;
             final String lastLastTag =
-                splitedTagsList[indexer].trim().toLowerCase();
+                splittedTagsList[indexer].trim().toLowerCase();
             if (lastLastTag.length > 0) {
-              _textEditingController.clear();
+              _textEditingController!.clear();
               if (!_tagsStringContents!.contains(lastLastTag)) {
                 final validatorResult = widget.validator!(lastLastTag);
                 if (validatorResult == null) {

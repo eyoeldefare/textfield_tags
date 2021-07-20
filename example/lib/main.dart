@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
           initialTags: ["college"],
-          textSeparators: [".", "!"],
           tagsStyler: TagsStyler(
             showHashtag: true,
             tagMargin: const EdgeInsets.only(right: 4.0),
