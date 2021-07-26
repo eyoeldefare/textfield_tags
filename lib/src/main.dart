@@ -242,40 +242,41 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (_showValidator == false) {
           var containedSeparator = widget.textSeparators
               .cast<String?>()
-              .firstWhere((element) => value.contains(element!), orElse: () => null);
+              .firstWhere((element) => value.contains(element!),
+                  orElse: () => null);
           if (containedSeparator == null) return;
 
-            final List<String> splittedTagsList = value.split(containedSeparator);
-            final int indexer = splittedTagsList.length > 1
-                ? splittedTagsList.length - 2
-                : splittedTagsList.length - 1;
-            final String lastLastTag =
-                splittedTagsList[indexer].trim().toLowerCase();
-            if (lastLastTag.length > 0) {
-              _textEditingController!.clear();
-              if (!_tagsStringContents!.contains(lastLastTag)) {
-                final validatorResult = widget.validator!(lastLastTag);
-                if (validatorResult == null) {
-                  widget.onTag(lastLastTag);
-                  if (!_showPrefixIcon) {
-                    setState(() {
-                      _tagsStringContents!.add(lastLastTag);
-                      _showPrefixIcon = true;
-                    });
-                  } else {
-                    setState(() {
-                      _tagsStringContents!.add(lastLastTag);
-                    });
-                  }
-                  this._animateTransition();
+          final List<String> splittedTagsList = value.split(containedSeparator);
+          final int indexer = splittedTagsList.length > 1
+              ? splittedTagsList.length - 2
+              : splittedTagsList.length - 1;
+          final String lastLastTag =
+              splittedTagsList[indexer].trim().toLowerCase();
+          if (lastLastTag.length > 0) {
+            _textEditingController!.clear();
+            if (!_tagsStringContents!.contains(lastLastTag)) {
+              if (widget.validator == null ||
+                  widget.validator!(lastLastTag) == null) {
+                widget.onTag(lastLastTag);
+                if (!_showPrefixIcon) {
+                  setState(() {
+                    _tagsStringContents!.add(lastLastTag);
+                    _showPrefixIcon = true;
+                  });
                 } else {
                   setState(() {
-                    _showValidator = true;
-                    _validatorMessage = validatorResult;
+                    _tagsStringContents!.add(lastLastTag);
                   });
                 }
+                this._animateTransition();
+              } else {
+                setState(() {
+                  _showValidator = true;
+                  _validatorMessage = widget.validator!(lastLastTag)!;
+                });
               }
             }
+          }
         } else {
           setState(() {
             _showValidator = false;
