@@ -1,3 +1,6 @@
+## [1.4.1] - 8/1/2021
+* Added functionality that allows users to add custom seperators
+
 ## [1.4.0] - 7/18/2021
 * Added prefix Icon inside the textfield
 * Fixed the issue that returned null whenever users remove validator function

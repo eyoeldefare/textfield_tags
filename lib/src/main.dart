@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'models.dart';
 
-typedef String? Validator(String? tag);
+typedef String? Validator(String tag);
 
 class TextFieldTags extends StatefulWidget {
   ///[tagsStyler] must not be [null]
@@ -32,18 +32,22 @@ class TextFieldTags extends StatefulWidget {
   ///[tagsDistanceFromBorder] sets the distance of the tags from the border
   final double tagsDistanceFromBorderEnd;
 
-  const TextFieldTags({
+  ///Enter optional String separators to split tags. Default is [","," "]
+  final List<String>? textSeparators;
+
+  TextFieldTags({
     Key? key,
     this.tagsDistanceFromBorderEnd = 0.725,
     this.scrollableTagsPadding = const EdgeInsets.symmetric(horizontal: 4.0),
     this.scrollableTagsMargin,
     this.validator,
     this.initialTags,
+    this.textSeparators = const [" ", ","],
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
@@ -231,36 +235,39 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         if (_showValidator == false) {
-          if (value.contains(" ") || value.contains(",")) {
-            final List<String> splitedTagsList = value.multiSplit([",", " "]);
-            final int indexer = splitedTagsList.length > 1
-                ? splitedTagsList.length - 2
-                : splitedTagsList.length - 1;
-            final String lastLastTag =
-                splitedTagsList[indexer].trim().toLowerCase();
-            if (lastLastTag.length > 0) {
-              _textEditingController!.clear();
-              if (!_tagsStringContents!.contains(lastLastTag)) {
-                if (widget.validator == null ||
-                    widget.validator!(lastLastTag) == null) {
-                  widget.onTag(lastLastTag);
-                  if (!_showPrefixIcon) {
-                    setState(() {
-                      _tagsStringContents!.add(lastLastTag);
-                      _showPrefixIcon = true;
-                    });
-                  } else {
-                    setState(() {
-                      _tagsStringContents!.add(lastLastTag);
-                    });
-                  }
-                  this._animateTransition();
+          var containedSeparator = widget.textSeparators!
+              .cast<String?>()
+              .firstWhere((element) => value.contains(element!),
+                  orElse: () => null);
+          if (containedSeparator == null) return;
+          final List<String> splittedTagsList = value.split(containedSeparator);
+          final int indexer = splittedTagsList.length > 1
+              ? splittedTagsList.length - 2
+              : splittedTagsList.length - 1;
+          final String lastLastTag =
+              splittedTagsList[indexer].trim().toLowerCase();
+          if (lastLastTag.length > 0) {
+            _textEditingController!.clear();
+            if (!_tagsStringContents!.contains(lastLastTag)) {
+              if (widget.validator == null ||
+                  widget.validator!(lastLastTag) == null) {
+                widget.onTag(lastLastTag);
+                if (!_showPrefixIcon) {
+                  setState(() {
+                    _tagsStringContents!.add(lastLastTag);
+                    _showPrefixIcon = true;
+                  });
                 } else {
                   setState(() {
-                    _showValidator = true;
-                    _validatorMessage = widget.validator!(lastLastTag)!;
+                    _tagsStringContents!.add(lastLastTag);
                   });
                 }
+                this._animateTransition();
+              } else {
+                setState(() {
+                  _showValidator = true;
+                  _validatorMessage = widget.validator!(lastLastTag)!;
+                });
               }
             }
           }
@@ -271,13 +278,5 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         }
       },
     );
-  }
-}
-
-extension _Extension on String {
-  List<String> multiSplit(List<String> delimenters) {
-    return delimenters.isEmpty
-        ? [this]
-        : this.split(RegExp(delimenters.map(RegExp.escape).join('|')));
   }
 }
