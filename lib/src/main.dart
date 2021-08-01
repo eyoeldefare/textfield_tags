@@ -32,8 +32,8 @@ class TextFieldTags extends StatefulWidget {
   ///[tagsDistanceFromBorder] sets the distance of the tags from the border
   final double tagsDistanceFromBorderEnd;
 
-  ///Separators used to split tags
-  late final List<String> textSeparators;
+  ///Enter optional String separators to split tags. Default is [","," "]
+  final List<String>? textSeparators;
 
   TextFieldTags({
     Key? key,
@@ -42,17 +42,12 @@ class TextFieldTags extends StatefulWidget {
     this.scrollableTagsMargin,
     this.validator,
     this.initialTags,
-    List<String>? textSeparators,
+    this.textSeparators = const [" ", ","],
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
     required this.onDelete,
-  }) : super(key: key) {
-    if (textSeparators == null)
-      this.textSeparators = [" ", ","];
-    else
-      this.textSeparators = textSeparators;
-  }
+  });
 
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
@@ -240,12 +235,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       },
       onChanged: (value) {
         if (_showValidator == false) {
-          var containedSeparator = widget.textSeparators
+          var containedSeparator = widget.textSeparators!
               .cast<String?>()
               .firstWhere((element) => value.contains(element!),
                   orElse: () => null);
           if (containedSeparator == null) return;
-
           final List<String> splittedTagsList = value.split(containedSeparator);
           final int indexer = splittedTagsList.length > 1
               ? splittedTagsList.length - 2
