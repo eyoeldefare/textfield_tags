@@ -112,16 +112,14 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               child: GestureDetector(
                 onTap: () {
                   widget.onDelete(stringContent);
-                  if (_tagsStringContents!.length == 1 && _showPrefixIcon) {
+                  if (_tagsStringContents!.length <= 1 && _showPrefixIcon) {
                     setState(() {
                       _tagsStringContents!.remove(stringContent);
                       _showPrefixIcon = false;
-                      _showValidator = false;
                     });
                   } else {
                     setState(() {
                       _tagsStringContents!.remove(stringContent);
-                      _showValidator = false;
                     });
                   }
                 },
@@ -177,7 +175,8 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         prefixIcon: _showPrefixIcon
             ? ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxWidth: _deviceWidth * widget.tagsDistanceFromBorderEnd),
+                  maxWidth: _deviceWidth * widget.tagsDistanceFromBorderEnd,
+                ),
                 child: Container(
                   margin: widget.scrollableTagsMargin,
                   padding: widget.scrollableTagsPadding,
@@ -195,41 +194,33 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             : null,
       ),
       onSubmitted: (value) {
-        if (_showValidator == false) {
+        if (_showValidator == false && value.length > 0) {
           final String val = value.trim().toLowerCase();
-          if (value.length > 0) {
-            _textEditingController!.clear();
-            if (!_tagsStringContents!.contains(val)) {
-              if (widget.validator == null || widget.validator!(val) == null) {
-                widget.onTag(val);
-                if (!_showPrefixIcon) {
-                  setState(() {
-                    _tagsStringContents!.add(val);
-                    _showPrefixIcon = true;
-                  });
-                } else {
-                  setState(() {
-                    _tagsStringContents!.add(val);
-                  });
-                }
-                this._animateTransition();
-              } else {
-                setState(() {
-                  _showValidator = true;
-                  _validatorMessage = widget.validator!(val)!;
-                });
-              }
+          _textEditingController!.clear();
+          if (widget.validator == null || widget.validator!(val) == null) {
+            widget.onTag(val);
+            if (!_showPrefixIcon) {
+              setState(() {
+                _tagsStringContents!.add(val);
+                _showPrefixIcon = true;
+              });
+            } else {
+              setState(() {
+                _tagsStringContents!.add(val);
+              });
             }
+            this._animateTransition();
+          } else {
+            setState(() {
+              _showValidator = true;
+              _validatorMessage = widget.validator!(val)!;
+            });
           }
-        } else {
-          setState(() {
-            _showValidator = false;
-          });
         }
       },
       onChanged: (value) {
         if (_showValidator == false) {
-          var containedSeparator = widget.textSeparators!
+          final containedSeparator = widget.textSeparators!
               .cast<String?>()
               .firstWhere((element) => value.contains(element!),
                   orElse: () => null);
@@ -238,8 +229,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
           final int indexer = splittedTagsList.length > 1
               ? splittedTagsList.length - 2
               : splittedTagsList.length - 1;
+
           final String lastLastTag =
               splittedTagsList[indexer].trim().toLowerCase();
+
           if (lastLastTag.length > 0) {
             _textEditingController!.clear();
             if (!_tagsStringContents!.contains(lastLastTag)) {
