@@ -35,10 +35,14 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 
 ``` dart 
    TextFieldTags(
+     textSeparators: <String> [
+       //text tag seperators
+       //Default = " ", ","
+     ],
       tags: <String>[
          // List of tags
          // Provide a list of initial tags to initialize it
-         ],
+      ],
       textFieldStyler: TextFieldStyler(
           //These are properties you can tweek for customization
 
