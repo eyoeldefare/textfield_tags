@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'models.dart';
 
 typedef String? Validator(String tag);
@@ -41,7 +40,7 @@ class TextFieldTags extends StatefulWidget {
     this.scrollableTagsPadding = const EdgeInsets.symmetric(horizontal: 4.0),
     this.scrollableTagsMargin,
     this.validator,
-    this.initialTags,
+    this.initialTags = const [],
     this.textSeparators = const [" ", ","],
     required this.tagsStyler,
     required this.textFieldStyler,
@@ -54,7 +53,7 @@ class TextFieldTags extends StatefulWidget {
 }
 
 class _TextFieldTagsState extends State<TextFieldTags> {
-  List<String>? _tagsStringContents;
+  Set<String>? _tagsStringContents;
   TextEditingController? _textEditingController;
   ScrollController? _scrollController;
   late bool _showPrefixIcon;
@@ -66,15 +65,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   void initState() {
     super.initState();
     _showValidator = false;
-    _showPrefixIcon = false;
-    _tagsStringContents = [];
-
+    _tagsStringContents = Set.from(widget.initialTags!);
+    _showPrefixIcon = _tagsStringContents!.length > 0 ? true : false;
     _textEditingController = TextEditingController();
     _scrollController = ScrollController();
-    if (widget.initialTags != null && widget.initialTags!.isNotEmpty) {
-      _showPrefixIcon = true;
-      _tagsStringContents = widget.initialTags;
-    }
   }
 
   @override
@@ -96,7 +90,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   List<Widget> get _getTags {
     List<Widget> _tags = [];
     for (var i = 0; i < _tagsStringContents!.length; i++) {
-      final String stringContent = _tagsStringContents![i];
+      final String stringContent = _tagsStringContents!.elementAt(i);
       final String stringContentWithHash =
           widget.tagsStyler.showHashtag ? "#$stringContent" : stringContent;
       final Container tag = Container(

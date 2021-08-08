@@ -28,6 +28,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<String> m = ["cool", "college", "cool"];
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
-          initialTags: ["college"],
+          //initialTags: ["better", "lovely"],
           textSeparators: [" ", ".", ","],
           tagsStyler: TagsStyler(
             showHashtag: true,
@@ -73,13 +79,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           onDelete: (tag) {
-            print('onDelete: $tag');
+            m.remove(tag);
           },
           onTag: (tag) {
-            print('onTag: $tag');
+            m.add(tag);
           },
           validator: (String tag) {
-            print('validator: $tag');
             if (tag.length > 10) {
               return "hey that is too much";
             }
