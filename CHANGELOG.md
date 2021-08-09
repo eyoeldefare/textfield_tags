@@ -1,3 +1,7 @@
+## [1.4.2] - 8/8/2021
+* Fix the issue of tags obsecurity when using non final initial tags
+* Change the onchange and onsubmit of textfields to reflect using Set instead of List to store tags
+
 ## [1.4.1] - 8/1/2021
 * Added functionality that allows users to add custom tag seperators
 
