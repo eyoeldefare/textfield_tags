@@ -85,9 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
             m.add(tag);
           },
           validator: (String tag) {
-            if (tag.length > 5) {
+            if (tag.length > 15) {
               return "hey that is too much";
+            } else if (tag.isEmpty) {
+              return "enter something";
             }
+
             return null;
           },
         ),

@@ -194,7 +194,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             : null,
       ),
       onSubmitted: (value) {
-        if (_showValidator == false && value.length > 0) {
+        if (_showValidator == false) {
           final String val = value.trim().toLowerCase();
           _textEditingController!.clear();
           if (widget.validator == null || widget.validator!(val) == null) {
@@ -222,40 +222,38 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         if (_showValidator == false) {
           final containedSeparator = widget.textSeparators!
               .cast<String?>()
-              .firstWhere((element) => value.contains(element!),
+              .firstWhere(
+                  (element) =>
+                      value.contains(element!) && value.indexOf(element) != 0,
                   orElse: () => null);
-          if (containedSeparator == null) return;
-          final List<String> splittedTagsList = value.split(containedSeparator);
-          final int indexer = splittedTagsList.length > 1
-              ? splittedTagsList.length - 2
-              : splittedTagsList.length - 1;
+          if (containedSeparator != null) {
+            final splits = value.split(containedSeparator);
+            final int indexer =
+                splits.length > 1 ? splits.length - 2 : splits.length - 1;
+            final String lastLastTag =
+                splits.elementAt(indexer).trim().toLowerCase();
 
-          final String lastLastTag =
-              splittedTagsList[indexer].trim().toLowerCase();
-
-          if (lastLastTag.length > 0) {
             _textEditingController!.clear();
-            if (!_tagsStringContents!.contains(lastLastTag)) {
-              if (widget.validator == null ||
-                  widget.validator!(lastLastTag) == null) {
-                widget.onTag(lastLastTag);
-                if (!_showPrefixIcon) {
-                  setState(() {
-                    _tagsStringContents!.add(lastLastTag);
-                    _showPrefixIcon = true;
-                  });
-                } else {
-                  setState(() {
-                    _tagsStringContents!.add(lastLastTag);
-                  });
-                }
-                this._animateTransition();
+
+            if (widget.validator == null ||
+                widget.validator!(lastLastTag) == null) {
+              widget.onTag(lastLastTag);
+              if (!_showPrefixIcon) {
+                setState(() {
+                  _tagsStringContents!.add(lastLastTag);
+                  _showPrefixIcon = true;
+                });
               } else {
                 setState(() {
-                  _showValidator = true;
-                  _validatorMessage = widget.validator!(lastLastTag)!;
+                  _tagsStringContents!.add(lastLastTag);
                 });
               }
+              this._animateTransition();
+            } else {
+              setState(() {
+                _showValidator = true;
+                _validatorMessage = widget.validator!(lastLastTag)!;
+              });
             }
           }
         } else {
