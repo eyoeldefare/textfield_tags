@@ -49,7 +49,7 @@ class TextFieldTags extends StatefulWidget {
     this.initialTags = const [],
     this.textSeparators = const [" ", ","],
     this.showHelper = true,
-    this.controller = TextEditingController(),
+    this.controller = const TextEditingController(),
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
