@@ -38,7 +38,7 @@ class TextFieldTags extends StatefulWidget {
   final bool showHelper;
   
   ///Should helper text be displayed
-  final TextEditingController? controller = TextEditingController();
+  final TextEditingController? controller;
   
   TextFieldTags({
     Key? key,
@@ -75,7 +75,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _showValidator = false;
     _tagsStringContents = Set.from(widget.initialTags!);
     _showPrefixIcon = _tagsStringContents!.length > 0 ? true : false;
-    _textEditingController = widget.controller;
+    _textEditingController = widget.controller ?? TextEditingController();
     _scrollController = ScrollController();
   }
 
