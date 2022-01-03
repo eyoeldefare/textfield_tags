@@ -161,9 +161,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         icon: widget.textFieldStyler.icon,
         contentPadding: widget.textFieldStyler.contentPadding,
         isDense: widget.textFieldStyler.isDense,
-        helperText: _showValidator
+        helperText: widget.showhelper ? _showValidator
             ? _validatorMessage
-            : widget.textFieldStyler.helperText,
+            : widget.textFieldStyler.helperText
+            : null,
         helperStyle: _showValidator
             ? const TextStyle(color: Colors.red)
             : widget.textFieldStyler.helperStyle,
