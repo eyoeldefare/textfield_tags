@@ -34,6 +34,9 @@ class TextFieldTags extends StatefulWidget {
   ///Enter optional String separators to split tags. Default is [","," "]
   final List<String>? textSeparators;
 
+  ///Should helper text be displayed
+  final bool showHelper;
+  
   TextFieldTags({
     Key? key,
     this.tagsDistanceFromBorderEnd = 0.725,
@@ -42,6 +45,7 @@ class TextFieldTags extends StatefulWidget {
     this.validator,
     this.initialTags = const [],
     this.textSeparators = const [" ", ","],
+    this.showHelper = true,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
