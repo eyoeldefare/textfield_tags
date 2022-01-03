@@ -37,6 +37,9 @@ class TextFieldTags extends StatefulWidget {
   ///Should helper text be displayed
   final bool showHelper;
   
+  ///Should helper text be displayed
+  final TextEditingController controller;
+  
   TextFieldTags({
     Key? key,
     this.tagsDistanceFromBorderEnd = 0.725,
@@ -46,6 +49,7 @@ class TextFieldTags extends StatefulWidget {
     this.initialTags = const [],
     this.textSeparators = const [" ", ","],
     this.showHelper = true,
+    this.controller,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
@@ -71,7 +75,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _showValidator = false;
     _tagsStringContents = Set.from(widget.initialTags!);
     _showPrefixIcon = _tagsStringContents!.length > 0 ? true : false;
-    _textEditingController = TextEditingController();
+    _textEditingController = widget.controller ?? TextEditingController();
     _scrollController = ScrollController();
   }
 
