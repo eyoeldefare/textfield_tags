@@ -38,7 +38,7 @@ class TextFieldTags extends StatefulWidget {
   final bool showHelper;
   
   ///Should helper text be displayed
-  final TextEditingController controller;
+  final TextEditingController? controller = TextEditingController();
   
   TextFieldTags({
     Key? key,
@@ -49,7 +49,7 @@ class TextFieldTags extends StatefulWidget {
     this.initialTags = const [],
     this.textSeparators = const [" ", ","],
     this.showHelper = true,
-    this.controller = const TextEditingController(),
+    this.controller,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
