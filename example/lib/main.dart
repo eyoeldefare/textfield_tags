@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -15,13 +17,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -39,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           'Flutter textfield tags',
           style: TextStyle(color: Colors.black),
         ),
@@ -48,14 +50,22 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
           //initialTags: ["better", "lovely"],
-          textSeparators: [" ", ".", ","],
+          textSeparators: const [" ", ".", ","],
           tagsStyler: TagsStyler(
             showHashtag: true,
             tagMargin: const EdgeInsets.only(right: 4.0),
-            tagCancelIcon: Icon(Icons.cancel, size: 15.0, color: Colors.black),
-            tagCancelIconPadding: EdgeInsets.only(left: 4.0, top: 2.0),
-            tagPadding:
-                EdgeInsets.only(top: 2.0, bottom: 4.0, left: 8.0, right: 4.0),
+            tagCancelIcon: const Icon(
+              Icons.cancel,
+              size: 15.0,
+              color: Colors.black,
+            ),
+            tagCancelIconPadding: const EdgeInsets.only(left: 4.0, top: 2.0),
+            tagPadding: const EdgeInsets.only(
+              top: 2.0,
+              bottom: 4.0,
+              left: 8.0,
+              right: 4.0,
+            ),
             tagDecoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -65,16 +75,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 Radius.circular(20.0),
               ),
             ),
-            tagTextStyle:
-                TextStyle(fontWeight: FontWeight.normal, color: Colors.black),
+            tagTextStyle: const TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
           ),
           textFieldStyler: TextFieldStyler(
             hintText: "Tags",
             isDense: false,
-            textFieldFocusedBorder: UnderlineInputBorder(
+            textFieldFocusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 3.0),
             ),
-            textFieldBorder: UnderlineInputBorder(
+            textFieldBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 3.0),
             ),
           ),
