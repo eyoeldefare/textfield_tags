@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models.dart';
 
-typedef String? Validator(String tag);
+typedef Validator = String? Function(String tag);
 
 class TextFieldTags extends StatefulWidget {
   ///[tagsStyler] must not be [null]
@@ -34,7 +34,7 @@ class TextFieldTags extends StatefulWidget {
   ///Enter optional String separators to split tags. Default is [","," "]
   final List<String>? textSeparators;
 
-  TextFieldTags({
+  const TextFieldTags({
     Key? key,
     this.tagsDistanceFromBorderEnd = 0.725,
     this.scrollableTagsPadding = const EdgeInsets.symmetric(horizontal: 4.0),
@@ -46,7 +46,7 @@ class TextFieldTags extends StatefulWidget {
     required this.textFieldStyler,
     required this.onTag,
     required this.onDelete,
-  });
+  }) : super(key: key);
 
   @override
   _TextFieldTagsState createState() => _TextFieldTagsState();
@@ -66,7 +66,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     super.initState();
     _showValidator = false;
     _tagsStringContents = Set.from(widget.initialTags!);
-    _showPrefixIcon = _tagsStringContents!.length > 0 ? true : false;
+    _showPrefixIcon = _tagsStringContents!.isNotEmpty;
     _textEditingController = TextEditingController();
     _scrollController = ScrollController();
   }
@@ -209,7 +209,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                 _tagsStringContents!.add(val);
               });
             }
-            this._animateTransition();
+            _animateTransition();
           } else {
             setState(() {
               _showValidator = true;
@@ -248,7 +248,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                   _tagsStringContents!.add(lastLastTag);
                 });
               }
-              this._animateTransition();
+              _animateTransition();
             } else {
               setState(() {
                 _showValidator = true;
