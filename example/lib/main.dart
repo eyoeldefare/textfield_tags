@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> m = ["cool", "college", "cool"];
+  List<String> m = ['cool', 'college', 'cool'];
   @override
   void initState() {
     super.initState();
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
           //initialTags: ["better", "lovely"],
-          textSeparators: const [" ", ".", ","],
+          textSeparators: const [' ', '.', ','],
           tagsStyler: TagsStyler(
             showHashtag: true,
             tagMargin: const EdgeInsets.only(right: 4.0),
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           textFieldStyler: TextFieldStyler(
-            hintText: "Tags",
+            hintText: 'Tags',
             isDense: false,
             textFieldFocusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 3.0),
@@ -98,9 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           validator: (String tag) {
             if (tag.length > 15) {
-              return "hey that is too much";
+              return 'hey that is too much';
             } else if (tag.isEmpty) {
-              return "enter something";
+              return 'enter something';
             }
 
             return null;

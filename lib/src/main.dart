@@ -41,7 +41,7 @@ class TextFieldTags extends StatefulWidget {
     this.scrollableTagsMargin,
     this.validator,
     this.initialTags = const [],
-    this.textSeparators = const [" ", ","],
+    this.textSeparators = const [' ', ','],
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
@@ -92,7 +92,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     for (var i = 0; i < _tagsStringContents!.length; i++) {
       final String stringContent = _tagsStringContents!.elementAt(i);
       final String stringContentWithHash =
-          widget.tagsStyler.showHashtag ? "#$stringContent" : stringContent;
+          widget.tagsStyler.showHashtag ? '#$stringContent' : stringContent;
       final Container tag = Container(
         padding: widget.tagsStyler.tagPadding,
         decoration: widget.tagsStyler.tagDecoration,
