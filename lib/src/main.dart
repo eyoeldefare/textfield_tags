@@ -34,6 +34,9 @@ class TextFieldTags extends StatefulWidget {
   ///Enter optional String separators to split tags. Default is [","," "]
   final List<String>? textSeparators;
 
+  ///Enter your own text editing Controller for more custom usage
+  final TextEditingController? textEditingController;
+
   const TextFieldTags({
     Key? key,
     this.tagsDistanceFromBorderEnd = 0.725,
@@ -42,6 +45,7 @@ class TextFieldTags extends StatefulWidget {
     this.validator,
     this.initialTags = const [],
     this.textSeparators = const [' ', ','],
+    this.textEditingController,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
@@ -67,7 +71,8 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _showValidator = false;
     _tagsStringContents = Set.from(widget.initialTags!);
     _showPrefixIcon = _tagsStringContents!.isNotEmpty;
-    _textEditingController = TextEditingController();
+    _textEditingController =
+        widget.textEditingController ?? TextEditingController();
     _scrollController = ScrollController();
   }
 
