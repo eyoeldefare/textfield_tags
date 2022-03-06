@@ -74,6 +74,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _textEditingController =
         widget.textEditingController ?? TextEditingController();
     _scrollController = ScrollController();
+    _animateTransition();
   }
 
   @override
