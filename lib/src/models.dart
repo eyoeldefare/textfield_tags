@@ -86,6 +86,9 @@ class TextFieldStyler {
   ///Add read only to the text field
   final bool readOnly;
 
+  ///Add keyboard type
+  final TextInputType? textInputType;
+
   final InputBorder? textFieldBorder;
   final InputBorder? textFieldFocusedBorder;
   final InputBorder? textFieldDisabledBorder;
@@ -96,6 +99,7 @@ class TextFieldStyler {
     this.helperText = 'Enter tags',
     this.helperStyle,
     this.textStyle,
+    this.textInputType,
     this.cursorColor,
     this.hintText = 'Got tags?',
     this.hintStyle,
