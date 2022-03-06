@@ -83,6 +83,9 @@ class TextFieldStyler {
   /// The icon that displays side of the text field
   final Icon? icon;
 
+  ///Add read only to the text field
+  final bool readOnly;
+
   final InputBorder? textFieldBorder;
   final InputBorder? textFieldFocusedBorder;
   final InputBorder? textFieldDisabledBorder;
@@ -99,6 +102,7 @@ class TextFieldStyler {
     this.contentPadding,
     this.textFieldFilledColor,
     this.isDense = true,
+    this.readOnly = false,
     this.textFieldEnabled = true,
     this.icon,
     this.textFieldBorder = const OutlineInputBorder(),

@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
           //initialTags: ["better", "lovely"],
+
           textSeparators: const [' ', '.', ','],
           tagsStyler: TagsStyler(
             showHashtag: true,
@@ -81,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           textFieldStyler: TextFieldStyler(
+            readOnly: false,
             hintText: 'Tags',
             isDense: false,
             textFieldFocusedBorder: const UnderlineInputBorder(
