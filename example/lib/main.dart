@@ -49,8 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
-          //initialTags: ["better", "lovely"],
-
+          initialTags: const [],
           textSeparators: const [' ', '.', ','],
           tagsStyler: TagsStyler(
             showHashtag: true,

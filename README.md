@@ -35,14 +35,14 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 
 ``` dart 
    TextFieldTags(
-     textSeparators: <String> [
-       //text tag seperators
-       //Default = " ", ","
-     ],
-      tags: <String>[
-         // List of tags
-         // Provide a list of initial tags to initialize it
-      ],
+     //double tagsDistanceFromBorderEnd,
+     //EdgeInsets scrollableTagsPadding,
+     //EdgeInsets scrollableTagsMargin,
+
+     //TextEditingController? textEditingController, ---> you can enter your own custom texteditingcontroller to listen for inputs or do other operations.
+
+      initialTags: const [],
+      textSeparators: const [' ', '.', ','],
       textFieldStyler: TextFieldStyler(
           //These are properties you can tweek for customization
 
@@ -56,20 +56,19 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
           // Color textFieldFilledColor,
           // bool isDense = true,
           // bool textFieldEnabled = true,
-          // OutlineInputBorder textFieldBorder = const OutlineInputBorder(),
-          // OutlineInputBorder textFieldFocusedBorder,
-          // OutlineInputBorder textFieldDisabledBorder,
-          // OutlineInputBorder textFieldEnabledBorder
+          // InputBorder textFieldBorder,
+          //... 
           ),
       tagsStyler: TagsStyler(
           //These are properties you can tweek for customization
           
           // showHashtag = false,
-          // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
-          // EdgeInsets tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
-          // BoxDecoration tagDecoration = const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
+          // EdgeInsets tagPadding,
+          // EdgeInsets tagMargin,
+          // BoxDecoration tagDecoration,
           // TextStyle tagTextStyle,
-          // Icon tagCancelIcon = const Icon(Icons.cancel, size: 18.0, color: Colors.green)
+          // Icon tagCancelIcon,
+          //...
           ),
       onTag: (tag) {
         //This give you the tag that was entered
@@ -81,6 +80,7 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
         //print(tag)
       },
       validator: (tag){
+        //Crate custom validations
         if(tag.length>15){
           return "hey that's too long";
         }
