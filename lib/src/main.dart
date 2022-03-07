@@ -3,6 +3,8 @@ import 'models.dart';
 
 typedef Validator = String? Function(String tag);
 
+enum LetterCase { none, small, capital }
+
 class TextFieldTags extends StatefulWidget {
   ///[tagsStyler] must not be [null]
   final TagsStyler tagsStyler;
@@ -37,6 +39,9 @@ class TextFieldTags extends StatefulWidget {
   ///Enter your own text editing Controller for more custom usage
   final TextEditingController? textEditingController;
 
+  ///Change the letter case of the text entered by user. Default is set to small letter[LetterCase.small]
+  final LetterCase letterCase;
+
   const TextFieldTags({
     Key? key,
     this.tagsDistanceFromBorderEnd = 0.725,
@@ -46,6 +51,7 @@ class TextFieldTags extends StatefulWidget {
     this.initialTags = const [],
     this.textSeparators = const [' ', ','],
     this.textEditingController,
+    this.letterCase = LetterCase.small,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
@@ -203,7 +209,11 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       ),
       onSubmitted: (value) {
         if (_showValidator == false) {
-          final String val = value.trim().toLowerCase();
+          final val = widget.letterCase == LetterCase.small
+              ? value.trim().toLowerCase()
+              : widget.letterCase == LetterCase.capital
+                  ? value.trim().toUpperCase()
+                  : value.trim();
           _textEditingController!.clear();
           if (widget.validator == null || widget.validator!(val) == null) {
             widget.onTag(val);
@@ -238,8 +248,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             final splits = value.split(containedSeparator);
             final int indexer =
                 splits.length > 1 ? splits.length - 2 : splits.length - 1;
-            final String lastLastTag =
-                splits.elementAt(indexer).trim().toLowerCase();
+
+            final lastLastTag = widget.letterCase == LetterCase.small
+                ? splits.elementAt(indexer).trim().toLowerCase()
+                : widget.letterCase == LetterCase.capital
+                    ? splits.elementAt(indexer).trim().toUpperCase()
+                    : splits.elementAt(indexer).trim();
 
             _textEditingController!.clear();
 

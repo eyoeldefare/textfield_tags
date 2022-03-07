@@ -35,11 +35,14 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 
 ``` dart 
    TextFieldTags(
-     //double tagsDistanceFromBorderEnd,
-     //EdgeInsets scrollableTagsPadding,
-     //EdgeInsets scrollableTagsMargin,
-
-     //TextEditingController? textEditingController, ---> you can enter your own custom texteditingcontroller to listen for inputs or do other operations.
+      //double tagsDistanceFromBorderEnd,
+      //EdgeInsets scrollableTagsPadding,
+      //EdgeInsets scrollableTagsMargin,
+      //tagsDistanceFromBorderEnd: 0.725,
+      //scrollableTagsMargin: EdgeInsets.only(left: 9),
+      //scrollableTagsPadding: EdgeInsets.only(left: 9),
+      //letterCase: LetterCase.small
+      //TextEditingController? textEditingController, ---> you can enter your own custom texteditingcontroller to listen for inputs or do other operations.
 
       initialTags: const [],
       textSeparators: const [' ', '.', ','],
@@ -86,9 +89,6 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
         }
         return null;
       }
-      //tagsDistanceFromBorderEnd: 0.725,
-      //scrollableTagsMargin: EdgeInsets.only(left: 9),
-      //scrollableTagsPadding: EdgeInsets.only(left: 9),
     )
 ```
 ## Example giffs
