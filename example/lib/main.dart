@@ -30,10 +30,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> m = ['cool', 'college', 'cool'];
+  Set<String> _tags;
+  final _textEdintController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+    _textEdintController.addListener(() {
+      //Here you can listen for the values entered to create a suggestion or other things
+      //print(_textEdintController.text);
+    });
+    _tags = {'me', 'you'};
   }
 
   @override
@@ -49,8 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
+          textEditingController: _textEdintController,
           letterCase: LetterCase.small,
-          initialTags: const [],
+          initialTags: _tags.toList(),
           textSeparators: const [' ', '.', ','],
           tagsStyler: TagsStyler(
             showHashtag: true,
@@ -93,18 +101,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           onDelete: (tag) {
-            m.remove(tag);
+            _tags.remove(tag);
           },
           onTag: (tag) {
-            m.add(tag);
+            _tags.add(tag);
           },
           validator: (String tag) {
             if (tag.length > 15) {
               return 'hey that is too much';
             } else if (tag.isEmpty) {
               return 'enter something';
+            } else if (_tags.contains(tag)) {
+              return 'you\'ve already entered that';
             }
-
             return null;
           },
         ),
