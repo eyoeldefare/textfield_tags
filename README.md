@@ -13,7 +13,7 @@ and move on to enter another tag.
 
 ```yaml 
   dependencies:
-      textfield_tags: ^1.4.2
+      textfield_tags: ^1.4.3
 ```
 
 `$ flutter pub get`
@@ -42,6 +42,7 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
       //scrollableTagsMargin: EdgeInsets.only(left: 9),
       //scrollableTagsPadding: EdgeInsets.only(left: 9),
       //letterCase: LetterCase.small
+
       //TextEditingController? textEditingController, ---> you can enter your own custom texteditingcontroller to listen for inputs or do other operations.
 
       initialTags: const [],

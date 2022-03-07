@@ -1,6 +1,6 @@
 name: textfield_tags
 description: A text field that allows an input of tags inside the textfield
-version: 1.4.2
+version: 1.4.3
 homepage: https://github.com/eyoeldefare/textfield_tags
 
 environment:

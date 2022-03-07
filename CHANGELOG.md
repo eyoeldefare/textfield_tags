@@ -1,3 +1,9 @@
+## [1.4.3] - 3/7/2022
+* Exposed the controller of the textfield for developers
+* Updated the whole example to use newer version of flutter
+* Added newer properties of Textfield widget such as readOnly, showHelper, keyboardType, controller
+* Added letter case functionality
+
 ## [1.4.2] - 8/8/2021
 * Fix the issue of tags obsecurity when using non final initial tags
 * Change the onchange and onsubmit of textfields to reflect using Set instead of List to store tags
