@@ -1,6 +1,6 @@
 # example
 
-Textfeidl tags example
+A new Flutter project.
 
 ## Getting Started
 
