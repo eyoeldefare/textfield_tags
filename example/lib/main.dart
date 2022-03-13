@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Set<String> _tags;
+  List<String> _tags;
   final _textEdintController = TextEditingController();
 
   @override
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //Here you can listen for the values entered to create a suggestion or other things
       //print(_textEdintController.text);
     });
-    _tags = {'me', 'you'};
+    _tags = ['me', 'you'];
   }
 
   @override
@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: TextFieldTags(
           textEditingController: _textEdintController,
           letterCase: LetterCase.small,
-          initialTags: _tags.toList(),
+          initialTags: _tags,
           textSeparators: const [' ', '.', ','],
           tagsStyler: TagsStyler(
             showHashtag: true,
