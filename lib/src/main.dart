@@ -36,11 +36,11 @@ class TextFieldTags extends StatefulWidget {
   ///Enter optional String separators to split tags. Default is [","," "]
   final List<String>? textSeparators;
 
-  ///Enter your own text editing Controller for more custom usage
-  final TextEditingController? textEditingController;
-
   ///Change the letter case of the text entered by user. Default is set to small letter[LetterCase.small]
   final LetterCase letterCase;
+
+  ///Use this to add more custumization and control over the tags and textfield
+  final TextFieldTagsController? textFieldTagsController;
 
   const TextFieldTags({
     Key? key,
@@ -50,8 +50,8 @@ class TextFieldTags extends StatefulWidget {
     this.validator,
     this.initialTags = const [],
     this.textSeparators = const [' ', ','],
-    this.textEditingController,
     this.letterCase = LetterCase.small,
+    this.textFieldTagsController,
     required this.tagsStyler,
     required this.textFieldStyler,
     required this.onTag,
@@ -63,23 +63,35 @@ class TextFieldTags extends StatefulWidget {
 }
 
 class _TextFieldTagsState extends State<TextFieldTags> {
-  Set<String>? _tagsStringContents;
-  TextEditingController? _textEditingController;
-  ScrollController? _scrollController;
-  late bool _showPrefixIcon;
-  late double _deviceWidth;
-  late bool _showValidator;
-  late String _validatorMessage;
+  late Set<String>? _tagsStringContents;
+  late TextFieldTagsController? _tagController;
+  late ScrollController? _scrollController;
+  late double? _deviceWidth;
+  late Map<String, dynamic>? _tagState;
 
   @override
   void initState() {
     super.initState();
-    _showValidator = false;
-    _tagsStringContents = Set.from(widget.initialTags!);
-    _showPrefixIcon = _tagsStringContents!.isNotEmpty;
-    _textEditingController =
-        widget.textEditingController ?? TextEditingController();
     _scrollController = ScrollController();
+    _tagController =
+        widget.textFieldTagsController ?? TextFieldTagsController();
+    _tagController!.init(widget.initialTags!, widget.initialTags!.isNotEmpty);
+
+    //init class props
+    _tagsStringContents = _tagController!.getSetTags;
+    _tagState = _tagController!.getTagStates;
+
+    //listen for changes
+    _tagController!.addListener(() {
+      setState(() {
+        _tagsStringContents = _tagController!.getSetTags;
+        _tagState!['show_validator'] = _tagController!.showValidator;
+        _tagState!['show_prefix_icon'] = _tagController!.showPrefixIcon;
+        _tagState!['validator_message'] =
+            _tagController!.getError['error_text'];
+        _tagState!['validator_style'] = _tagController!.getError['error_style'];
+      });
+    });
     _animateTransition();
   }
 
@@ -92,11 +104,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   @override
   void dispose() {
     super.dispose();
-    _textEditingController!.dispose();
     _scrollController!.dispose();
+    _tagController!.dispose();
     _tagsStringContents = null;
-    _textEditingController = null;
     _scrollController = null;
+    _deviceWidth = null;
+    _tagController = null;
   }
 
   List<Widget> get _getTags {
@@ -124,15 +137,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
               child: GestureDetector(
                 onTap: () {
                   widget.onDelete(stringContent);
-                  if (_tagsStringContents!.length <= 1 && _showPrefixIcon) {
-                    setState(() {
-                      _tagsStringContents!.remove(stringContent);
-                      _showPrefixIcon = false;
-                    });
+                  if (_tagsStringContents!.length <= 1 &&
+                      _tagState!['show_prefix_icon']) {
+                    _tagController!.removeTag = stringContent;
+                    _tagController!.setPrefixIcon = false;
                   } else {
-                    setState(() {
-                      _tagsStringContents!.remove(stringContent);
-                    });
+                    _tagController!.removeTag = stringContent;
                   }
                 },
                 child: widget.tagsStyler.tagCancelIcon,
@@ -164,7 +174,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       maxLength: widget.textFieldStyler.maxLength,
       keyboardType: widget.textFieldStyler.textInputType,
       readOnly: widget.textFieldStyler.readOnly,
-      controller: _textEditingController,
+      controller: TextFieldTagsController.getTextEditingController,
       autocorrect: false,
       cursorColor: widget.textFieldStyler.cursorColor,
       style: widget.textFieldStyler.textStyle,
@@ -172,14 +182,18 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         icon: widget.textFieldStyler.icon,
         contentPadding: widget.textFieldStyler.contentPadding,
         isDense: widget.textFieldStyler.isDense,
-        helperText: _showValidator
-            ? _validatorMessage
+        helperText: _tagState!['show_validator']
+            ? _tagState!['validator_message']
             : widget.textFieldStyler.helperText,
-        helperStyle: _showValidator
-            ? const TextStyle(color: Colors.red)
+        helperStyle: _tagState!['show_validator']
+            ? _tagState!['validator_style']
             : widget.textFieldStyler.helperStyle,
-        hintText: !_showPrefixIcon ? widget.textFieldStyler.hintText : null,
-        hintStyle: !_showPrefixIcon ? widget.textFieldStyler.hintStyle : null,
+        hintText: !_tagState!['show_prefix_icon']
+            ? widget.textFieldStyler.hintText
+            : null,
+        hintStyle: !_tagState!['show_prefix_icon']
+            ? widget.textFieldStyler.hintStyle
+            : null,
         filled: widget.textFieldStyler.textFieldFilled,
         fillColor: widget.textFieldStyler.textFieldFilledColor,
         enabled: widget.textFieldStyler.textFieldEnabled,
@@ -187,10 +201,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         focusedBorder: widget.textFieldStyler.textFieldFocusedBorder,
         disabledBorder: widget.textFieldStyler.textFieldDisabledBorder,
         enabledBorder: widget.textFieldStyler.textFieldEnabledBorder,
-        prefixIcon: _showPrefixIcon
+        prefixIcon: _tagState!['show_prefix_icon']
             ? ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxWidth: _deviceWidth * widget.tagsDistanceFromBorderEnd,
+                  maxWidth: _deviceWidth! * widget.tagsDistanceFromBorderEnd,
                 ),
                 child: Container(
                   margin: widget.scrollableTagsMargin,
@@ -209,36 +223,30 @@ class _TextFieldTagsState extends State<TextFieldTags> {
             : null,
       ),
       onSubmitted: (value) {
-        if (_showValidator == false) {
+        if (_tagState!['show_validator'] == false) {
           final val = widget.letterCase == LetterCase.small
               ? value.trim().toLowerCase()
               : widget.letterCase == LetterCase.capital
                   ? value.trim().toUpperCase()
                   : value.trim();
-          _textEditingController!.clear();
+          TextFieldTagsController.getTextEditingController.clear();
           if (widget.validator == null || widget.validator!(val) == null) {
             widget.onTag(val);
-            if (!_showPrefixIcon) {
-              setState(() {
-                _tagsStringContents!.add(val);
-                _showPrefixIcon = true;
-              });
+            if (!_tagState!['show_prefix_icon']) {
+              _tagController!.addTag = val;
+              _tagController!.setPrefixIcon = true;
             } else {
-              setState(() {
-                _tagsStringContents!.add(val);
-              });
+              _tagController!.addTag = val;
             }
             _animateTransition();
           } else {
-            setState(() {
-              _showValidator = true;
-              _validatorMessage = widget.validator!(val)!;
-            });
+            _tagController!.setShowValidator = true;
+            _tagController!.showError(widget.validator!(val)!);
           }
         }
       },
       onChanged: (value) {
-        if (_showValidator == false) {
+        if (_tagState!['show_validator'] == false) {
           final containedSeparator = widget.textSeparators!
               .cast<String?>()
               .firstWhere(
@@ -256,33 +264,25 @@ class _TextFieldTagsState extends State<TextFieldTags> {
                     ? splits.elementAt(indexer).trim().toUpperCase()
                     : splits.elementAt(indexer).trim();
 
-            _textEditingController!.clear();
+            TextFieldTagsController.getTextEditingController.clear();
 
             if (widget.validator == null ||
                 widget.validator!(lastLastTag) == null) {
               widget.onTag(lastLastTag);
-              if (!_showPrefixIcon) {
-                setState(() {
-                  _tagsStringContents!.add(lastLastTag);
-                  _showPrefixIcon = true;
-                });
+              if (!_tagState!['show_prefix_icon']) {
+                _tagController!.addTag = lastLastTag;
+                _tagController!.setPrefixIcon = true;
               } else {
-                setState(() {
-                  _tagsStringContents!.add(lastLastTag);
-                });
+                _tagController!.addTag = lastLastTag;
               }
               _animateTransition();
             } else {
-              setState(() {
-                _showValidator = true;
-                _validatorMessage = widget.validator!(lastLastTag)!;
-              });
+              _tagController!.setShowValidator = true;
+              _tagController!.showError(widget.validator!(lastLastTag)!);
             }
           }
         } else {
-          setState(() {
-            _showValidator = false;
-          });
+          _tagController!.setShowValidator = false;
         }
       },
     );

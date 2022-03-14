@@ -31,15 +31,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> _tags;
-  final _textEdintController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
-    _textEdintController.addListener(() {
-      //Here you can listen for the values entered to create a suggestion or other things
-      //print(_textEdintController.text);
-    });
+
     _tags = ['me', 'you'];
   }
 
@@ -56,7 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: TextFieldTags(
-          textEditingController: _textEdintController,
           letterCase: LetterCase.small,
           initialTags: _tags,
           textSeparators: const [' ', '.', ','],

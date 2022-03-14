@@ -238,4 +238,10 @@ class TextFieldTagsController extends ChangeNotifier {
     textEditingController.clear();
     super.notifyListeners();
   }
+
+  ///Dispose of resouses
+  void dispose() {
+    textEditingController.dispose();
+    focusNode.dispose();
+  }
 }
