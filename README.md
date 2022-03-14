@@ -13,11 +13,10 @@ and move on to enter another tag.
 
 ```yaml 
   dependencies:
-      textfield_tags: ^1.4.3
+      textfield_tags: ^1.4.4
 ```
 
 `$ flutter pub get`
-
 
 ## Getting Started
 
@@ -34,69 +33,142 @@ You can investigate the properties of `TagsStyler` and `TextFieldStyler` for mor
 ### When you want to use it, call the `TextFieldTags()` as bellow examples show
 
 ``` dart 
-   TextFieldTags(
-      //double tagsDistanceFromBorderEnd,
-      //EdgeInsets scrollableTagsPadding,
-      //EdgeInsets scrollableTagsMargin,
-      //tagsDistanceFromBorderEnd: 0.725,
-      //scrollableTagsMargin: EdgeInsets.only(left: 9),
-      //scrollableTagsPadding: EdgeInsets.only(left: 9),
-      //letterCase: LetterCase.small
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key key}) : super(key: key);
 
-      //TextEditingController? textEditingController, ---> you can enter your own custom texteditingcontroller to listen for inputs or do other operations.
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-      initialTags: const [],
-      textSeparators: const [' ', '.', ','],
-      textFieldStyler: TextFieldStyler(
-          //These are properties you can tweek for customization
+class _MyHomePageState extends State<MyHomePage> {
+  List<String> _tags;
 
-          // bool textFieldFilled = false,
-          // Icon icon,
-          // String helperText = 'Enter tags',
-          // TextStyle helperStyle,
-          // String hintText = 'Got tags?',
-          // TextStyle hintStyle,
-          // EdgeInsets contentPadding,
-          // Color textFieldFilledColor,
-          // bool isDense = true,
-          // bool textFieldEnabled = true,
-          // InputBorder textFieldBorder,
-          //... 
-          ),
-      tagsStyler: TagsStyler(
-          //These are properties you can tweek for customization
-          
-          // showHashtag = false,
-          // EdgeInsets tagPadding,
-          // EdgeInsets tagMargin,
-          // BoxDecoration tagDecoration,
-          // TextStyle tagTextStyle,
-          // Icon tagCancelIcon,
-          //...
-          ),
-      onTag: (tag) {
-        //This give you the tag that was entered
-        //print(tag)
-      },
+  //final _textEdintController = TextEditingController();
+  final _textFieldTagsController = TextFieldTagsController();
 
-      onDelete: (tag){
-        //This gives you the tag that was deleted
-        //print(tag)
-      },
-      validator: (tag){
-        //Crate custom validations
-        if(tag.length>15){
-          return "hey that's too long";
-        }
-        return null;
-      }
-    )
+  @override
+  void initState() {
+    super.initState();
+
+    //If you want to create some sort of suggestions, listen for everything being entered here
+    TextFieldTagsController.getTextEditingController.addListener(() {
+      TextFieldTagsController.getTextEditingController.text;
+    });
+
+    _tags = ['me', 'you'];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Flutter textfield tags',
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            TextFieldTags(
+              textFieldTagsController: _textFieldTagsController,
+              letterCase: LetterCase.small,
+              initialTags: _tags,
+              textSeparators: const [' ', '.', ','],
+              tagsStyler: TagsStyler(
+                showHashtag: true,
+                tagMargin: const EdgeInsets.only(right: 4.0),
+                tagCancelIcon: const Icon(
+                  Icons.cancel,
+                  size: 15.0,
+                  color: Colors.black,
+                ),
+                tagCancelIconPadding:
+                    const EdgeInsets.only(left: 4.0, top: 2.0),
+                tagPadding: const EdgeInsets.only(
+                  top: 2.0,
+                  bottom: 4.0,
+                  left: 8.0,
+                  right: 4.0,
+                ),
+                tagDecoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey.shade300,
+                  ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                ),
+                tagTextStyle: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+                ),
+              ),
+              textFieldStyler: TextFieldStyler(
+                readOnly: false,
+                hintText: 'Tags',
+                isDense: false,
+                textFieldFocusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 3.0),
+                ),
+                textFieldBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 3.0),
+                ),
+              ),
+              onDelete: (tag) {
+                _tags.remove(tag);
+              },
+              onTag: (tag) {
+                _tags.add(tag);
+              },
+              validator: (String tag) {
+                if (tag.length > 15) {
+                  return 'hey that is too much';
+                } else if (tag.isEmpty) {
+                  return 'enter something';
+                } else if (_textFieldTagsController.getAllTags.contains(tag)) {
+                  return 'you\'ve already entered that';
+                }
+                return null;
+              },
+            ),
+            TextButton(
+              onPressed: () {
+                //Clear the textfield and tags
+                _textFieldTagsController.clearTextFieldTags();
+
+                //Set a new custom error
+                _textFieldTagsController.showError(
+                  "everything cleared?",
+                  errorStyle: const TextStyle(color: Colors.purple),
+                );
+
+                //Set the focus of the textfield if you choose
+                TextFieldTagsController.getFocusNode.unfocus();
+
+                //set all tags
+                _tags = _textFieldTagsController.getAllTags;
+
+                //Submit form
+              },
+              child: const Text('Submit Form'),
+            )
+          ],
+        ),
+      ),
+      // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
 ```
 ## Example giffs
 
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g1.gif" width="300">
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g2.gif" width="300">
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g3.gif" width="300">
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g1.gif" width="300"> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g2.gif" width="300"> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g3.gif" width="300"> 
+
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/g4.gif" width="300">
 
 ## Examples pics
 

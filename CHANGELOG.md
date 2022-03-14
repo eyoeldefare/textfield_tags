@@ -1,3 +1,6 @@
+## [1.4.4] - 3/14/2022
+* Implemented a custom controller to manage the textfield and tags
+
 ## [1.4.3] - 3/7/2022
 * Exposed the controller of the textfield for developers
 * Updated the whole example to use newer version of flutter
