@@ -175,6 +175,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
       keyboardType: widget.textFieldStyler.textInputType,
       readOnly: widget.textFieldStyler.readOnly,
       controller: TextFieldTagsController.getTextEditingController,
+      focusNode: TextFieldTagsController.getFocusNode,
       autocorrect: false,
       cursorColor: widget.textFieldStyler.cursorColor,
       style: widget.textFieldStyler.textStyle,
