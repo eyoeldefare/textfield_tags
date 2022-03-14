@@ -45,6 +45,8 @@ class TagsStyler {
   });
 }
 
+///////////////////////////////////TextFieldStyler Model///////////////////////////////
+
 ///[TextFieldStyler] allows you to design the exact style you want for your textfield by using its properties. It must not be [null]
 class TextFieldStyler {
   /// The color of the decoration inside the textfield
@@ -89,6 +91,9 @@ class TextFieldStyler {
   ///Add keyboard type
   final TextInputType? textInputType;
 
+  ///Add max length for the tags
+  final int? maxLength;
+
   final InputBorder? textFieldBorder;
   final InputBorder? textFieldFocusedBorder;
   final InputBorder? textFieldDisabledBorder;
@@ -98,6 +103,7 @@ class TextFieldStyler {
     this.textFieldFilled = false,
     this.helperText = 'Enter tags',
     this.helperStyle,
+    this.maxLength,
     this.textStyle,
     this.textInputType,
     this.cursorColor,
@@ -115,3 +121,6 @@ class TextFieldStyler {
     this.textFieldEnabledBorder,
   });
 }
+
+
+///////////////////////////////////Controller Model///////////////////////////////

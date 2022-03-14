@@ -161,6 +161,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      maxLength: widget.textFieldStyler.maxLength,
       keyboardType: widget.textFieldStyler.textInputType,
       readOnly: widget.textFieldStyler.readOnly,
       controller: _textEditingController,
