@@ -122,5 +122,120 @@ class TextFieldStyler {
   });
 }
 
-
 ///////////////////////////////////Controller Model///////////////////////////////
+
+///Textfield tags controller
+class TextFieldTagsController extends ChangeNotifier {
+  static final textEditingController = TextEditingController();
+  static final focusNode = FocusNode();
+  late Set<String> tags;
+  late Map<String, dynamic> tagStates;
+
+  TextFieldTagsController()
+      : tags = {},
+        tagStates = {
+          'show_prefix_icon': false,
+          'show_validator': false,
+          'error': {
+            'error_text': '',
+            'error_style': const TextStyle(color: Colors.red),
+          },
+        };
+
+  ///Get the map object of all tag states
+  Map<String, dynamic> get getTagStates {
+    return {
+      'show_validator': tagStates['show_validator'],
+      'show_prefix_icon': tagStates['show_prefix_icon'],
+      'validator_message': tagStates['error']['error_text'],
+      'validator_style': tagStates['error']['error_style'],
+    };
+  }
+
+  ///Get a list of all tags
+  List<String> get getAllTags {
+    return tags.toList();
+  }
+
+  ///Get a set of all tags
+  Set<String> get getSetTags {
+    return tags;
+  }
+
+  ///Get the text controller
+  static TextEditingController get getTextEditingController {
+    return textEditingController;
+  }
+
+  ///Get the text controller focus node
+  static FocusNode get getFocusNode {
+    return focusNode;
+  }
+
+  ///Show prefix icon?
+  bool get showPrefixIcon {
+    return tagStates['show_prefix_icon'];
+  }
+
+  ///Show validator?
+  bool get showValidator {
+    return tagStates['show_validator'];
+  }
+
+  ///Get the error
+  Map<String, dynamic> get getError {
+    return tagStates['error'];
+  }
+
+  //------------------------------SETS-----------------------
+
+  ///Set tags
+  void init(List tags, bool showPrefix) {
+    this.tags = Set.from(tags);
+    tagStates['show_prefix_icon'] = showPrefix;
+    super.notifyListeners();
+  }
+
+  ///Add a tag
+  set addTag(String tag) {
+    tags.add(tag);
+    super.notifyListeners();
+  }
+
+  ///Remove a tag
+  set removeTag(String tag) {
+    tags.remove(tag);
+    super.notifyListeners();
+  }
+
+  ///Set prefix icon
+  set setPrefixIcon(bool showPrefixIcon) {
+    tagStates['show_prefix_icon'] = showPrefixIcon;
+    super.notifyListeners();
+  }
+
+  ///Set show validator
+  set setShowValidator(bool showValidator) {
+    tagStates['show_validator'] = showValidator;
+    super.notifyListeners();
+  }
+
+  ///Set your error message and its style
+  void showError(String errorMessage, {TextStyle? errorStyle}) {
+    tagStates['error']['error_text'] = errorMessage;
+    tagStates['show_validator'] = true;
+    if (errorStyle != null) {
+      tagStates['error']['error_style'] = errorStyle;
+    }
+    super.notifyListeners();
+  }
+
+  ///Clear the tags
+  void clearTextFieldTags() {
+    tags.clear();
+    tagStates['show_prefix_icon'] = tags.isNotEmpty;
+    tagStates['show_validator'] = false;
+    textEditingController.clear();
+    super.notifyListeners();
+  }
+}
