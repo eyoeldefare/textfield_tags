@@ -60,6 +60,7 @@ class _HomeState extends State<Home> {
     'gradle',
     'xml',
     'html',
+    'flutter',
     'css',
     'dockerfile'
   ];

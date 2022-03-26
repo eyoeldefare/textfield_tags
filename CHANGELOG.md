@@ -1,3 +1,8 @@
+## [2.0.0] - 3/26/2022
+* Breaking changes to the overall application that removed static customization for the tags and textfields
+* Added ability to use the `AutoComplete()` widget provided by the flutter API
+* Users can now extend their own custom controller class to use their own implementations
+
 ## [1.4.4] - 3/14/2022
 * Implemented a custom controller to manage the textfield and tags
 
