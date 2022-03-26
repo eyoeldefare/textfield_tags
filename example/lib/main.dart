@@ -13,144 +13,244 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const MyHomePage(),
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: const Home(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  List<String> _tags;
+class _HomeState extends State<Home> {
+  double _distanceToField;
+  TextfieldTagsController _controller;
 
-  //final _textEdintController = TextEditingController();
-  final _textFieldTagsController = TextFieldTagsController();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _distanceToField = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-
-    //If you want to create some sort of suggestions, listen for everything being entered here
-    TextFieldTagsController.getTextEditingController.addListener(() {
-      TextFieldTagsController.getTextEditingController.text;
-    });
-
-    _tags = ['me', 'you'];
+    _controller = TextfieldTagsController();
   }
 
+  static const List<String> _pickLanguage = <String>[
+    'c',
+    'c++',
+    'java',
+    'python',
+    'javascript',
+    'php',
+    'sql',
+    'yaml',
+    'gradle',
+    'xml',
+    'html',
+    'css',
+    'dockerfile'
+  ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Flutter textfield tags',
-          style: TextStyle(color: Colors.black),
+    return MaterialApp(
+      title: "wellcome",
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 74, 137, 92),
+          centerTitle: true,
+          title: const Text('Enter a tag...'),
         ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
+        body: Column(
           children: [
-            TextFieldTags(
-              textFieldTagsController: _textFieldTagsController,
-              letterCase: LetterCase.small,
-              initialTags: _tags,
-              textSeparators: const [' ', '.', ','],
-              tagsStyler: TagsStyler(
-                showHashtag: true,
-                tagMargin: const EdgeInsets.only(right: 4.0),
-                tagCancelIcon: const Icon(
-                  Icons.cancel,
-                  size: 15.0,
-                  color: Colors.black,
-                ),
-                tagCancelIconPadding:
-                    const EdgeInsets.only(left: 4.0, top: 2.0),
-                tagPadding: const EdgeInsets.only(
-                  top: 2.0,
-                  bottom: 4.0,
-                  left: 8.0,
-                  right: 4.0,
-                ),
-                tagDecoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.grey.shade300,
+            Autocomplete<String>(
+              optionsViewBuilder: (context, onSelected, options) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 4.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Material(
+                      elevation: 4.0,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 200),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: options.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final dynamic option = options.elementAt(index);
+                            return TextButton(
+                              onPressed: () {
+                                onSelected(option);
+                              },
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
+                                  child: Text(
+                                    '#$option',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(255, 74, 137, 92),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                ),
-                tagTextStyle: const TextStyle(
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black,
-                ),
-              ),
-              textFieldStyler: TextFieldStyler(
-                readOnly: false,
-                hintText: 'Tags',
-                isDense: false,
-                textFieldFocusedBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 3.0),
-                ),
-                textFieldBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 3.0),
-                ),
-              ),
-              onDelete: (tag) {
-                _tags.remove(tag);
+                );
               },
-              onTag: (tag) {
-                _tags.add(tag);
-              },
-              validator: (String tag) {
-                if (tag.length > 15) {
-                  return 'hey that is too much';
-                } else if (tag.isEmpty) {
-                  return 'enter something';
-                } else if (_textFieldTagsController.getAllTags.contains(tag)) {
-                  return 'you\'ve already entered that';
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                if (textEditingValue.text == '') {
+                  return const Iterable<String>.empty();
                 }
-                return null;
+                return _pickLanguage.where((String option) {
+                  return option.contains(textEditingValue.text.toLowerCase());
+                });
+              },
+              onSelected: (String selectedTag) {
+                _controller.addTag = selectedTag;
+              },
+              fieldViewBuilder: (context, ttec, tfn, onFieldSubmitted) {
+                return TextFieldTags(
+                  textEditingController: ttec,
+                  focusNode: tfn,
+                  textfieldTagsController: _controller,
+                  initialTags: const [
+                    'pick',
+                    'your',
+                    'favorite',
+                    'programming',
+                    'language',
+                  ],
+                  textSeparators: const [' ', ','],
+                  letterCase: LetterCase.normal,
+                  validator: (String tag) {
+                    if (tag == 'php') {
+                      return 'No, please just no';
+                    } else if (_controller.getTags.contains(tag)) {
+                      return 'you already entered that';
+                    }
+                    return null;
+                  },
+                  inputfieldBuilder:
+                      (context, tec, fn, error, onChanged, onSubmitted) {
+                    return ((context, sc, tags, onTagDelete) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: TextField(
+                          controller: tec,
+                          focusNode: fn,
+                          decoration: InputDecoration(
+                            border: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 74, 137, 92),
+                                  width: 3.0),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 74, 137, 92),
+                                  width: 3.0),
+                            ),
+                            helperText: 'Enter language...',
+                            helperStyle: const TextStyle(
+                              color: Color.fromARGB(255, 74, 137, 92),
+                            ),
+                            hintText: _controller.hasTags ? '' : "Enter tag...",
+                            errorText: error,
+                            prefixIconConstraints: BoxConstraints(
+                                maxWidth: _distanceToField * 0.74),
+                            prefixIcon: tags.isNotEmpty
+                                ? SingleChildScrollView(
+                                    controller: sc,
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                        children: tags.map((String tag) {
+                                      return Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0),
+                                          ),
+                                          color:
+                                              Color.fromARGB(255, 74, 137, 92),
+                                        ),
+                                        margin:
+                                            const EdgeInsets.only(right: 10.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 4.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              child: Text(
+                                                '#$tag',
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              onTap: () {
+                                                print("$tag selected");
+                                              },
+                                            ),
+                                            const SizedBox(width: 4.0),
+                                            InkWell(
+                                              child: const Icon(
+                                                Icons.cancel,
+                                                size: 14.0,
+                                                color: Color.fromARGB(
+                                                    255, 233, 233, 233),
+                                              ),
+                                              onTap: () {
+                                                onTagDelete(tag);
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }).toList()),
+                                  )
+                                : null,
+                          ),
+                          onChanged: onChanged,
+                          onSubmitted: onSubmitted,
+                        ),
+                      );
+                    });
+                  },
+                );
               },
             ),
-            TextButton(
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 74, 137, 92),
+                ),
+              ),
               onPressed: () {
-                //Clear the textfield and tags
-                _textFieldTagsController.clearTextFieldTags();
-
-                //Set a new custom error
-                _textFieldTagsController.showError(
-                  "everything cleared?",
-                  errorStyle: const TextStyle(color: Colors.purple),
-                );
-
-                //Set the focus of the textfield if you choose
-                TextFieldTagsController.getFocusNode.unfocus();
-
-                //set all tags
-                _tags = _textFieldTagsController.getAllTags;
-
-                //Submit form
+                _controller.clearTags();
               },
-              child: const Text('Submit Form'),
-            )
+              child: const Text('CLEAR TAGS'),
+            ),
           ],
         ),
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
-
-//Tags eg: university, college, music, math, calculus, computerscience, economics, flutter
