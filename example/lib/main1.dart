@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
                                                 color: Colors.white),
                                           ),
                                           onTap: () {
-                                            print("$tag selected");
+                                            //print("$tag selected");
                                           },
                                         ),
                                         const SizedBox(width: 4.0),

@@ -111,13 +111,15 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
   }
 
   void _onTagOperation(String tag) {
-    textEditingController!.clear();
-    _error = _validator != null ? _validator!(tag) : null;
-    if (!hasError) {
-      super.addTag = tag;
-      scrollTags();
+    if (tag.isNotEmpty) {
+      textEditingController!.clear();
+      _error = _validator != null ? _validator!(tag) : null;
+      if (!hasError) {
+        super.addTag = tag;
+        scrollTags();
+      }
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   @override
