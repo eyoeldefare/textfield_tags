@@ -1,3 +1,6 @@
+## [2.0.0+1] - 5/1/2022
+* Remove the space entered by default when pressing the submit button
+
 ## [2.0.0] - 3/26/2022
 * Breaking changes to the overall application that removed static customization for the tags and textfields
 * Added ability to use the `AutoComplete()` widget provided by the flutter API
