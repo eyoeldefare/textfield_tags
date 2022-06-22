@@ -15,6 +15,7 @@ typedef InputFieldBuilder<T> = TagsBuilder<T> Function(
   void Function(String value)? onChanged,
   void Function(String value)? onSubmitted,
 );
+
 enum LetterCase { normal, small, capital }
 
 abstract class TextfieldTagsNotifier extends ChangeNotifier {
@@ -83,7 +84,7 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
     int speedInMilliseconds = 300,
     double? distance,
   }) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
         if (distance != null) {
           scrollController.animateTo(
