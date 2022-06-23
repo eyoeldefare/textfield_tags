@@ -12,7 +12,7 @@ This widget allows you to create a textfield that takes in Textfield values and 
 
 ```yaml 
   dependencies:
-      textfield_tags: ^2.0.0+1
+      textfield_tags: ^2.0.1
 ```
 
 `$ flutter pub get`

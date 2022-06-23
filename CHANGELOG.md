@@ -1,3 +1,5 @@
+## [2.0.1] - 6/22/2022
+* Remove the space entered by default when pressing the submit button
 ## [2.0.0+1] - 5/1/2022
 * Remove the space entered by default when pressing the submit button
 
