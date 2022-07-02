@@ -84,7 +84,7 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
     int speedInMilliseconds = 300,
     double? distance,
   }) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
         if (distance != null) {
           scrollController.animateTo(
