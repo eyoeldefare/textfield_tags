@@ -67,10 +67,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _tags = _ttc.getTags;
 
     _ttc.addListener(() {
-      setState(() {
-        _error = _ttc.getError;
-        _tags = _ttc.getTags;
-      });
+      if (mounted){
+        setState(() {
+          _error = _ttc.getError;
+          _tags = _ttc.getTags;
+        });
+     }
     });
   }
 
