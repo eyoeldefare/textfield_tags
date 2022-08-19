@@ -23,11 +23,11 @@ abstract class TextfieldTagsNotifier extends ChangeNotifier {
 
   final scrollController = ScrollController();
 
-  late final TextEditingController? textEditingController;
-  late final FocusNode? focusNode;
+  late TextEditingController? textEditingController;
+  late FocusNode? focusNode;
 
-  late final Set<String>? _textSeparators;
-  late final List<String>? _tags;
+  late Set<String>? _textSeparators;
+  late List<String>? _tags;
   List<String>? get getTags => _tags?.toList();
 
   void initS(
@@ -36,31 +36,31 @@ abstract class TextfieldTagsNotifier extends ChangeNotifier {
     FocusNode? fn,
     List<String>? textSeparators,
   ) {
-    _textSeparators = (textSeparators?.toSet() ?? {});
+    _textSeparators = textSeparators?.toSet() ?? {};
     textEditingController = tec ?? TextEditingController();
     focusNode = fn ?? FocusNode();
     _tags = initialTags?.toList() ?? [];
   }
 
   set addTag(String tag) {
-    _tags!.add(tag);
+    _tags?.add(tag);
   }
 
   set removeTag(String tag) {
-    _tags!.remove(tag);
+    _tags?.remove(tag);
   }
 
-  onChanged(String value);
-  onSubmitted(String value);
-  onTagDelete(String tag);
+  void onChanged(String value);
+  void onSubmitted(String value);
+  void onTagDelete(String tag);
 }
 
 class TextfieldTagsController extends TextfieldTagsNotifier {
+  TextfieldTagsController();
+
   LetterCase? _letterCase;
   Validator? _validator;
   String? _error;
-
-  TextfieldTagsController();
 
   void init(
     Validator? validator,
@@ -75,8 +75,8 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
     _validator = validator;
   }
 
-  bool get hasError => _error != null && _error!.isNotEmpty;
-  bool get hasTags => _tags != null && _tags!.isNotEmpty;
+  bool get hasError => _error != null && _error?.isNotEmpty == true;
+  bool get hasTags => _tags != null && _tags?.isNotEmpty == true;
   String? get getError => _error;
 
   void scrollTags({
@@ -113,7 +113,7 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
 
   void _onTagOperation(String tag) {
     if (tag.isNotEmpty) {
-      textEditingController!.clear();
+      textEditingController?.clear();
       _error = _validator != null ? _validator!(tag) : null;
       if (!hasError) {
         super.addTag = tag;
@@ -125,9 +125,9 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
 
   @override
   void onChanged(String value) {
-    final ts = _textSeparators!;
-    final lc = _letterCase!;
-    final separator = ts.cast<String?>().firstWhere(
+    final ts = _textSeparators;
+    final lc = _letterCase;
+    final separator = ts?.cast<String?>().firstWhere(
         (element) => value.contains(element!) && value.indexOf(element) != 0,
         orElse: () => null);
     if (separator != null) {
@@ -171,15 +171,15 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
 
   void clearTags() {
     _error = null;
-    _tags!.clear();
+    _tags?.clear();
     notifyListeners();
   }
 
   @override
   void dispose() {
     super.dispose();
-    textEditingController!.dispose();
-    focusNode!.dispose();
+    textEditingController?.dispose();
+    focusNode?.dispose();
     scrollController.dispose();
   }
 }

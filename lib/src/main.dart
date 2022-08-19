@@ -2,6 +2,18 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 
 class TextFieldTags extends StatefulWidget {
+  const TextFieldTags({
+    required this.inputfieldBuilder,
+    this.validator,
+    this.initialTags,
+    this.textSeparators,
+    this.letterCase,
+    this.textEditingController,
+    this.focusNode,
+    this.textfieldTagsController,
+    Key? key,
+  }) : super(key: key);
+
   ///[validator] allows you to validate the tag that has been entered
   final Validator? validator;
 
@@ -28,23 +40,11 @@ class TextFieldTags extends StatefulWidget {
   ///If no focus node is provider by you, the widget will use its own built in default one.
   final FocusNode? focusNode;
 
-  const TextFieldTags({
-    Key? key,
-    this.validator,
-    this.initialTags,
-    this.textSeparators,
-    this.letterCase,
-    this.textEditingController,
-    this.focusNode,
-    this.textfieldTagsController,
-    required this.inputfieldBuilder,
-  }) : super(key: key);
-
   @override
-  _TextFieldTagsState createState() => _TextFieldTagsState();
+  TextFieldTagsState createState() => TextFieldTagsState();
 }
 
-class _TextFieldTagsState extends State<TextFieldTags> {
+class TextFieldTagsState extends State<TextFieldTags> {
   late List<String>? _tags;
   late String? _error;
   late TextfieldTagsController _ttc;
@@ -61,12 +61,13 @@ class _TextFieldTagsState extends State<TextFieldTags> {
         widget.focusNode,
         widget.textSeparators,
       )
-      ..scrollTags(forward: true);
+      ..scrollTags();
 
     _error = _ttc.getError;
     _tags = _ttc.getTags;
 
     _ttc.addListener(() {
+      if (!mounted) return;
       setState(() {
         _error = _ttc.getError;
         _tags = _ttc.getTags;
@@ -76,6 +77,10 @@ class _TextFieldTagsState extends State<TextFieldTags> {
 
   @override
   Widget build(BuildContext context) {
+    if (_ttc.textEditingController == null || _ttc.focusNode == null) {
+      return const SizedBox();
+    }
+
     final build = widget.inputfieldBuilder(
       context,
       _ttc.textEditingController!,
@@ -86,9 +91,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     )(
       context,
       _ttc.scrollController,
-      _tags!,
+      _tags ?? [],
       _ttc.onTagDelete,
-    );
+    ) as Widget;
     return build;
   }
 }
