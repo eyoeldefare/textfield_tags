@@ -1,5 +1,10 @@
+## [2.0.2] - 9/15/2022
+* Remove final keyword from controller to enable the textseperator and tags texts can be updated and are not final
+* Use mounted key word in the main to check for the state is mounted in tree before update
+
 ## [2.0.1] - 6/22/2022
 * Remove the space entered by default when pressing the submit button
+
 ## [2.0.0+1] - 5/1/2022
 * Remove the space entered by default when pressing the submit button
 

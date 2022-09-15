@@ -28,6 +28,7 @@ abstract class TextfieldTagsNotifier extends ChangeNotifier {
 
   late Set<String>? _textSeparators;
   late List<String>? _tags;
+
   List<String>? get getTags => _tags?.toList();
 
   void initS(

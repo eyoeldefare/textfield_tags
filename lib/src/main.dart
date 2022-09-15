@@ -41,7 +41,7 @@ class TextFieldTags extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TextFieldTagsState createState() => _TextFieldTagsState();
+  createState() => _TextFieldTagsState();
 }
 
 class _TextFieldTagsState extends State<TextFieldTags> {
@@ -67,12 +67,12 @@ class _TextFieldTagsState extends State<TextFieldTags> {
     _tags = _ttc.getTags;
 
     _ttc.addListener(() {
-      if (mounted){
+      if (mounted) {
         setState(() {
           _error = _ttc.getError;
           _tags = _ttc.getTags;
         });
-     }
+      }
     });
   }
 
