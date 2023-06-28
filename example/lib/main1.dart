@@ -74,13 +74,13 @@ class _HomeState extends State<Home> {
                 return null;
               },
               inputFieldBuilder:
-                  (context, textEditingControllerIFB, fn, errorString, onChanged, onSubmitted) {
-                return ((context, sc, tags, onTagDelete) {
+                  (context, textEditingControllerIFB, focusNode, errorString, onChanged, onSubmitted) {
+                return ((context, scrollController, tags, onTagDelete) {
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
                       controller: textEditingControllerIFB,
-                      focusNode: fn,
+                      focusNode: focusNode,
                       decoration: InputDecoration(
                         isDense: true,
                         border: const OutlineInputBorder(
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
                             BoxConstraints(maxWidth: _distanceToField * 0.74),
                         prefixIcon: tags.isNotEmpty
                             ? SingleChildScrollView(
-                                controller: sc,
+                                controller: scrollController,
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                     children: tags.map((String tag) {

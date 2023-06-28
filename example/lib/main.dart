@@ -147,7 +147,7 @@ class _HomeState extends State<Home> {
                   },
                   inputFieldBuilder:
                       (context, textEditingControllerIFB, focusNode, errorString, onChanged, onSubmitted) {
-                    return ((context, sc, tags, onTagDelete) {
+                    return ((context, scrollController, tags, onTagDelete) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: TextField(
@@ -174,7 +174,7 @@ class _HomeState extends State<Home> {
                                 maxWidth: _distanceToField * 0.74),
                             prefixIcon: tags.isNotEmpty
                                 ? SingleChildScrollView(
-                                    controller: sc,
+                                    controller: scrollController,
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
                                         children: tags.map((String tag) {
