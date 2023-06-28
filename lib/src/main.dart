@@ -14,7 +14,7 @@ class TextFieldTags extends StatefulWidget {
   ///Change the letter case of the text entered by user. Default is set to normal letter[LetterCase.normal]
   final LetterCase? letterCase;
 
-  ///Use this to add more custumization and control over the tags and textfield
+  ///Use this to add more customization and control over the tags and textfield
   final TextfieldTagsController? textfieldTagsController;
 
   ///This [InputFieldBuilder] allows you to build your own custom widget

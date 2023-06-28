@@ -67,7 +67,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "wellcome",
+      title: "Welcome",
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 74, 137, 92),
