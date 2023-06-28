@@ -28,7 +28,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   double _distanceToField;
-  TextfieldTagsController _controller;
+  TextfieldTagsController _textFieldTagsController;
 
   @override
   void didChangeDependencies() {
@@ -39,13 +39,13 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _textFieldTagsController.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = TextfieldTagsController();
+    _textFieldTagsController = TextfieldTagsController();
   }
 
   static const List<String> _pickLanguage = <String>[
@@ -127,13 +127,13 @@ class _HomeState extends State<Home> {
                 });
               },
               onSelected: (String selectedTag) {
-                _controller.addTag = selectedTag;
+                _textFieldTagsController.addTag = selectedTag;
               },
-              fieldViewBuilder: (context, ttec, tfn, onFieldSubmitted) {
+              fieldViewBuilder: (context, textEditingController, tfn, onFieldSubmitted) {
                 return TextFieldTags(
-                  textEditingController: ttec,
+                  textEditingController: textEditingController,
                   focusNode: tfn,
-                  textfieldTagsController: _controller,
+                  textfieldTagsController: _textFieldTagsController,
                   initialTags: const [
                     'pick',
                     'your',
@@ -146,19 +146,19 @@ class _HomeState extends State<Home> {
                   validator: (String tag) {
                     if (tag == 'php') {
                       return 'No, please just no';
-                    } else if (_controller.getTags.contains(tag)) {
+                    } else if (_textFieldTagsController.getTags.contains(tag)) {
                       return 'you already entered that';
                     }
                     return null;
                   },
                   inputFieldBuilder:
-                      (context, tec, fn, error, onChanged, onSubmitted) {
+                      (context, textEditingControllerIFB, focusNode, errorString, onChanged, onSubmitted) {
                     return ((context, sc, tags, onTagDelete) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: TextField(
-                          controller: tec,
-                          focusNode: fn,
+                          controller: textEditingControllerIFB,
+                          focusNode: focusNode,
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(
                               borderSide: BorderSide(
@@ -174,8 +174,8 @@ class _HomeState extends State<Home> {
                             helperStyle: const TextStyle(
                               color: Color.fromARGB(255, 74, 137, 92),
                             ),
-                            hintText: _controller.hasTags ? '' : "Enter tag...",
-                            errorText: error,
+                            hintText: _textFieldTagsController.hasTags ? '' : "Enter tag...",
+                            errorText: errorString,
                             prefixIconConstraints: BoxConstraints(
                                 maxWidth: _distanceToField * 0.74),
                             prefixIcon: tags.isNotEmpty
@@ -245,7 +245,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               onPressed: () {
-                _controller.clearTags();
+                _textFieldTagsController.clearTags();
               },
               child: const Text('CLEAR TAGS'),
             ),
