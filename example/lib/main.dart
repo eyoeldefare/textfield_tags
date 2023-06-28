@@ -28,7 +28,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   double _distanceToField;
-  TextfieldTagsController _textFieldTagsController;
+  final TextfieldTagsController _textFieldTagsController = TextfieldTagsController();
 
   @override
   void didChangeDependencies() {
@@ -40,12 +40,6 @@ class _HomeState extends State<Home> {
   void dispose() {
     super.dispose();
     _textFieldTagsController.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _textFieldTagsController = TextfieldTagsController();
   }
 
   static const List<String> _pickLanguage = <String>[
