@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
                 }
                 return null;
               },
-              inputfieldBuilder:
+              inputFieldBuilder:
                   (context, tec, fn, error, onChanged, onSubmitted) {
                 return ((context, sc, tags, onTagDelete) {
                   return Padding(
