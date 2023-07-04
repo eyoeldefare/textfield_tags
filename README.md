@@ -201,9 +201,11 @@ Sample examples will be shown bellow from left to right respectively.
 
 [Example 2](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main.dart)
 
+[Example 3 Multiline](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main2.dart)
+
 ### Visual Samples For Above Examples
 
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_2.gif" width=250>
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_2.gif" width=250>  <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_3.gif" width=250>
 
 ## More Advanced Functionality Via Custom Controller
 
