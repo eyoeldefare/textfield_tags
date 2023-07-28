@@ -178,9 +178,9 @@ class TextfieldTagsController extends TextfieldTagsNotifier {
 
   @override
   void dispose() {
-    super.dispose();
     textEditingController!.dispose();
     focusNode!.dispose();
     scrollController.dispose();
+    super.dispose();
   }
 }
