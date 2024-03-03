@@ -14,11 +14,11 @@ class TextFieldTags extends StatefulWidget {
   ///Change the letter case of the text entered by user. Default is set to normal letter[LetterCase.normal]
   final LetterCase? letterCase;
 
-  ///Use this to add more custumization and control over the tags and textfield
+  ///Use this to add more customization and control over the tags and textfield
   final TextfieldTagsController? textfieldTagsController;
 
   ///This [InputFieldBuilder] allows you to build your own custom widget
-  final InputFieldBuilder inputfieldBuilder;
+  final InputFieldBuilder inputFieldBuilder;
 
   ///Use this to utilize your own [TextEditingController] instance created by you or by other widgets outside of this widget.
   ///If no controller is provider by you, the widget will use its own built in default controller.
@@ -37,7 +37,7 @@ class TextFieldTags extends StatefulWidget {
     this.textEditingController,
     this.focusNode,
     this.textfieldTagsController,
-    required this.inputfieldBuilder,
+    required this.inputFieldBuilder,
   }) : super(key: key);
 
   @override
@@ -78,7 +78,7 @@ class _TextFieldTagsState extends State<TextFieldTags> {
 
   @override
   Widget build(BuildContext context) {
-    final build = widget.inputfieldBuilder(
+    final build = widget.inputFieldBuilder(
       context,
       _ttc.textEditingController!,
       _ttc.focusNode!,

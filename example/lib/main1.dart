@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -20,15 +20,16 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  double _distanceToField;
-  TextfieldTagsController _controller;
+  late double _distanceToField;
+  final TextfieldTagsController _textfieldTagsController =
+      TextfieldTagsController();
 
   @override
   void didChangeDependencies() {
@@ -39,19 +40,13 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextfieldTagsController();
+    _textfieldTagsController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "wellcome",
+      title: "Welcome",
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 74, 137, 92),
@@ -61,7 +56,7 @@ class _HomeState extends State<Home> {
         body: Column(
           children: [
             TextFieldTags(
-              textfieldTagsController: _controller,
+              textfieldTagsController: _textfieldTagsController,
               initialTags: const [
                 'pick',
                 'your',
@@ -74,19 +69,19 @@ class _HomeState extends State<Home> {
               validator: (String tag) {
                 if (tag == 'php') {
                   return 'No, please just no';
-                } else if (_controller.getTags.contains(tag)) {
+                } else if (_textfieldTagsController.getTags!.contains(tag)) {
                   return 'you already entered that';
                 }
                 return null;
               },
-              inputfieldBuilder:
-                  (context, tec, fn, error, onChanged, onSubmitted) {
-                return ((context, sc, tags, onTagDelete) {
+              inputFieldBuilder: (context, textEditingControllerIFB, focusNode,
+                  errorString, onChanged, onSubmitted) {
+                return ((context, scrollController, tags, onTagDelete) {
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
-                      controller: tec,
-                      focusNode: fn,
+                      controller: textEditingControllerIFB,
+                      focusNode: focusNode,
                       decoration: InputDecoration(
                         isDense: true,
                         border: const OutlineInputBorder(
@@ -105,13 +100,15 @@ class _HomeState extends State<Home> {
                         helperStyle: const TextStyle(
                           color: Color.fromARGB(255, 74, 137, 92),
                         ),
-                        hintText: _controller.hasTags ? '' : "Enter tag...",
-                        errorText: error,
+                        hintText: _textfieldTagsController.hasTags
+                            ? ''
+                            : "Enter tag...",
+                        errorText: errorString,
                         prefixIconConstraints:
                             BoxConstraints(maxWidth: _distanceToField * 0.74),
                         prefixIcon: tags.isNotEmpty
                             ? SingleChildScrollView(
-                                controller: sc,
+                                controller: scrollController,
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                     children: tags.map((String tag) {
@@ -173,7 +170,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               onPressed: () {
-                _controller.clearTags();
+                _textfieldTagsController.clearTags();
               },
               child: const Text('CLEAR TAGS'),
             ),
