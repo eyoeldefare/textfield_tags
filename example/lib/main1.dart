@@ -28,8 +28,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late double _distanceToField;
-  final TextfieldTagsController _textfieldTagsController =
-      TextfieldTagsController();
+  late TextfieldTagsController _textfieldTagsController;
 
   @override
   void didChangeDependencies() {
@@ -41,6 +40,12 @@ class _HomeState extends State<Home> {
   void dispose() {
     super.dispose();
     _textfieldTagsController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _textfieldTagsController = TextfieldTagsController();
   }
 
   @override

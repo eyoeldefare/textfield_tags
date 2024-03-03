@@ -28,8 +28,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late double _distanceToField;
-  final TextfieldTagsController _textFieldTagsController =
-      TextfieldTagsController();
+  late TextfieldTagsController _textfieldTagsController;
 
   @override
   void didChangeDependencies() {
@@ -38,9 +37,15 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _textfieldTagsController = TextfieldTagsController();
+  }
+
+  @override
   void dispose() {
     super.dispose();
-    _textFieldTagsController.dispose();
+    _textfieldTagsController.dispose();
   }
 
   static const List<String> _pickLanguage = <String>[
@@ -122,14 +127,14 @@ class _HomeState extends State<Home> {
                 });
               },
               onSelected: (String selectedTag) {
-                _textFieldTagsController.addTag = selectedTag;
+                _textfieldTagsController.addTag = selectedTag;
               },
               fieldViewBuilder:
                   (context, textEditingController, tfn, onFieldSubmitted) {
                 return TextFieldTags(
                   textEditingController: textEditingController,
                   focusNode: tfn,
-                  textfieldTagsController: _textFieldTagsController,
+                  textfieldTagsController: _textfieldTagsController,
                   initialTags: const [
                     'pick',
                     'your',
@@ -142,7 +147,7 @@ class _HomeState extends State<Home> {
                   validator: (String tag) {
                     if (tag == 'php') {
                       return 'No, please just no';
-                    } else if (_textFieldTagsController.getTags!
+                    } else if (_textfieldTagsController.getTags!
                         .contains(tag)) {
                       return 'you already entered that';
                     }
@@ -171,7 +176,7 @@ class _HomeState extends State<Home> {
                             helperStyle: const TextStyle(
                               color: Color.fromARGB(255, 74, 137, 92),
                             ),
-                            hintText: _textFieldTagsController.hasTags
+                            hintText: _textfieldTagsController.hasTags
                                 ? ''
                                 : "Enter tag...",
                             errorText: errorString,
@@ -244,7 +249,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               onPressed: () {
-                _textFieldTagsController.clearTags();
+                _textfieldTagsController.clearTags();
               },
               child: const Text('CLEAR TAGS'),
             ),
