@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -20,15 +20,16 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  double _distanceToField;
-  final TextfieldTagsController _textfieldTagsController = TextfieldTagsController();
+  late double _distanceToField;
+  final TextfieldTagsController _textfieldTagsController =
+      TextfieldTagsController();
 
   @override
   void didChangeDependencies() {
@@ -68,13 +69,13 @@ class _HomeState extends State<Home> {
               validator: (String tag) {
                 if (tag == 'php') {
                   return 'No, please just no';
-                } else if (_textfieldTagsController.getTags.contains(tag)) {
+                } else if (_textfieldTagsController.getTags!.contains(tag)) {
                   return 'you already entered that';
                 }
                 return null;
               },
-              inputFieldBuilder:
-                  (context, textEditingControllerIFB, focusNode, errorString, onChanged, onSubmitted) {
+              inputFieldBuilder: (context, textEditingControllerIFB, focusNode,
+                  errorString, onChanged, onSubmitted) {
                 return ((context, scrollController, tags, onTagDelete) {
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -99,7 +100,9 @@ class _HomeState extends State<Home> {
                         helperStyle: const TextStyle(
                           color: Color.fromARGB(255, 74, 137, 92),
                         ),
-                        hintText: _textfieldTagsController.hasTags ? '' : "Enter tag...",
+                        hintText: _textfieldTagsController.hasTags
+                            ? ''
+                            : "Enter tag...",
                         errorText: errorString,
                         prefixIconConstraints:
                             BoxConstraints(maxWidth: _distanceToField * 0.74),
