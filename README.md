@@ -12,7 +12,7 @@ This widget allows you to create a textfield that takes in Textfield values and 
 
 ```yaml 
   dependencies:
-      textfield_tags: ^2.1.0+2
+      textfield_tags: ^2.1.1
 ```
 
 `$ flutter pub get`
@@ -262,8 +262,8 @@ tag picker that selects numbers between 2 and 10 with the exception of number 8.
   }
 }
 
-  final _myCustomController = MyCustomController();
-  TextFieldTags(textfieldController: _myCustomController);
+  final _myCustomController = MyCustomController<int>();
+  TextFieldTags<int>(textfieldController: _myCustomController);
 ```
 
 [See Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main3.dart)
