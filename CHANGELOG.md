@@ -1,3 +1,8 @@
+## [2.1.0+1] - 3/5/2024
+* Update documentations
+* Formatting
+* Up the the max declared SDK constraint to 4.0.0
+
 ## [2.1.0] - 3/5/2024
 * Migration to sound and unsound null safety
 * Require min sdk 2.12.0
