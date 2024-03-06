@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'controller.dart';
 
-class TextFieldTags extends StatefulWidget {
+class TextFieldTags<T> extends StatefulWidget {
   ///[validator] allows you to validate the tag that has been entered
-  final Validator? validator;
+  final Validator<T>? validator;
 
   ///[initialTags] are optional initial tags that show up on the text field. Default is set to empty list.
-  final List<String>? initialTags;
+  final List<T>? initialTags;
 
   ///Enter optional String separators to split the tags. Default is set to [","," "]
   final List<String>? textSeparators;
@@ -15,10 +15,11 @@ class TextFieldTags extends StatefulWidget {
   final LetterCase? letterCase;
 
   ///Use this to add more customization and control over the tags and textfield
-  final TextfieldTagsController? textfieldTagsController;
+  final TextfieldTagsController<T>? textfieldTagsController;
 
   ///This [InputFieldBuilder] allows you to build your own custom widget
-  final InputFieldBuilder inputFieldBuilder;
+  // final InputFieldBuilder? inputFieldBuilder;
+  final TextFieldTagsBuilder<T> textFieldTagsBuilder;
 
   ///Use this to utilize your own [TextEditingController] instance created by you or by other widgets outside of this widget.
   ///If no controller is provider by you, the widget will use its own built in default controller.
@@ -28,49 +29,72 @@ class TextFieldTags extends StatefulWidget {
   ///If no focus node is provider by you, the widget will use its own built in default one.
   final FocusNode? focusNode;
 
+  ///Use this to utilize your own [ScrollController] instance created by you or by other widgets outside of this widget.
+  ///If no scroll controller is provider, the widget will use a default one.
+  final ScrollController? scrollController;
+
   const TextFieldTags({
     Key? key,
     this.validator,
     this.initialTags,
     this.textSeparators,
     this.letterCase,
+    this.textfieldTagsController,
     this.textEditingController,
     this.focusNode,
-    this.textfieldTagsController,
-    required this.inputFieldBuilder,
+    this.scrollController,
+    required this.textFieldTagsBuilder,
   }) : super(key: key);
 
   @override
-  createState() => _TextFieldTagsState();
+  createState() => _TextFieldTagsState<T>();
 }
 
-class _TextFieldTagsState extends State<TextFieldTags> {
-  late List<String>? _tags;
-  late String? _error;
-  late TextfieldTagsController _ttc;
+class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
+  late TextfieldTagsController<T> _ttc;
+  late TextFieldTagValues<T> _ttv;
 
   @override
   void initState() {
     super.initState();
-    _ttc = (widget.textfieldTagsController ?? TextfieldTagsController())
-      ..init(
+    if (widget.textfieldTagsController != null) {
+      _ttc = widget.textfieldTagsController!;
+      _ttc.registerController(
+        widget.initialTags,
+        widget.textSeparators,
+        widget.letterCase,
+        widget.validator,
+        widget.focusNode,
+        widget.textEditingController,
+        widget.scrollController,
+      );
+    } else {
+      _ttc = TextfieldTagsController.icr(
+        widget.initialTags,
+        widget.textSeparators,
         widget.validator,
         widget.letterCase,
-        widget.initialTags,
-        widget.textEditingController,
         widget.focusNode,
-        widget.textSeparators,
-      )
-      ..scrollTags(forward: true);
-
-    _error = _ttc.getError;
-    _tags = _ttc.getTags;
-
+        widget.textEditingController,
+        widget.scrollController,
+      );
+    }
+    _ttv = TextFieldTagValues(
+      onChanged: _ttc.onChanged,
+      onSubmitted: _ttc.onSubmitted,
+      onTagDelete: _ttc.onTagDelete,
+      tags: _ttc.getTags!,
+      error: _ttc.getError,
+      tagScrollController: _ttc.getScrollController!,
+      textEditingController: _ttc.getTextEditingController!,
+      focusNode: _ttc.getFocusNode!,
+    );
+    _ttc.scrollTags();
     _ttc.addListener(() {
       if (mounted) {
         setState(() {
-          _error = _ttc.getError;
-          _tags = _ttc.getTags;
+          _ttv.error = _ttc.getError;
+          _ttv.tags = _ttc.getTags!;
         });
       }
     });
@@ -78,18 +102,9 @@ class _TextFieldTagsState extends State<TextFieldTags> {
 
   @override
   Widget build(BuildContext context) {
-    final build = widget.inputFieldBuilder(
+    final build = widget.textFieldTagsBuilder(
       context,
-      _ttc.textEditingController!,
-      _ttc.focusNode!,
-      _error,
-      _ttc.onChanged,
-      _ttc.onSubmitted,
-    )(
-      context,
-      _ttc.scrollController,
-      _tags!,
-      _ttc.onTagDelete,
+      _ttv,
     );
     return build;
   }
