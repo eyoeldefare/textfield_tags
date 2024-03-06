@@ -81,15 +81,6 @@ abstract class TextfieldTagsNotifier<T> extends ChangeNotifier {
     return null;
   }
 
-  bool? updateTag(T tag) {
-    if (_tags != null) {
-      int index = _tags!.indexOf(tag);
-      _tags![index] = tag;
-      return true;
-    }
-    return null;
-  }
-
   bool? clearTags() {
     if (_tags != null) {
       _tags!.clear();
@@ -195,9 +186,9 @@ class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
     ScrollController? scrollController,
   ) {
     assert(
-      (_tags == null ||
-          _textSeparators == null ||
-          _letterCase == null ||
+      (_tags == null &&
+          _textSeparators == null &&
+          _letterCase == null &&
           _validator == null),
       'You\'ve already registered a tag controller',
     );

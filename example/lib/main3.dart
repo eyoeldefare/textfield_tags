@@ -182,6 +182,16 @@ class MyCustomController<T> extends TextfieldTagsController<T> {
   }
 
   @override
+  void onTagDelete(T tag) {
+    bool? removed = removeTag(tag);
+    if (removed == true) {
+      setError = null;
+    } else {
+      setError = 'Failed to delete number tag';
+    }
+  }
+
+  @override
   set setError(String? error) {
     super.setError = error;
     getTextEditingController?.clear();

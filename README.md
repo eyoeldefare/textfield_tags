@@ -12,7 +12,7 @@ This widget allows you to create a textfield that takes in Textfield values and 
 
 ```yaml 
   dependencies:
-      textfield_tags: ^2.1.0+1
+      textfield_tags: ^2.1.0+2
 ```
 
 `$ flutter pub get`
@@ -236,6 +236,16 @@ tag picker that selects numbers between 2 and 10 with the exception of number 8.
       } else {
         setError = 'Must enter numbers greater than 2 and less than 10';
       }
+    }
+  }
+
+  @override
+  void onTagDelete(T tag) {
+    bool? removed = removeTag(tag);
+    if (removed == true) {
+      setError = null;
+    } else {
+      setError = 'Failed to delete number tag';
     }
   }
 
