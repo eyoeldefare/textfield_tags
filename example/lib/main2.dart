@@ -79,12 +79,12 @@ class _HomeState extends State<Home> {
                 }
                 return null;
               },
-              textFieldTagsBuilder: (context, textFieldTagValues) {
+              inputFieldBuilder: (context, inputFieldValues) {
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: TextField(
-                    controller: textFieldTagValues.textEditingController,
-                    focusNode: textFieldTagValues.focusNode,
+                    controller: inputFieldValues.textEditingController,
+                    focusNode: inputFieldValues.focusNode,
                     decoration: InputDecoration(
                       isDense: true,
                       border: const OutlineInputBorder(
@@ -103,23 +103,22 @@ class _HomeState extends State<Home> {
                       helperStyle: const TextStyle(
                         color: Color.fromARGB(255, 74, 137, 92),
                       ),
-                      hintText: textFieldTagValues.tags.isNotEmpty
+                      hintText: inputFieldValues.tags.isNotEmpty
                           ? ''
                           : "Enter tag...",
-                      errorText: textFieldTagValues.error,
+                      errorText: inputFieldValues.error,
                       prefixIconConstraints:
                           BoxConstraints(maxWidth: _distanceToField * 0.85),
-                      prefixIcon: textFieldTagValues.tags.isNotEmpty
+                      prefixIcon: inputFieldValues.tags.isNotEmpty
                           ? SingleChildScrollView(
-                              controller:
-                                  textFieldTagValues.tagScrollController,
+                              controller: inputFieldValues.tagScrollController,
                               scrollDirection: Axis.vertical,
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: Wrap(
                                   runSpacing: 7.0,
                                   children:
-                                      textFieldTagValues.tags.map((String tag) {
+                                      inputFieldValues.tags.map((String tag) {
                                     return Container(
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(
@@ -155,8 +154,7 @@ class _HomeState extends State<Home> {
                                                   255, 233, 233, 233),
                                             ),
                                             onTap: () {
-                                              textFieldTagValues
-                                                  .onTagDelete(tag);
+                                              inputFieldValues.onTagDelete(tag);
                                             },
                                           )
                                         ],
@@ -166,8 +164,8 @@ class _HomeState extends State<Home> {
                             )
                           : null,
                     ),
-                    onChanged: textFieldTagValues.onChanged,
-                    onSubmitted: textFieldTagValues.onSubmitted,
+                    onChanged: inputFieldValues.onChanged,
+                    onSubmitted: inputFieldValues.onSubmitted,
                   ),
                 );
               },

@@ -19,7 +19,7 @@ class TextFieldTags<T> extends StatefulWidget {
 
   ///This [InputFieldBuilder] allows you to build your own custom widget
   // final InputFieldBuilder? inputFieldBuilder;
-  final TextFieldTagsBuilder<T> textFieldTagsBuilder;
+  final InputFieldBuilder<T> inputFieldBuilder;
 
   ///Use this to utilize your own [TextEditingController] instance created by you or by other widgets outside of this widget.
   ///If no controller is provider by you, the widget will use its own built in default controller.
@@ -43,7 +43,7 @@ class TextFieldTags<T> extends StatefulWidget {
     this.textEditingController,
     this.focusNode,
     this.scrollController,
-    required this.textFieldTagsBuilder,
+    required this.inputFieldBuilder,
   }) : super(key: key);
 
   @override
@@ -52,7 +52,7 @@ class TextFieldTags<T> extends StatefulWidget {
 
 class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
   late TextfieldTagsController<T> _ttc;
-  late TextFieldTagValues<T> _ttv;
+  late InputFieldValues<T> _ttv;
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
         widget.scrollController,
       );
     }
-    _ttv = TextFieldTagValues(
+    _ttv = InputFieldValues(
       onChanged: _ttc.onChanged,
       onSubmitted: _ttc.onSubmitted,
       onTagDelete: _ttc.onTagDelete,
@@ -102,7 +102,7 @@ class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final build = widget.textFieldTagsBuilder(
+    final build = widget.inputFieldBuilder(
       context,
       _ttv,
     );

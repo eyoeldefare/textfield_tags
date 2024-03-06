@@ -1,3 +1,13 @@
+## [2.1.0] - 3/5/2024
+* Migration to sound and unsound null safety
+* Require min sdk 2.12.0
+* Provide example for multiline support in the text field
+* Provide type options for tags (if anyone wants it for any reason)
+* Fix issue #56 which is causes by calling dispose on outside instances
+* Add an optional entry for scroll controller for users to manage the scroller themselves
+* Provide a cleaner text field tags builder method
+* Add additional example for custom controllers
+
 ## [2.0.2] - 9/15/2022
 * Remove final keyword from controller to enable the textseperator and tags texts can be updated and are not final
 * Use mounted key word in the main to check for the state is mounted in tree before update

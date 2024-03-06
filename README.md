@@ -12,7 +12,7 @@ This widget allows you to create a textfield that takes in Textfield values and 
 
 ```yaml 
   dependencies:
-      textfield_tags: ^2.0.2
+      textfield_tags: ^2.1.0
 ```
 
 `$ flutter pub get`
@@ -25,10 +25,12 @@ To start using this widget, you will need to first import the package inside you
 
 To use this widget, 
 1. `import 'package:textfield_tags/textfield_tags.dart';` inside your dart file
-2. Call the widget `TextFieldTags()`. 
-3. The widget takes in 8 arguments: `List<String>? initialTags`, `FocusNode? focusNode`, `TextEditingController? textEditingController`, `List<String>? textSeperators`, `LetterCase? letterCase`, `Validator? validator`, `InputFieldBuilder inputfieldBuilder`, `TextfieldTagsController? textfieldController`. Read the api documentation about these properties for more details.
+2. Call the widget `TextFieldTags<String>(...)`. 
+3. The widget takes in 9 arguments: `List<String>? initialTags`, 
+`ScrollController? scrollController`,
+`FocusNode? focusNode`, `TextEditingController? textEditingController`, `List<String>? textSeperators`, `LetterCase? letterCase`, `Validator? validator`, `InputFieldBuilder inputfieldBuilder`, `TextfieldTagsController? textfieldController`. Read the api documentation about these properties for more details.
 
-### When you want to use it, call the `TextFieldTags()` as bellow examples show
+### When you want to use it, call the `TextFieldTags<String>(...)` as the bellow examples shows
 
 ``` dart 
 class Home extends StatefulWidget {
@@ -85,91 +87,89 @@ class _HomeState extends State<Home> {
                 }
                 return null;
               },
-              inputFieldBuilder:
-                  (context, textEditingController, focusNode, errorString, onChanged, onSubmitted) {
-                return ((context, sc, tags, onTagDelete) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: textEditingController,
-                      focusNode: focusNode,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide(
+              inputFieldBuilder: (context, inputFieldValues) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: TextField(
+                    controller: inputFieldValues.textEditingController,
+                    focusNode: inputFieldValues.focusNode,
+                    decoration: InputDecoration(
+                      border: const UnderlineInputBorder(
+                        borderSide: BorderSide(
                             color: Color.fromARGB(255, 74, 137, 92),
-                            width: 3.0,
-                          ),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 74, 137, 92),
-                            width: 3.0,
-                          ),
-                        ),
-                        helperText: 'Enter language...',
-                        helperStyle: const TextStyle(
-                          color: Color.fromARGB(255, 74, 137, 92),
-                        ),
-                        hintText: _textfieldTagsController.hasTags ? '' : "Enter tag...",
-                        errorText: errorString,
-                        prefixIconConstraints:
-                            BoxConstraints(maxWidth: _distanceToField * 0.74),
-                        prefixIcon: tags.isNotEmpty
-                            ? SingleChildScrollView(
-                                controller: sc,
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                    children: tags.map((String tag) {
-                                  return Container(
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20.0),
-                                      ),
-                                      color: Color.fromARGB(255, 74, 137, 92),
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 5.0),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0, vertical: 5.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        InkWell(
-                                          child: Text(
-                                            '#$tag',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
-                                          onTap: () {
-                                            print("$tag selected");
-                                          },
-                                        ),
-                                        const SizedBox(width: 4.0),
-                                        InkWell(
-                                          child: const Icon(
-                                            Icons.cancel,
-                                            size: 14.0,
-                                            color: Color.fromARGB(
-                                                255, 233, 233, 233),
-                                          ),
-                                          onTap: () {
-                                            onTagDelete(tag);
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }).toList()),
-                              )
-                            : null,
+                            width: 3.0),
                       ),
-                      onChanged: onChanged,
-                      onSubmitted: onSubmitted,
-                    ),
-                  );
-                });
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 74, 137, 92),
+                            width: 3.0),
+                      ),
+                      helperText: 'Enter language...',
+                      helperStyle: const TextStyle(
+                        color: Color.fromARGB(255, 74, 137, 92),
+                      ),
+                      hintText: inputFieldValues.tags.isNotEmpty
+                          ? ''
+                          : "Enter tag...",
+                      errorText: inputFieldValues.error,
+                      prefixIconConstraints:
+                          BoxConstraints(maxWidth: _distanceToField * 0.74),
+                      prefixIcon: inputFieldValues.tags.isNotEmpty
+                          ? SingleChildScrollView(
+                              controller:
+                                  inputFieldValues.tagScrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                  children: inputFieldValues.tags
+                                      .map((String tag) {
+                                return Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.0),
+                                    ),
+                                    color: Color.fromARGB(255, 74, 137, 92),
+                                  ),
+                                  margin:
+                                      const EdgeInsets.only(right: 10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 4.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                        child: Text(
+                                          '#$tag',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        onTap: () {
+                                          //print("$tag selected");
+                                        },
+                                      ),
+                                      const SizedBox(width: 4.0),
+                                      InkWell(
+                                        child: const Icon(
+                                          Icons.cancel,
+                                          size: 14.0,
+                                          color: Color.fromARGB(
+                                              255, 233, 233, 233),
+                                        ),
+                                        onTap: () {
+                                          inputFieldValues.onTagDelete(tag);
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }).toList()),
+                            )
+                          : null,
+                    ),    
+                    onChanged: inputFieldValues.onChanged,
+                    onSubmitted: inputFieldValues.onSubmitted,
+                  ),
+                );
               },
             ),
             ElevatedButton(
@@ -203,38 +203,54 @@ Sample examples will be shown bellow from left to right respectively.
 
 [Example 3 Multiline](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main2.dart)
 
+[Example 4 Custom Controller](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main3.dart)
+
 ### Visual Samples For Above Examples
 
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_2.gif" width=250>  <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_3.gif" width=250>
 
 ## More Advanced Functionality Via Custom Controller
 
-If you feel like you want more functionality than what is offered from the default controller that comes with this widget, you can easily extend the controller's class to your own custom class and inherit all its functionality and add your own stuffs as bellow example shows.
+If you feel like you want more functionality than what is offered by the default controller that comes with this widget, you can easily extend the controller's class to your own custom class and inherit all its functionality and add your own stuffs as bellow example shows.
+
+The bellow example shows you how you can use a numbers
+tag picker that selects numbers between 2 and 10 with the exception of number 8.
 
 ### Example:
 
 ``` dart
   // Create my own custom controller
-  class MyCustomController extends TextfieldTagsController {
-      MyCustomController() : super();
+ class MyCustomController<T> extends  TextfieldTagsController<T> {
+  @override
+  void onSubmitted(T value) {
+    if (value is int) {
+      String? validate = getValidator != null ? getValidator!(value) : null;
+      if (validate == null && value > 2 && value < 10) {
+        bool? addTag = super.addTag(value);
+        if (addTag == true) {
+          setError = null;
+          scrollTags();
+        }
+      } else if (validate != null) {
+        setError = validate;
+      } else {
+        setError = 'Must enter numbers greater than 2 and less than 10';
+      }
+    }
+  }
 
-      //create your own methods
-      void myCustomMethod(){
-      }
-     
-      //override the super class method
-      @override
-        set addTag(String tag) {
-          if(tag!='php'){
-            super.addTag = tag;
-            notifyListeners();
-          }else{
-            _error= '?';
-          }
-      }
-      
-      //....
- }
+  @override
+  set setError(String? error) {
+    super.setError = error;
+    getTextEditingController?.clear();
+    getFocusNode?.requestFocus();
+    notifyListeners();
+  }
+
+  doOtherThings(){
+    ...
+  }
+}
 
   final _myCustomController = MyCustomController();
   TextFieldTags(textfieldController: _myCustomController);

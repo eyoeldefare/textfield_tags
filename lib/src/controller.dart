@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 typedef Validator<T> = String? Function(T tag);
-typedef TextFieldTagsBuilder<T> = Widget Function(
+typedef InputFieldBuilder<T> = Widget Function(
   BuildContext context,
-  TextFieldTagValues<T> textFieldTagValues,
+  InputFieldValues<T> textFieldTagValues,
 );
 
 enum LetterCase { normal, small, capital }
@@ -14,7 +14,7 @@ class ObjIder<O> {
   const ObjIder(this.object, this.origin);
 }
 
-class TextFieldTagValues<T> {
+class InputFieldValues<T> {
   final void Function(T tag) onChanged;
   final void Function(T tag) onSubmitted;
   final void Function(T tag) onTagDelete;
@@ -24,7 +24,7 @@ class TextFieldTagValues<T> {
   List<T> tags;
   String? error;
 
-  TextFieldTagValues({
+  InputFieldValues({
     required this.textEditingController,
     required this.focusNode,
     required this.error,
@@ -122,7 +122,7 @@ class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
   late int _tagScrollAnimationSpeedInMs;
   late String? _error;
   static Function throwTypeError() => throw Exception(
-      'This controller only supports String tags for tags. Feel free to extend class for other types for any reason');
+      'This default controller is designed for String tags. See example (main3.dart) file to see how to use other custom types');
 
   TextfieldTagsController()
       : _tagScrollAnimationSpeedInMs = 300,
@@ -156,14 +156,21 @@ class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
 
   List<T>? get getTags => _tags?.toList();
   String? get getError => _error;
+  int get getTagScrollAnimationSpeedInMs => _tagScrollAnimationSpeedInMs;
+  LetterCase? get getLetterCase => _letterCase;
+  Set<String>? get getTextSeparators => _textSeparators;
+  Validator<T>? get getValidator => _validator;
   ScrollController? get getScrollController => _scrollController?.object;
   FocusNode? get getFocusNode => _focusNode?.object;
   TextEditingController? get getTextEditingController =>
       _textEditingController?.object;
-  int get tagScrollAnimationSpeedInMs => _tagScrollAnimationSpeedInMs;
 
   set setTagScrollAnimationSpeedInMs(int tsas) {
     _tagScrollAnimationSpeedInMs = tsas;
+  }
+
+  set setError(String? error) {
+    _error = error;
   }
 
   void scrollTags() {
@@ -171,7 +178,7 @@ class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
       if (_scrollController != null && _scrollController!.object.hasClients) {
         _scrollController!.object.animateTo(
           _scrollController!.object.position.maxScrollExtent,
-          duration: Duration(milliseconds: tagScrollAnimationSpeedInMs),
+          duration: Duration(milliseconds: _tagScrollAnimationSpeedInMs),
           curve: Curves.linear,
         );
       }

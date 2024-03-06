@@ -153,12 +153,12 @@ class _HomeState extends State<Home> {
                     }
                     return null;
                   },
-                  textFieldTagsBuilder: (context, textFieldTagValues) {
+                  inputFieldBuilder: (context, inputFieldValues) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: TextField(
-                        controller: textFieldTagValues.textEditingController,
-                        focusNode: textFieldTagValues.focusNode,
+                        controller: inputFieldValues.textEditingController,
+                        focusNode: inputFieldValues.focusNode,
                         decoration: InputDecoration(
                           border: const UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -174,19 +174,19 @@ class _HomeState extends State<Home> {
                           helperStyle: const TextStyle(
                             color: Color.fromARGB(255, 74, 137, 92),
                           ),
-                          hintText: textFieldTagValues.tags.isNotEmpty
+                          hintText: inputFieldValues.tags.isNotEmpty
                               ? ''
                               : "Enter tag...",
-                          errorText: textFieldTagValues.error,
+                          errorText: inputFieldValues.error,
                           prefixIconConstraints:
                               BoxConstraints(maxWidth: _distanceToField * 0.74),
-                          prefixIcon: textFieldTagValues.tags.isNotEmpty
+                          prefixIcon: inputFieldValues.tags.isNotEmpty
                               ? SingleChildScrollView(
                                   controller:
-                                      textFieldTagValues.tagScrollController,
+                                      inputFieldValues.tagScrollController,
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
-                                      children: textFieldTagValues.tags
+                                      children: inputFieldValues.tags
                                           .map((String tag) {
                                     return Container(
                                       decoration: const BoxDecoration(
@@ -222,8 +222,7 @@ class _HomeState extends State<Home> {
                                                   255, 233, 233, 233),
                                             ),
                                             onTap: () {
-                                              textFieldTagValues
-                                                  .onTagDelete(tag);
+                                              inputFieldValues.onTagDelete(tag);
                                             },
                                           )
                                         ],
@@ -233,8 +232,8 @@ class _HomeState extends State<Home> {
                                 )
                               : null,
                         ),
-                        onChanged: textFieldTagValues.onChanged,
-                        onSubmitted: textFieldTagValues.onSubmitted,
+                        onChanged: inputFieldValues.onChanged,
+                        onSubmitted: inputFieldValues.onSubmitted,
                       ),
                     );
                   },
