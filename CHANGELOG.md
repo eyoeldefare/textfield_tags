@@ -1,3 +1,6 @@
+## [2.1.1] - 3/5/2024
+* Release v2.1.1
+
 ## [2.1.0+2] - 3/5/2024
 * Update documentation to show a more complete example for custom controller
 * Fix assertion typo
