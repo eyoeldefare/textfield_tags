@@ -28,7 +28,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late double _distanceToField;
-  late TextfieldTagsController<String> _textfieldTagsController;
+  late StringTagController _stringTagController;
 
   @override
   void didChangeDependencies() {
@@ -39,13 +39,13 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     super.dispose();
-    _textfieldTagsController.dispose();
+    _stringTagController.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _textfieldTagsController = TextfieldTagsController();
+    _stringTagController = StringTagController();
   }
 
   @override
@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
         body: Column(
           children: [
             TextFieldTags<String>(
-              textfieldTagsController: _textfieldTagsController,
+              textfieldTagsController: _stringTagController,
               initialTags: const [
                 'yaml',
                 'gradle',
@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
               validator: (String tag) {
                 if (tag == 'php') {
                   return 'No, please just no';
-                } else if (_textfieldTagsController.getTags!.contains(tag)) {
+                } else if (_stringTagController.getTags!.contains(tag)) {
                   return 'You\'ve already entered that';
                 }
                 return null;
@@ -99,13 +99,13 @@ class _HomeState extends State<Home> {
                           width: 3.0,
                         ),
                       ),
-                      helperText: 'Enter language...',
+                      helperText: 'Enter a language...',
                       helperStyle: const TextStyle(
                         color: Color.fromARGB(255, 74, 137, 92),
                       ),
                       hintText: inputFieldValues.tags.isNotEmpty
                           ? ''
-                          : "Enter tag...",
+                          : "Enter a language...",
                       errorText: inputFieldValues.error,
                       prefixIconConstraints:
                           BoxConstraints(maxWidth: _distanceToField * 0.85),
@@ -178,9 +178,12 @@ class _HomeState extends State<Home> {
                 ),
               ),
               onPressed: () {
-                _textfieldTagsController.clearTags();
+                _stringTagController.clearTags();
               },
-              child: const Text('CLEAR TAGS'),
+              child: const Text(
+                'CLEAR TAGS',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

@@ -50,12 +50,15 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Welcome to Numbers",
+      title: "Custom Type Tag Demo",
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 74, 137, 92),
           centerTitle: true,
-          title: const Text('Enter a number...'),
+          title: const Text(
+            'Custom Type Tag Demo',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -85,12 +88,12 @@ class _HomeState extends State<Home> {
                       borderSide: BorderSide(
                           color: Color.fromARGB(255, 74, 137, 92), width: 3.0),
                     ),
-                    helperText: 'Enter language...',
+                    helperText: 'Enter a number...',
                     helperStyle: const TextStyle(
                       color: Color.fromARGB(255, 74, 137, 92),
                     ),
                     hintText:
-                        inputFieldValues.tags.isNotEmpty ? '' : "Enter tag...",
+                        inputFieldValues.tags.isNotEmpty ? '' : "Enter num...",
                     errorText: inputFieldValues.error,
                     prefixIconConstraints:
                         BoxConstraints(maxWidth: _distanceToField * 0.74),
@@ -119,7 +122,8 @@ class _HomeState extends State<Home> {
                                       child: Text(
                                         '#$tagData',
                                         style: const TextStyle(
-                                            color: Colors.white),
+                                          color: Colors.white,
+                                        ),
                                       ),
                                       onTap: () {
                                         //print("$tag selected");
@@ -166,6 +170,8 @@ class MyIntTagController<T extends int> extends TextfieldTagsController<T> {
   @override
   bool? onTagSubmitted(T tag) {
     String? validate = getValidator != null ? getValidator!(tag) : null;
+    getTextEditingController?.clear();
+    getFocusNode?.requestFocus();
     if (validate == null && tag > 2 && tag < 10) {
       bool? addTag = super.addTag(tag);
       if (addTag == true) {
@@ -173,16 +179,19 @@ class MyIntTagController<T extends int> extends TextfieldTagsController<T> {
         scrollTags();
       }
     } else if (validate != null) {
-      setError = validate;
+      super.setError = validate;
     } else {
-      setError = 'Must enter numbers between 2 and 10';
+      super.setError = 'Must enter numbers between 2 and 10';
     }
+    notifyListeners();
     return null;
   }
 
   @override
   set setError(String? error) {
     super.setError = error;
+    getTextEditingController?.clear();
+    getFocusNode?.requestFocus();
     notifyListeners();
   }
 }

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'String Type Tag Demo',
+      title: 'String Type Demo',
       theme: ThemeData(primarySwatch: Colors.green),
       home: const Home(),
     );
@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _stringTagController = StringTagController<String>();
+    _stringTagController = StringTagController();
   }
 
   @override
@@ -67,12 +67,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Welcome",
+      title: "String Type Demo",
       home: Scaffold(
         appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 74, 137, 92),
             centerTitle: true,
-            title: const Text('String Type Tag Demo...',
+            title: const Text('String Type Demo...',
                 style: TextStyle(color: Colors.white))),
         body: Column(
           children: [
@@ -246,7 +246,10 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 _stringTagController.clearTags();
               },
-              child: const Text('CLEAR TAGS'),
+              child: const Text(
+                'CLEAR TAGS',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

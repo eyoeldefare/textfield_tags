@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TagData Type Tag Demo',
+      title: 'TagData Type Demo',
       theme: ThemeData(primarySwatch: Colors.green),
       home: const Home(),
     );
@@ -59,13 +59,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Welcome To Zootopia",
+      title: "TagData Type Demo",
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 74, 137, 92),
           centerTitle: true,
           title: const Text(
-            'TagData Type Example...',
+            'TagData Type Demo...',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -101,8 +101,9 @@ class _HomeState extends State<Home> {
               validator: (TagData<ButtonData> tag) {
                 if (tag.tag == 'lion') {
                   return 'Not envited per tiger request';
-                } else if (_dynamicTagController.getTags!.contains(tag)) {
-                  return 'Already in the clube';
+                } else if (_dynamicTagController.getTags!
+                    .any((element) => element.tag == tag.tag)) {
+                  return 'Already in the club';
                 }
                 return null;
               },
@@ -126,13 +127,13 @@ class _HomeState extends State<Home> {
                           width: 3.0,
                         ),
                       ),
-                      helperText: 'Enter language...',
+                      helperText: 'Zootopia club...',
                       helperStyle: const TextStyle(
                         color: Color.fromARGB(255, 74, 137, 92),
                       ),
                       hintText: inputFieldValues.tags.isNotEmpty
                           ? ''
-                          : "Enter tag...",
+                          : "Register name...",
                       errorText: inputFieldValues.error,
                       prefixIconConstraints:
                           BoxConstraints(maxWidth: _distanceToField * 0.74),
@@ -162,7 +163,8 @@ class _HomeState extends State<Home> {
                                         child: Text(
                                           '${tag.data.emoji} ${tag.tag}',
                                           style: const TextStyle(
-                                              color: Colors.white),
+                                              color:
+                                                  Color.fromARGB(255, 0, 0, 0)),
                                         ),
                                         onTap: () {
                                           // print("${tag.tag} selected");
@@ -173,8 +175,7 @@ class _HomeState extends State<Home> {
                                         child: const Icon(
                                           Icons.cancel,
                                           size: 14.0,
-                                          color: Color.fromARGB(
-                                              255, 233, 233, 233),
+                                          color: Color.fromARGB(255, 0, 0, 0),
                                         ),
                                         onTap: () {
                                           inputFieldValues.onTagRemoved(tag);
@@ -220,7 +221,10 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 _dynamicTagController.clearTags();
               },
-              child: const Text('CLEAR TAGS'),
+              child: const Text(
+                'CLEAR TAGS',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
