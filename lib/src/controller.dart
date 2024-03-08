@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
+enum LetterCase { normal, small, capital }
+
 typedef Validator<T> = String? Function(T tag);
 typedef InputFieldBuilder<T> = Widget Function(
   BuildContext context,
   InputFieldValues<T> textFieldTagValues,
 );
-
-enum LetterCase { normal, small, capital }
 
 class ObjIder<O> {
   final O object;
@@ -15,9 +15,9 @@ class ObjIder<O> {
 }
 
 class InputFieldValues<T> {
-  final void Function(T tag) onChanged;
-  final void Function(T tag) onSubmitted;
-  final void Function(T tag) onTagDelete;
+  final void Function(T tag) onTagChanged;
+  final void Function(T tag) onTagSubmitted;
+  final void Function(T tag) onTagRemoved;
   final ScrollController tagScrollController;
   final TextEditingController textEditingController;
   final FocusNode focusNode;
@@ -28,9 +28,9 @@ class InputFieldValues<T> {
     required this.textEditingController,
     required this.focusNode,
     required this.error,
-    required this.onChanged,
-    required this.onSubmitted,
-    required this.onTagDelete,
+    required this.onTagChanged,
+    required this.onTagSubmitted,
+    required this.onTagRemoved,
     required this.tags,
     required this.tagScrollController,
   });
@@ -89,9 +89,9 @@ abstract class TextfieldTagsNotifier<T> extends ChangeNotifier {
     return null;
   }
 
-  void onChanged(T value);
-  void onSubmitted(T value);
-  void onTagDelete(T tag);
+  bool? onTagChanged(T tag);
+  bool? onTagSubmitted(T tag);
+  bool? onTagRemoved(T tag);
 
   @override
   void dispose() {
@@ -112,38 +112,11 @@ abstract class TextfieldTagsNotifier<T> extends ChangeNotifier {
 class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
   late int _tagScrollAnimationSpeedInMs;
   late String? _error;
-  static Function throwTypeError() => throw Exception(
-      'This default controller is designed for String tags. See example (main3.dart) file to see how to use other custom types');
 
   TextfieldTagsController()
       : _tagScrollAnimationSpeedInMs = 300,
         _error = null,
         super();
-
-  TextfieldTagsController.icr(
-    List<T>? initialTags,
-    List<String>? textSeparators,
-    Validator<T>? validator,
-    LetterCase? letterCase,
-    FocusNode? focusNode,
-    TextEditingController? textEditingController,
-    ScrollController? scrollController,
-  )   : _tagScrollAnimationSpeedInMs = 300,
-        super(
-          initialTags: initialTags != null ? initialTags.toList() : [],
-          textSeparators: textSeparators != null ? textSeparators.toSet() : {},
-          letterCase: letterCase ?? LetterCase.normal,
-          validator: validator,
-          focusNode: focusNode != null
-              ? ObjIder<FocusNode>(focusNode, false)
-              : ObjIder<FocusNode>(FocusNode(), true),
-          textEditingController: textEditingController != null
-              ? ObjIder<TextEditingController>(textEditingController, false)
-              : ObjIder<TextEditingController>(TextEditingController(), true),
-          scrollController: scrollController != null
-              ? ObjIder<ScrollController>(scrollController, false)
-              : ObjIder<ScrollController>(ScrollController(), true),
-        );
 
   List<T>? get getTags => _tags?.toList();
   String? get getError => _error;
@@ -207,24 +180,6 @@ class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
         : ObjIder<ScrollController>(ScrollController(), true);
   }
 
-  void _onTagOperation(T tag) {
-    if (tag is String) {
-      if (tag.isNotEmpty) {
-        _textEditingController?.object.clear();
-        _error = _validator != null ? _validator!(tag) : null;
-        if (_error == null) {
-          bool? added = super.addTag(tag);
-          if (added == true) {
-            scrollTags();
-          }
-        }
-        notifyListeners();
-      }
-    } else {
-      throwTypeError();
-    }
-  }
-
   @override
   bool? clearTags() {
     bool? clear = super.clearTags();
@@ -233,60 +188,151 @@ class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
       _textEditingController?.object.clear();
       _focusNode?.object.requestFocus();
       notifyListeners();
-      return clear;
+    }
+    return clear;
+  }
+
+  @override
+  bool? onTagChanged(T tag) => null;
+
+  @override
+  bool? onTagSubmitted(T tag) {
+    bool? add = super.addTag(tag);
+    if (add == true) {
+      _error = null;
+      _textEditingController?.object.clear();
+      notifyListeners();
+    }
+    return add;
+  }
+
+  @override
+  bool? onTagRemoved(T tag) {
+    bool? remove = super.removeTag(tag);
+    if (remove == true) {
+      _error = null;
+      notifyListeners();
+    }
+    return remove;
+  }
+}
+
+class StringTagController<T extends String> extends TextfieldTagsController<T> {
+  bool? _tagOperation(T tag) {
+    bool? added;
+    if (tag.isNotEmpty) {
+      getTextEditingController?.clear();
+      super.setError = getValidator != null ? getValidator!(tag) : null;
+      if (getError == null) {
+        added = super.addTag(tag);
+        if (added == true) {
+          scrollTags();
+        }
+      }
+      notifyListeners();
+    }
+    return added;
+  }
+
+  @override
+  bool? onTagChanged(T tag) {
+    final ts = getTextSeparators;
+    final lc = getLetterCase;
+    final separator = ts?.cast<String?>().firstWhere(
+        (element) => tag.contains(element!) && tag.indexOf(element) != 0,
+        orElse: () => null);
+    if (separator != null) {
+      final splits = tag.split(separator);
+      final indexer = splits.length > 1 ? splits.length - 2 : splits.length - 1;
+      final tsv = lc == LetterCase.small
+          ? splits.elementAt(indexer).trim().toLowerCase()
+          : lc == LetterCase.capital
+              ? splits.elementAt(indexer).trim().toUpperCase()
+              : splits.elementAt(indexer).trim();
+      return _tagOperation(tsv as T);
     }
     return null;
   }
 
   @override
-  void onChanged(T value) {
-    if (value is String) {
-      final ts = _textSeparators;
-      final lc = _letterCase;
-      final separator = ts?.cast<String?>().firstWhere(
-          (element) => value.contains(element!) && value.indexOf(element) != 0,
-          orElse: () => null);
-      if (separator != null) {
-        final splits = value.split(separator);
-        final indexer =
-            splits.length > 1 ? splits.length - 2 : splits.length - 1;
-        final val = lc == LetterCase.small
-            ? splits.elementAt(indexer).trim().toLowerCase()
-            : lc == LetterCase.capital
-                ? splits.elementAt(indexer).trim().toUpperCase()
-                : splits.elementAt(indexer).trim();
-        _onTagOperation(val as T);
-      }
-    } else {
-      throwTypeError();
-    }
+  bool? onTagSubmitted(T tag) {
+    final lc = getLetterCase;
+    final tsv = lc == LetterCase.small
+        ? tag.trim().toLowerCase()
+        : lc == LetterCase.capital
+            ? tag.trim().toUpperCase()
+            : tag.trim();
+    return _tagOperation(tsv as T);
   }
 
   @override
-  void onSubmitted(T value) {
-    if (value is String) {
-      final lc = _letterCase;
-      final val = lc == LetterCase.small
-          ? value.trim().toLowerCase()
+  set setError(String? error) {
+    super.setError = error;
+    notifyListeners();
+  }
+}
+
+class DynamicTagController<T extends TagData>
+    extends TextfieldTagsController<T> {
+  bool? _tagOperation(T tag) {
+    bool? added;
+    if (tag.tag.isNotEmpty) {
+      getTextEditingController?.clear();
+      super.setError = getValidator != null ? getValidator!(tag) : null;
+      if (getError == null) {
+        added = super.addTag(tag);
+        if (added == true) {
+          scrollTags();
+        }
+      }
+      notifyListeners();
+    }
+    return added;
+  }
+
+  @override
+  bool? onTagChanged(T tag) {
+    final ts = getTextSeparators;
+    final lc = getLetterCase;
+    final separator = ts?.cast<String?>().firstWhere(
+        (element) =>
+            tag.tag.contains(element!) && tag.tag.indexOf(element) != 0,
+        orElse: () => null);
+    if (separator != null) {
+      final splits = tag.tag.split(separator);
+      final indexer = splits.length > 1 ? splits.length - 2 : splits.length - 1;
+      final tsv = lc == LetterCase.small
+          ? splits.elementAt(indexer).trim().toLowerCase()
           : lc == LetterCase.capital
-              ? value.trim().toUpperCase()
-              : value.trim();
-      _onTagOperation(val as T);
-    } else {
-      throwTypeError();
+              ? splits.elementAt(indexer).trim().toUpperCase()
+              : splits.elementAt(indexer).trim();
+      tag.tag = tsv;
+      return _tagOperation(tag);
     }
+    return null;
   }
 
   @override
-  void onTagDelete(T tag) {
-    if (tag is String) {
-      bool? removed = removeTag(tag);
-      if (removed == true) {
-        _error = null;
-        notifyListeners();
-      }
-    } else {
-      throwTypeError();
-    }
+  bool? onTagSubmitted(T tag) {
+    final lc = getLetterCase;
+    final tsv = lc == LetterCase.small
+        ? tag.tag.trim().toLowerCase()
+        : lc == LetterCase.capital
+            ? tag.tag.trim().toUpperCase()
+            : tag.tag.trim();
+    tag.tag = tsv;
+    return _tagOperation(tag);
   }
+
+  @override
+  set setError(String? error) {
+    super.setError = error;
+    notifyListeners();
+  }
+}
+
+class TagData<D> {
+  String tag;
+  final D data;
+  TagData(this.tag, this.data);
 }

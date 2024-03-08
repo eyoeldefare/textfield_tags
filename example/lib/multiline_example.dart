@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Multiline Tag Demo',
       theme: ThemeData(primarySwatch: Colors.green),
       home: const Home(),
     );
@@ -56,18 +56,18 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 74, 137, 92),
           centerTitle: true,
-          title: const Text('Enter a tag...'),
+          title: const Text(
+            'Multiline Tag Demo...',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         body: Column(
           children: [
             TextFieldTags<String>(
               textfieldTagsController: _textfieldTagsController,
               initialTags: const [
-                'pick',
-                'your',
-                'favorite',
-                'programming',
-                'language'
+                'yaml',
+                'gradle',
               ],
               textSeparators: const [' ', ','],
               letterCase: LetterCase.normal,
@@ -75,7 +75,7 @@ class _HomeState extends State<Home> {
                 if (tag == 'php') {
                   return 'No, please just no';
                 } else if (_textfieldTagsController.getTags!.contains(tag)) {
-                  return 'you already entered that';
+                  return 'You\'ve already entered that';
                 }
                 return null;
               },
@@ -154,7 +154,8 @@ class _HomeState extends State<Home> {
                                                   255, 233, 233, 233),
                                             ),
                                             onTap: () {
-                                              inputFieldValues.onTagDelete(tag);
+                                              inputFieldValues
+                                                  .onTagRemoved(tag);
                                             },
                                           )
                                         ],
@@ -164,8 +165,8 @@ class _HomeState extends State<Home> {
                             )
                           : null,
                     ),
-                    onChanged: inputFieldValues.onChanged,
-                    onSubmitted: inputFieldValues.onSubmitted,
+                    onChanged: inputFieldValues.onTagChanged,
+                    onSubmitted: inputFieldValues.onTagSubmitted,
                   ),
                 );
               },

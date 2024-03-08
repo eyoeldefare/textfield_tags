@@ -1,6 +1,6 @@
 # textfield_tags
 
-This widget allows you to create a textfield that takes in Textfield values and display the values as tags. The tags can also be customized to your own preference. The widget also takes in a controller that can also be customized by extending it into your own custom controller and inheriting its functionalities.  
+Textfield tags is a widget allows you to create tags inside a textfield. The tags can be customized to your own preferences as the widget allows you to create your own tags. The default controllers allow you to store tags as regular strings or `TagData` object which allows you to store any kinds of data. This allow you to store color themes with each tags and display those based on the tag entered.  
 
 ## Environment
 
@@ -25,176 +25,101 @@ To start using this widget, you will need to first import the package inside you
 
 To use this widget, 
 1. `import 'package:textfield_tags/textfield_tags.dart';` inside your dart file
-2. Call the widget `TextFieldTags<String>(...)`. 
+2. Follow the example bellow to call the widget `TextFieldTags(...)`. 
 3. The widget takes in 9 arguments: `List<String>? initialTags`, 
 `ScrollController? scrollController`,
-`FocusNode? focusNode`, `TextEditingController? textEditingController`, `List<String>? textSeperators`, `LetterCase? letterCase`, `Validator? validator`, `InputFieldBuilder inputfieldBuilder`, `TextfieldTagsController? textfieldController`. Read the api documentation about these properties for more details.
+`FocusNode? focusNode`, 
+`TextEditingController? textEditingController`, `List<String>? textSeperators`, 
+`LetterCase? letterCase`, 
+`Validator? validator`, 
+`InputFieldBuilder inputfieldBuilder`, `TextfieldTagsController? textfieldController`. Read the api documentation about these properties for more details or see the examples provided in example folder.
 
-### When you want to use it, call the `TextFieldTags<String>(...)` as the bellow examples shows
+## Controller support
+By default, this widget comes with 2 built-in controllers: one that allows you to manage string based tags and another one that allows you to store other data with the tags. We will do deeper in each types of controllers bellow.
+
+### Storing `String` Tags
+If you want to store and manage your tags in a simple `String` type, then this example will be enough for your solution. 
+
+This solution uses `StringTagControlle<String>()` controller to manage the tags.
+
+``` dart
+  class MyWidget extends StatelessWidget {
+    const MyWidget({Key? key}) : super(key: key);
+
+    final _stringTagController = StringTagControlle();
+
+    @override
+    Widget build(BuildContext context) {
+      return TextFieldTags<String>(
+        textfieldTagsController: _stringTagController,
+        initialTags:['cat','dog'],
+        textSeparators: const [' ', ','],
+        validator: (String tag){
+          if (tag == 'lion'){
+            return 'Lion not allowed';
+          }
+          return null;
+        },
+        inputFieldBuilder: (context, inputFieldValues){
+          return TextField();
+        }
+      );
+    }
+  }
+
+```
+### Storing objects with string Tags
+If you want to store other objects along with the string tags this solution will be ideal for you. Storing other objects allows you to design the tags based on their stored data or consume the stored data for other reasons. 
+
+This solution uses `DynamicTagController<TagData<YourDataType>>()` controller to manage the tags. In this case, `YourDataType` is the data you want to use such as int, String, Object, etc.
 
 ``` dart 
-class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
+class ButtonColor{
+  final Color buttonColor;
+  final Color buttonTextColor;
+  const ButtonColor(this.buttonColor, this.buttonTextColor);
 }
 
-class _HomeState extends State<Home> {
-  double _distanceToField;
-  TextfieldTagsController _textfieldTagsController = TextfieldTagsController();
+class MyWidget extends StatelessWidget {
+    const MyWidget({Key? key}) : super(key: key);
+    final _dynamicTagController = DynamicTagController<TagData<ButtonColor>>()
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _distanceToField = MediaQuery.of(context).size.width;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _textfieldTagsController ;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Welcome",
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 74, 137, 92),
-          centerTitle: true,
-          title: const Text('Enter a tag...'),
-        ),
-        body: Column(
-          children: [
-            TextFieldTags(
-              textfieldTagsController: _textfieldTagsController,
-              initialTags: const [
-                'pick',
-                'your',
-                'favorite',
-                'programming',
-                'language'
-              ],
-              textSeparators: const [' ', ','],
-              letterCase: LetterCase.normal,
-              validator: (String tag) {
-                if (tag == 'php') {
-                  return 'No, please just no';
-                } else if (_textfieldTagsController.getTags.contains(tag)) {
-                  return 'you already entered that';
-                }
-                return null;
-              },
-              inputFieldBuilder: (context, inputFieldValues) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: TextField(
-                    controller: inputFieldValues.textEditingController,
-                    focusNode: inputFieldValues.focusNode,
-                    decoration: InputDecoration(
-                      border: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromARGB(255, 74, 137, 92),
-                            width: 3.0),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromARGB(255, 74, 137, 92),
-                            width: 3.0),
-                      ),
-                      helperText: 'Enter language...',
-                      helperStyle: const TextStyle(
-                        color: Color.fromARGB(255, 74, 137, 92),
-                      ),
-                      hintText: inputFieldValues.tags.isNotEmpty
-                          ? ''
-                          : "Enter tag...",
-                      errorText: inputFieldValues.error,
-                      prefixIconConstraints:
-                          BoxConstraints(maxWidth: _distanceToField * 0.74),
-                      prefixIcon: inputFieldValues.tags.isNotEmpty
-                          ? SingleChildScrollView(
-                              controller:
-                                  inputFieldValues.tagScrollController,
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                  children: inputFieldValues.tags
-                                      .map((String tag) {
-                                return Container(
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                    color: Color.fromARGB(255, 74, 137, 92),
-                                  ),
-                                  margin:
-                                      const EdgeInsets.only(right: 10.0),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 4.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      InkWell(
-                                        child: Text(
-                                          '#$tag',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        onTap: () {
-                                          //print("$tag selected");
-                                        },
-                                      ),
-                                      const SizedBox(width: 4.0),
-                                      InkWell(
-                                        child: const Icon(
-                                          Icons.cancel,
-                                          size: 14.0,
-                                          color: Color.fromARGB(
-                                              255, 233, 233, 233),
-                                        ),
-                                        onTap: () {
-                                          inputFieldValues.onTagDelete(tag);
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }).toList()),
-                            )
-                          : null,
-                    ),    
-                    onChanged: inputFieldValues.onChanged,
-                    onSubmitted: inputFieldValues.onSubmitted,
-                  ),
-                );
-              },
+    @override
+    Widget build(BuildContext context) {
+      return TextFieldTags<TagData<ButtonColor>>(
+        textfieldTagsController: _dynamicTagController,
+        initialTags:[
+          TagData(
+            'cat',
+            ButtonColor(
+              Color.fromARGB(255, 74, 137, 92),
+              Color.fromARGB(255, 137, 74, 126),
             ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  const Color.fromARGB(255, 74, 137, 92),
-                ),
-              ),
-              onPressed: () {
-                _textfieldTagsController.clearTags();
-              },
-              child: const Text('CLEAR TAGS'),
+          ),
+          TagData(
+            'dog',
+            ButtonColor(
+              Color.fromARGB(123, 74, 137, 92),
+              Color.fromARGB(45, 137, 74, 126),
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ],
+        textSeparators: const [' ', ','],
+        validator: (TagData<ButtonColor> tag){
+          if (tag == 'lion'){
+            return 'Lion not allowed';
+          }
+          return null;
+        },
+        inputFieldBuilder: (context, inputFieldValues){
+          return TextField();
+        }
+      ); 
+    }
   }
-}
 ```
-## V2.0.0+ Examples
 
-Please note that versions bellow V2.0.0 will not be supported anymore. Please consider upgrading to V2.0.0+. 
-The new changes offer more customization and flexibility to developers with many functionalities that solves previous customization issues related to this package. Now you can design this Widget to whatever you wants it. All the functionalities from previous versions are also included.
-
+### Examples
 Sample examples will be shown bellow from left to right respectively.
 
 [Example 1](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main1.dart)
@@ -205,65 +130,71 @@ Sample examples will be shown bellow from left to right respectively.
 
 [Example 4 Custom Controller](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main3.dart)
 
-### Visual Samples For Above Examples
+## Visual Samples For The Above Examples
 
 <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_2.gif" width=250>  <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_3.gif" width=250>
 
-## More Advanced Functionality Via Custom Controller
+### More Advanced Functionality Via Your Own Custom Controller
 
-If you feel like you want more functionality than what is offered by the default controller that comes with this widget, you can easily extend the controller's class to your own custom class and inherit all its functionality and add your own stuffs as bellow example shows.
+If you feel like you want more functionality than what is offered by the 2 default controllers, you can easily extend `TextfieldTagsController` class to your own custom class and inherit all its functionalities and add your own stuffs as bellow example show.
 
 The bellow example shows you how you can use a numbers
 tag picker that selects numbers between 2 and 10 with the exception of number 8.
 
-### Example:
+## Example:
 
 ``` dart
   // Create my own custom controller
- class MyCustomController<T> extends  TextfieldTagsController<T> {
-  @override
-  void onSubmitted(T value) {
-    if (value is int) {
-      String? validate = getValidator != null ? getValidator!(value) : null;
-      if (validate == null && value > 2 && value < 10) {
-        bool? addTag = super.addTag(value);
-        if (addTag == true) {
-          setError = null;
-          scrollTags();
-        }
-      } else if (validate != null) {
-        setError = validate;
-      } else {
-        setError = 'Must enter numbers greater than 2 and less than 10';
+  class MyIntTagController<T extends int> extends TextfieldTagsController<T> {
+      @override
+      bool? onTagSubmitted(T value) {
+          String? validate = getValidator != null ? getValidator!(value) : null;
+          if (validate == null && value > 2 && value < 10) {
+            bool? addTag = super.addTag(value);
+            if (addTag == true) {
+              setError = null;
+              scrollTags();
+            }
+          } else if (validate != null) {
+            setError = validate;
+          } else {
+            setError = 'Must enter numbers between 2 and 10';
+          }
+          return null;
       }
+
+      @override
+      set setError(String? error) {
+        super.setError = error;
+        notifyListeners();
+      }
+
+      doOtherThings(){
+        ...
+      }
+  }
+
+  class MyWidget extends StatelessWidget {
+    const MyWidget({Key? key}) : super(key: key);
+    final _myintTagController = MyIntTagController<int>();
+
+    @override
+    Widget build(BuildContext context) {
+      return TextFieldTags<int>(
+        textfieldTagsController: _myintTagController,
+        initialTags:[ 4, 5 ],
+        validator: (int tag){
+          if (tag == 8){
+            return '8 is not allowed';
+          }
+          return null;
+        },
+        inputFieldBuilder: (context, inputFieldValues){
+          return TextField();
+        }
+      ); 
     }
   }
-
-  @override
-  void onTagDelete(T tag) {
-    bool? removed = removeTag(tag);
-    if (removed == true) {
-      setError = null;
-    } else {
-      setError = 'Failed to delete number tag';
-    }
-  }
-
-  @override
-  set setError(String? error) {
-    super.setError = error;
-    getTextEditingController?.clear();
-    getFocusNode?.requestFocus();
-    notifyListeners();
-  }
-
-  doOtherThings(){
-    ...
-  }
-}
-
-  final _myCustomController = MyCustomController<int>();
-  TextFieldTags<int>(textfieldController: _myCustomController);
 ```
 
 [See Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main3.dart)

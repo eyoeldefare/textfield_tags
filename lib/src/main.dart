@@ -14,13 +14,6 @@ class TextFieldTags<T> extends StatefulWidget {
   ///Change the letter case of the text entered by user. Default is set to normal letter[LetterCase.normal]
   final LetterCase? letterCase;
 
-  ///Use this to add more customization and control over the tags and textfield
-  final TextfieldTagsController<T>? textfieldTagsController;
-
-  ///This [InputFieldBuilder] allows you to build your own custom widget
-  // final InputFieldBuilder? inputFieldBuilder;
-  final InputFieldBuilder<T> inputFieldBuilder;
-
   ///Use this to utilize your own [TextEditingController] instance created by you or by other widgets outside of this widget.
   ///If no controller is provider by you, the widget will use its own built in default controller.
   final TextEditingController? textEditingController;
@@ -33,16 +26,25 @@ class TextFieldTags<T> extends StatefulWidget {
   ///If no scroll controller is provider, the widget will use a default one.
   final ScrollController? scrollController;
 
+  ///This [InputFieldBuilder] allows you to build your own custom widget
+  ///Note that this field is required
+  final InputFieldBuilder<T> inputFieldBuilder;
+
+  ///[TextfieldTagsController] is the controller that houses the control for tags, textfield properties and other properties.
+  ///Note that this field is required to be initialized in your class
+  ///and must have the same type as the [TextFieldTags] widget
+  final TextfieldTagsController<T> textfieldTagsController;
+
   const TextFieldTags({
     Key? key,
     this.validator,
     this.initialTags,
     this.textSeparators,
     this.letterCase,
-    this.textfieldTagsController,
     this.textEditingController,
     this.focusNode,
     this.scrollController,
+    required this.textfieldTagsController,
     required this.inputFieldBuilder,
   }) : super(key: key);
 
@@ -57,9 +59,8 @@ class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
   @override
   void initState() {
     super.initState();
-    if (widget.textfieldTagsController != null) {
-      _ttc = widget.textfieldTagsController!;
-      _ttc.registerController(
+    _ttc = widget.textfieldTagsController
+      ..registerController(
         widget.initialTags,
         widget.textSeparators,
         widget.letterCase,
@@ -67,29 +68,20 @@ class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
         widget.focusNode,
         widget.textEditingController,
         widget.scrollController,
-      );
-    } else {
-      _ttc = TextfieldTagsController.icr(
-        widget.initialTags,
-        widget.textSeparators,
-        widget.validator,
-        widget.letterCase,
-        widget.focusNode,
-        widget.textEditingController,
-        widget.scrollController,
-      );
-    }
+      )
+      ..scrollTags();
+
     _ttv = InputFieldValues(
-      onChanged: _ttc.onChanged,
-      onSubmitted: _ttc.onSubmitted,
-      onTagDelete: _ttc.onTagDelete,
+      onTagChanged: _ttc.onTagChanged,
+      onTagSubmitted: _ttc.onTagSubmitted,
+      onTagRemoved: _ttc.onTagRemoved,
       tags: _ttc.getTags!,
       error: _ttc.getError,
       tagScrollController: _ttc.getScrollController!,
       textEditingController: _ttc.getTextEditingController!,
       focusNode: _ttc.getFocusNode!,
     );
-    _ttc.scrollTags();
+
     _ttc.addListener(() {
       if (mounted) {
         setState(() {
