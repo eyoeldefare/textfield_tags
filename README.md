@@ -71,7 +71,7 @@ If you only want to use string based tags, then the `StringTagController` is ide
     }
   }
 ```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/one.png" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/string_1.webm" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/string_2.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/string_3.webm" width=250> 
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/string_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/string_2.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/string_3.gif" width=250> 
 
 ### Using dynamic tags (`DynamicTagController`)
 If you want to store dynamic type of datas with each tags, then using `DyanmicTagController` will be ideal for you. This will offer you more flexibiliity and customization and will allow you to design the tags based on their own stored data. 
@@ -137,7 +137,7 @@ class MyWidget extends StatelessWidget {
     }
   }
 ```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/dynamic_1.webm" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/dyanmic_2.webm" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/dynamic_3.webm" width=250> 
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dynamic_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dyanmic_2.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dynamic_3.gif" width=250> 
 
 ### More Advanced Functionality Via A Custom Controller
 
@@ -204,4 +204,4 @@ tag picker that selects numbers between 2 and 10 with the exception of number 8.
     }
   }
 ```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/custom_1.webm" width=250>
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/custom_1.gif" width=250>
