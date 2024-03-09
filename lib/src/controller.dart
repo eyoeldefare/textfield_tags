@@ -217,6 +217,8 @@ class TextfieldTagsController<T> extends TextfieldTagsNotifier<T> {
   }
 }
 
+///[StringTagController] is a simpler version of dynamic controller offering a
+///straight forward solution to store string tags (might be deprecated in the future as its somehow redundant in light of what is offered in dynamic controller).
 class StringTagController<T extends String> extends TextfieldTagsController<T> {
   bool? _tagOperation(T tag) {
     bool? added;
@@ -272,6 +274,7 @@ class StringTagController<T extends String> extends TextfieldTagsController<T> {
   }
 }
 
+///[DynamicTagController] is a controller for managing dynamic tag entries
 class DynamicTagController<T extends DynamicTagData>
     extends TextfieldTagsController<T> {
   bool? _tagOperation(T tag) {
@@ -331,6 +334,7 @@ class DynamicTagController<T extends DynamicTagData>
   }
 }
 
+///[DynamicTagData] offers a model to store additional data with each tags
 class DynamicTagData<D> {
   String tag;
   final D data;

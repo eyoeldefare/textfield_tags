@@ -12,7 +12,7 @@ Textfield_tags is a widget that allows developers to create tags inside a textfi
 
 ```yaml 
   dependencies:
-      textfield_tags: ^3.0.0
+      textfield_tags: ^3.0.1
 ```
 
 `$ flutter pub get`

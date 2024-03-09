@@ -1,3 +1,7 @@
+## [3.0.1] - 3/8/2024
+* Update documentation
+* Format docs
+
 ## [3.0.0] - 3/8/2024
 * Release v3
 * Added more customization for designing tags
