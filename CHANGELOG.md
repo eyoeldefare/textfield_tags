@@ -1,3 +1,9 @@
+## [3.0.0] - 3/8/2024
+* Release v3
+* Added more customization for designing tags
+* Allows robust custom controllers for custom solutions
+* Added dynamic data support for tags allowing developers to store objects
+
 ## [2.1.1] - 3/5/2024
 * Release v2.1.1
 

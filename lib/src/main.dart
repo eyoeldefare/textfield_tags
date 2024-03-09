@@ -54,7 +54,7 @@ class TextFieldTags<T> extends StatefulWidget {
 
 class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
   late TextfieldTagsController<T> _ttc;
-  late InputFieldValues<T> _ttv;
+  late InputFieldValues<T> _ifb;
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
       )
       ..scrollTags();
 
-    _ttv = InputFieldValues(
+    _ifb = InputFieldValues(
       onTagChanged: _ttc.onTagChanged,
       onTagSubmitted: _ttc.onTagSubmitted,
       onTagRemoved: _ttc.onTagRemoved,
@@ -85,8 +85,8 @@ class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
     _ttc.addListener(() {
       if (mounted) {
         setState(() {
-          _ttv.error = _ttc.getError;
-          _ttv.tags = _ttc.getTags!;
+          _ifb.error = _ttc.getError;
+          _ifb.tags = _ttc.getTags!;
         });
       }
     });
@@ -96,7 +96,7 @@ class _TextFieldTagsState<T> extends State<TextFieldTags<T>> {
   Widget build(BuildContext context) {
     final build = widget.inputFieldBuilder(
       context,
-      _ttv,
+      _ifb,
     );
     return build;
   }

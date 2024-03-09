@@ -33,7 +33,10 @@ To use this widget,
 `TextEditingController? textEditingController`, `List<String>? textSeperators`, 
 `LetterCase? letterCase`, 
 `Validator? validator`, 
-`InputFieldBuilder inputfieldBuilder`, `TextfieldTagsController? textfieldController`. Read the api documentation on these properties for more details or see the examples provided in the example folder.
+`InputFieldBuilder inputfieldBuilder`, 
+`TextfieldTagsController? textfieldController`. 
+
+Read the api documentation on these properties for more details or see the examples provided in the example folder.
 
 ## Examples With Different Controllers
 By default, the widget comes with 2 built-in controllers: one that allows you to manage string type tags and another one that allows you to use any type of tags including objects, ints, strings, etc. We will show examples of the two controllers in actions bellow.
