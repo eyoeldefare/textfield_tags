@@ -272,7 +272,7 @@ class StringTagController<T extends String> extends TextfieldTagsController<T> {
   }
 }
 
-class DynamicTagController<T extends TagData>
+class DynamicTagController<T extends DynamicTagData>
     extends TextfieldTagsController<T> {
   bool? _tagOperation(T tag) {
     bool? added;
@@ -331,8 +331,8 @@ class DynamicTagController<T extends TagData>
   }
 }
 
-class TagData<D> {
+class DynamicTagData<D> {
   String tag;
   final D data;
-  TagData(this.tag, this.data);
+  DynamicTagData(this.tag, this.data);
 }

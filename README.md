@@ -1,6 +1,6 @@
 # textfield_tags
 
-Textfield tags is a widget allows you to create tags inside a textfield. The tags can be customized to your own preferences as the widget allows you to create your own tags. The default controllers allow you to store tags as regular strings or `TagData` object which allows you to store any kinds of data. This allow you to store color themes with each tags and display those based on the tag entered.  
+Textfield_tags is a widget that allows developers to create tags inside a textfield. The widget comes with 2 default controllers that allow you to store tags as regular strings or objects. Alternatively, you can create your own controller by extending the base controller class to have custom tag controllers.
 
 ## Environment
 
@@ -12,14 +12,14 @@ Textfield tags is a widget allows you to create tags inside a textfield. The tag
 
 ```yaml 
   dependencies:
-      textfield_tags: ^2.1.1
+      textfield_tags: ^3.0.0
 ```
 
 `$ flutter pub get`
 
 ## Getting Started
 
-To start using this widget, you will need to first import the package inside your project following the installation guide found on [Flutter.dev](https://pub.dev/packages/textfield_tags).
+To get started using this widget, you will need to first import the package inside your project following the installation guide found on [Flutter.dev](https://pub.dev/packages/textfield_tags).
 
 ## Usage
 
@@ -36,18 +36,18 @@ To use this widget,
 `InputFieldBuilder inputfieldBuilder`, `TextfieldTagsController? textfieldController`. Read the api documentation on these properties for more details or see the examples provided in the example folder.
 
 ## Examples With Different Controllers
-By default, the widget comes with 2 built-in controllers: one that allows you to manage string based tags and another one that allows you to store other data with the tags. We will show examples of controller usage bellow.
+By default, the widget comes with 2 built-in controllers: one that allows you to manage string type tags and another one that allows you to use any type of tags including objects, ints, strings, etc. We will show examples of the two controllers in actions bellow.
 
-### Using `String` based tags (`StringTagControlle`)
-If you only want to use string based tags, then the `StringTagControlle` is good enough for you. The example bellow shows how you can utilize the `StringTagControlle<String>()` controller to manage the tags.
+### Using `String` type tags (`StringTagControlle`)
+If you only want to use string based tags, then the `StringTagController` is ideal for you. The example bellow shows how you can utilize the `StringTagController<String>()` controller to manage string tags.
 
-[See Full Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main1.dart)
+[See Full Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/string_tag_examples.dart)
 
 ``` dart
   class MyWidget extends StatelessWidget {
     const MyWidget({Key? key}) : super(key: key);
 
-    final _stringTagController = StringTagControlle();
+    final _stringTagController = StringTagController();
 
     @override
     Widget build(BuildContext context) {
@@ -62,20 +62,21 @@ If you only want to use string based tags, then the `StringTagControlle` is good
           return null;
         },
         inputFieldBuilder: (context, inputFieldValues){
-          return TextField();
+          return TextField(
+            controller: inputFieldValues.textEditingController,
+            focusNode: inputFieldValues.focusNode, 
+          );
         }
       );
     }
   }
 ```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_1.gif" width=250>
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/one.png" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/string_1.webm" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/string_2.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/string_3.webm" width=250> 
 
-### Using dynamic based tags (`DynamicTagController`)
-If you want to store other datas with each tags, then this solution will be ideal for you. This will offer you more flexibiliity and customization as storing other datas  will allow you to design the tags based on their own stored data. 
+### Using dynamic tags (`DynamicTagController`)
+If you want to store dynamic type of datas with each tags, then using `DyanmicTagController` will be ideal for you. This will offer you more flexibiliity and customization and will allow you to design the tags based on their own stored data. 
 
-For example the bellow example stores the colors of each tags to show their color. We will store the button color and text color of each tags.
-
-[See Full Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main1.dart)
+[See Full Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/dynamic_tag_examples.dart)
 
 ``` dart 
 //Sample data model 
@@ -91,24 +92,24 @@ class MyWidget extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
-      return TextFieldTags<TagData<ButtonData>>(
+      return TextFieldTags<DynamicTagData<ButtonData>>(
         textfieldTagsController: _dynamicTagController,
         initialTags:[
-          TagData(
+          DynamicTagData<ButtonData>(
             'cat',
             const ButtonData(
               Color.fromARGB(255, 132, 204, 255),
               "😽",
             ),
           ),
-          TagData(
+          DynamicTagData<ButtonData>(
             'penguin',
-            const ButtonData(
+            const ButtonData<ButtonData>(
               Color.fromARGB(255, 255, 131, 228),
               '🐧',
             ),
           ),
-          TagData(
+          DynamicTagData<ButtonData>(
             'tiger',
             const ButtonData(
               Color.fromARGB(255, 222, 255, 132),
@@ -117,7 +118,7 @@ class MyWidget extends StatelessWidget {
           ),
         ],
         textSeparators: const [' ', ','],
-        validator: (TagData<ButtonData> tag){
+        validator: (DynamicTagData<ButtonData> tag){
           if (tag.tag == 'lion') {
             return 'Not envited per tiger request';
           } else if (_dynamicTagController.getTags!
@@ -127,22 +128,25 @@ class MyWidget extends StatelessWidget {
           return null;
         },
         inputFieldBuilder: (context, inputFieldValues){
-          return TextField();
+          return TextField(
+            controller: inputFieldValues.textEditingController,
+            focusNode: inputFieldValues.focusNode,
+          );
         }
       ); 
     }
   }
 ```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_2.gif" width=250>
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/dynamic_1.webm" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/dyanmic_2.webm" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/dynamic_3.webm" width=250> 
 
 ### More Advanced Functionality Via A Custom Controller
 
-If you feel like you want more functionality than what is offered by the 2 default controllers, you can easily extend `TextfieldTagsController` class to your own custom class and inherit all its functionalities and add your own stuffs as bellow example show.
+If you feel like you want more functionality than what is offered by the 2 default controllers, then you can easily extend `TextfieldTagsController` class to your own custom class and inherit all its functionalities and add your own stuffs as bellow example shows.
 
 The bellow example shows you how you can use a numbers
 tag picker that selects numbers between 2 and 10 with the exception of number 8.
 
-[See Full Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/main1.dart)(_this example also shows multiline functionality_)
+[See Full Example](https://github.com/eyoeldefare/textfield_tags/blob/master/example/lib/custom_tag_examples.dart)
 
 ``` dart
   // Create my own custom controller
@@ -191,10 +195,13 @@ tag picker that selects numbers between 2 and 10 with the exception of number 8.
           return null;
         },
         inputFieldBuilder: (context, inputFieldValues){
-          return TextField();
+          return TextField(
+            controller: inputFieldValues.textEditingController,
+            focusNode: inputFieldValues.focusNode,
+          );
         }
       ); 
     }
   }
 ```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_3.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/gif_3.gif" width=250>
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/master/images/custom_1.webm" width=250>
