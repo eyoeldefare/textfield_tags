@@ -137,7 +137,7 @@ class MyWidget extends StatelessWidget {
     }
   }
 ```
-<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dynamic_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dyanmic_2.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dynamic_3.gif" width=250> 
+<img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dynamic_1.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dynamic_2.gif" width=250> <img src="https://raw.githubusercontent.com/eyoeldefare/textfield_tags/v3/images/dynamic_3.gif" width=250> 
 
 ### More Advanced Functionality Via A Custom Controller
 
